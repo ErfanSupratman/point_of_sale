@@ -88,6 +88,72 @@ $(document)
                             $("#modal-new-product-fullscreen #insert").hide();
                           });
 
+                  $('#stock_table tbody')
+                          .on(
+                                  'click',
+                                  'td.delete',
+                                  function() {
+                                    var rowData = table.row(this).data();
+                                    swal(
+                                            {
+                                              title: "Are you sure?",
+                                              text: "Delete " + rowData.product_name
+                                                      + "!",
+                                              type: "warning",
+                                              showCancelButton: true,
+                                              confirmButtonColor: "#DD6B55",
+                                              confirmButtonText: "Yes, delete it!",
+                                              closeOnConfirm: false
+                                            },
+                                            function() {
+                                              $
+                                                      .get(
+                                                              "Inventory/deactiveStock?id="
+                                                                      + rowData.id,
+                                                              function(data,
+                                                                      status) {
+                                                                if (data.success) {
+                                                                  swal(
+                                                                          "Deleted!",
+                                                                          "Berhasil menghapus "
+                                                                                  + rowData.product_name
+                                                                                  + "",
+                                                                          "success");
+                                                                  table.ajax
+                                                                          .reload();
+                                                                } else {
+                                                                  swal(
+                                                                          "Failed!",
+                                                                          "Gagal menghapus "
+                                                                                  + rowData.product_name
+                                                                                  + "",
+                                                                          "error");
+                                                                }
+                                                              });
+
+                                            });
+                                  });
+
+                  $("#modal-new-stock-fullscreen #insert").click(
+                          function() {
+                            var fullName = $(
+                                    "#modal-new-stock-fullscreen #name").val();
+                            $.post('Inventory/addStock', $('form#stock_form')
+                                    .serialize(), function(data) {
+                              if (data.success) {
+                                swal("Inserted!", "Berhasil menyimpan "
+                                        + fullName + "", "success");
+                                table.ajax.reload();
+                                $('#modal-new-stock-fullscreen').modal('hide');
+                              } else {
+                                swal("Failed!", "Gagal menyimpan " + fullName
+                                        + "", "error");
+                              }
+                            });
+                          });
+
+                  // /////
+
                   $('#purchase_order').on(
                           'click',
                           '.clickable-row',
@@ -96,7 +162,7 @@ $(document)
                             $(this).addClass('active').siblings().removeClass(
                                     'active');
                           });
-
+                  // ////
                   $('#brand').change(function() {
                     $('#name').typeahead('destroy');
 
@@ -118,22 +184,39 @@ $(document)
                     });
                   });
 
-                  $('#name').change(function(e) {
+                  $('#name')
+                          .change(
+                                  function(e) {
 
-                    var current = $('#name').typeahead("getActive");
-                    if (current) {
-                      if (current.name == $('#name').val()) {
-                        $('.product_detail').fadeOut(500, function() {
-                          $(this).text(current.product_code).fadeIn(500);
-                        });
-                      } else {
-                        $('.product_detail').fadeOut(500, function() {
-                          $(this).text("product not found!").fadeIn(500);
-                        });
-                      }
-                    } else {
-                    }
-                  });
+                                    var current = $('#name').typeahead(
+                                            "getActive");
+                                    if (current) {
+                                      if (current.name == $('#name').val()) {
+                                        $('.product_detail')
+                                                .fadeOut(
+                                                        500,
+                                                        function() {
+                                                          $(this)
+                                                                  .text(
+                                                                          current.product_code)
+                                                                  .fadeIn(500);
+                                                          $(
+                                                                  '#modal-new-stock-fullscreen #product_id')
+                                                                  .val(
+                                                                          current.id);
+                                                        });
+                                      } else {
+                                        $('.product_detail').fadeOut(
+                                                500,
+                                                function() {
+                                                  $(this).text(
+                                                          "product not found!")
+                                                          .fadeIn(500);
+                                                });
+                                      }
+                                    } else {
+                                    }
+                                  });
 
                   $('#brand_movement').change(function() {
                     if ($('#brand_movement').val() == 'Bilt-Hamber') {

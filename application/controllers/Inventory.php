@@ -32,16 +32,16 @@ class Inventory extends CI_Controller {
 	public function addStock() {
 		header ( 'Content-Type: application/json' );
 		$data = array (
-				'name' => $_POST ['name_new'],
-				'brand_id' => $_POST ['brand_new'] 
+				'product_id' => $_POST ['product_id'],
+				'location_id' => $_POST ['lokasi'] 
 		);
-		$response = $this->product_model->addProduct ( $data );
+		$response = $this->inventory_model->addStock ( $data );
 		echo json_encode ( $response );
 	}
 	public function deactiveStock() {
 		$id = $_GET ['id'];
 		header ( 'Content-Type: application/json' );
-		$response = $this->product_model->deactiveProduct ( $id );
+		$response = $this->inventory_model->deactiveStock ( $id );
 		echo json_encode ( $response );
 	}
 }
