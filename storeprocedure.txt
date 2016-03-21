@@ -1,0 +1,9 @@
+DELIMITER $$
+DROP FUNCTION IF EXISTS getCounterSequence
+CREATE FUNCTION getCounterSequence(tipe INT) RETURNS VARCHAR(255)
+BEGIN
+  DECLARE COUNTER_FOUND VARCHAR(255);
+	UPDATE pos_counter SET sequence=(sequence+1) WHERE type= tipe;
+    SELECT CONCAT(prefix,"-",LPAD(sequence,10,'0')) INTO COUNTER_FOUND FROM pos_counter WHERE type = tipe;
+  RETURN COUNTER_FOUND;
+END;

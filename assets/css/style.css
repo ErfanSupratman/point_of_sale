@@ -1,0 +1,99 @@
+td.details-control {
+    cursor: pointer;
+}
+
+.select-style {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #fff;
+    background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 98% 50%;
+}
+
+.select-style select {
+    padding: 5px 8px;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+table.dataTable {
+    width: 98% !important;
+}
+
+.typeahead { z-index: 1051; }
+
+.footer {
+				text-align: right;
+				font-size: 11px;	
+				border-top: 5px solid #D0D0D0;
+				line-height: 15px;
+				padding: 0 10px 0 10px;
+				width: 100%;
+				height: 50px;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				background-color: #ffffff;
+			}
+
+			.huge {
+				font-weight: bold;
+				font-size: 20px;
+			}
+
+			.navbar-inverse {
+				border-radius: 0px !important;
+			}
+			/* .modal-fullscreen 
+
+			.modal-fullscreen {
+			  background: transparent;
+			}
+			.modal-fullscreen .modal-content {
+			  background: transparent;
+			  border: 0;
+			  -webkit-box-shadow: none;
+			  box-shadow: none;
+			}
+			.modal-backdrop.modal-backdrop-fullscreen {
+			  background: #ffffff;
+			}
+			.modal-backdrop.modal-backdrop-fullscreen.in {
+			  opacity: .97;
+			  filter: alpha(opacity=97);
+			}*/
+
+			/* .modal-fullscreen size: we use Bootstrap media query breakpoints 
+
+			.modal-fullscreen .modal-dialog {
+			  margin: 0;
+			  margin-right: auto;
+			  margin-left: auto;
+			  width: 100%;
+			}*/
+			@media (min-width: 768px) {
+			  .modal-fullscreen .modal-dialog {
+				width: 750px;
+			  }
+			}
+			@media (min-width: 992px) {
+			  .modal-fullscreen .modal-dialog {
+				width: 970px;
+			  }
+			}
+			@media (min-width: 1200px) {
+			  .modal-fullscreen .modal-dialog {
+				 width: 1170px;
+			  }
+			}

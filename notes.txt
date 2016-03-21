@@ -1,0 +1,12 @@
+- import barang
+- bahan baku ada 6 merek.
+- 200 item kemasan
+-----------------------------------------------------------------------------------------------
+- stok barang masuk. lokasi, showroom, gudang, pinjam.
+- harga beli kurs.
+- invoice lunas, bengkel, distributor area, dealer, and retail. 
+  keterangan atau belum ongkos kirim, kurs dollar. cuci mobil, jual barang, poles mobil.
+- report bulanan tahunan.
+- hapus bulanan.
+- contact person dan alamat.
+-----------------------------------------------------------------------------------------------
