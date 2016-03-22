@@ -75,17 +75,23 @@ $(document)
                           'td.details-control',
                           function() {
                             var rowData = table.row(this).data();
+                            console.log(rowData);
                             $('#modal-new-stock-fullscreen').modal('show');
                             $("#modal-new-stock-fullscreen .title_header")
                                     .text("Ubah Data");
                             $("#modal-new-stock-fullscreen #name").val(
                                     rowData.product_name);
-                            $("#modal-new-product-fullscreen #product_id").val(
-                                    rowData.brand_name);
-                            $("#modal-new-product-fullscreen #brand_new")
+                            $("#modal-new-stock-fullscreen #lokasi").val(
+                                    rowData.warehouse_id);
+                            $("#modal-new-stock-fullscreen #product_id").val(
+                                    rowData.product_id);
+                            $("#modal-new-stock-fullscreen #jumlah").val(
+                                    rowData.stock);
+                            $(".product_detail").text(rowData.product_code)
+                            $("#modal-new-stock-fullscreen #brand")
                                     .selectpicker('val', rowData.brand_id);
-                            $("#modal-new-product-fullscreen #update").show();
-                            $("#modal-new-product-fullscreen #insert").hide();
+                            $("#modal-new-stock-fullscreen #update").show();
+                            $("#modal-new-stock-fullscreen #insert").hide();
                           });
 
                   $('#stock_table tbody')
@@ -97,7 +103,8 @@ $(document)
                                     swal(
                                             {
                                               title: "Are you sure?",
-                                              text: "Delete " + rowData.product_name
+                                              text: "Delete "
+                                                      + rowData.product_name
                                                       + "!",
                                               type: "warning",
                                               showCancelButton: true,
