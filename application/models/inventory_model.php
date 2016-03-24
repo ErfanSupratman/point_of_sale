@@ -12,14 +12,14 @@ class Inventory_model extends CI_Model {
 	}
 	function getAllStockSummary() {
 		$dataWrapper = new DataWrapper ();
-		$sql = 'SELECT ps.id, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
+		$sql = 'SELECT ps.id,ps.stock_code, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
 				ps.stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
 				JOIN pos_brand pb ON pb.id=pp.brand_id
 				WHERE
-					ps.active=true ORDER BY lower(pp.name) asc';
+					ps.active=true ORDER BY lower(pp.name) asc, lower(stock_code) asc';
 		$query = $this->db->query ( $sql );
 		// Fetch the result array from the result object and return it
 		

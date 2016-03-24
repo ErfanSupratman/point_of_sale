@@ -2,31 +2,6 @@ td.details-control {
     cursor: pointer;
 }
 
-.select-style {
-    padding: 0;
-    margin: 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
-    background-color: #fff;
-    background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 98% 50%;
-}
-
-.select-style select {
-    padding: 5px 8px;
-    border: none;
-    box-shadow: none;
-    background-color: transparent;
-    background-image: none;
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
-}
-
-.select-style select:focus {
-    outline: none;
-}
-
 table.dataTable {
     width: 98% !important;
 }

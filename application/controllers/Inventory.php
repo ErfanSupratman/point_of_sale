@@ -22,18 +22,30 @@ class Inventory extends CI_Controller {
 		header ( 'Content-Type: application/json' );
 		
 		$data = array (
-				'name' => $_POST ['name_new'],
-				'brand_id' => $_POST ['brand_new'] 
+				'product_id' => $_POST ['product_id'],
+				'location_id' => $_POST ['lokasi'],
+				'stock' => $_POST ['jumlah'],
+				'harga_beli' => $_POST ['hargab'],
+				'harga_bengkel' => $_POST ['hargabe'],
+				'harga_dist_area' => $_POST ['hargada'],
+				'harga_retail' => $_POST ['hargare'],
+				'harga_dealer' => $_POST ['hargadl']
 		);
 		
-		$response = $this->product_model->updateProduct ( $data, $_GET ['id'] );
+		$response = $this->inventory_model->updateProduct ( $data, $_GET ['id'] );
 		echo json_encode ( $response );
 	}
 	public function addStock() {
 		header ( 'Content-Type: application/json' );
 		$data = array (
 				'product_id' => $_POST ['product_id'],
-				'location_id' => $_POST ['lokasi'] 
+				'location_id' => $_POST ['lokasi'],
+				'stock' => $_POST ['jumlah'],
+				'harga_beli' => $_POST ['hargab'],
+				'harga_bengkel' => $_POST ['hargabe'],
+				'harga_dist_area' => $_POST ['hargada'],
+				'harga_retail' => $_POST ['hargare'],
+				'harga_dealer' => $_POST ['hargadl']
 		);
 		$response = $this->inventory_model->addStock ( $data );
 		echo json_encode ( $response );

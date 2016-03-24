@@ -24,21 +24,29 @@
 				<div class="row">
 					<form action="/" id="stock_form">
 						<div class="col-sm-6">
-							<label for="brand">Brand</label> <select
-								class="form-control input-xs" id="brand" name="brand"
-								data-live-search="true" title="Pilih Brand"></select> <label
-								for="name">Product Name : </label> <input type="text" id="name"
+							<input type="hidden" id="id" name="id"></input>
+							<div class="form-group">
+								<label for="brand">Brand</label> <select
+									class="form-control input-xs" id="brand" name="brand"
+									data-live-search="true" title="Pilih Brand"></select> 
+							</div>
+							<div class="form-group">
+							<label
+								for="name">Product Name : </label>
+							 <input type="text" id="name"
 								class="form-control input-sm" name="name"
-								data-provide="typeahead"></input><input type="hidden"
-								id="product_id" name="product_id"></input> <label for="name">Product
+								data-provide="typeahead" autocomplete="off"></input><input type="hidden"
+								id="product_id" name="product_id"></input>
+							</div>
+								 <label for="name">Product
 								Code : </label> <br /> <span class="product_detail"></span> <br />
 							<label for="lokasi">Lokasi Stock</label>
 							<div class="select-style">
 								<select class="form-control input-sm" id="lokasi" name="lokasi">
 									<option>Pilih</option>
 									<option value="1">Gudang</option>
-									<option value="3">Pinjam</option>
-									<option value="2">Showroom</option>
+									<option value="2">Pinjam</option>
+									<option value="3">Showroom</option>
 								</select>
 							</div>
 							<label for="jumlah">Jumlah</label> <input id="jumlah" type="text"
@@ -94,7 +102,7 @@
 								id="hargabe" type="text" class="form-control input-sm"
 								name="hargabe" /> <label for="hargare">Harga Retail</label> <input
 								id="hargare" type="text" class="form-control input-sm"
-								name="hargadl" /> <label for="hargare">Harga Dealer</label> <input
+								name="hargare" /> <label for="hargare">Harga Dealer</label> <input
 								id="hargadl" type="text" class="form-control input-sm"
 								name="hargadl" />
 						</div>

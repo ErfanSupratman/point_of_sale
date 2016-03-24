@@ -52,8 +52,7 @@ defined ( 'BASEPATH' ) or exit ( 'No direct script access allowed' );
 						<span class="glyphicon glyphicon-transfer"></span> Pindah Stock
 					</button>
 
-					<button type="button" class="btn btn-success btn-md"
-						data-toggle="modal" data-target="#modal-new-stock-fullscreen">
+					<button type="button" id="addStock" class="btn btn-success btn-md">
 						<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
 						Baru
 					</button>
@@ -87,30 +86,34 @@ defined ( 'BASEPATH' ) or exit ( 'No direct script access allowed' );
 							style="font-size: 1em" cellspacing="0" width="98%">
 							<thead>
 								<tr>
+									<th>Kode Stock</th>
 									<th>Kode Produk</th>
 									<th>Nama Produk</th>
 									<th>Brand</th>
 									<th>Jumlah</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Bengkel</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Dist. Area</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Dealer</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Retail</th>
+									<th>Hrg. Bengkel</th>
+									<th>Hrg. Dist. Area</th>
+									<th>Hrg. Dealer</th>
+									<th>Hrg. Retail</th>
 									<th>Lokasi</th>
-									<th>Action</th>
+									<th>Booking</th>
+									<th>Delete</th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
+									<th>Kode Stock</th>
 									<th>Kode Produk</th>
 									<th>Nama Produk</th>
 									<th>Brand</th>
 									<th>Jumlah</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Bengkel</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Dist. Area</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Dealer</th>
-									<th class="hidden-xs hidden-sm hidden-md">Hrg. Retail</th>
+									<th>Hrg. Bengkel</th>
+									<th>Hrg. Dist. Area</th>
+									<th>Hrg. Dealer</th>
+									<th>Hrg. Retail</th>
 									<th>Lokasi</th>
-									<th>Action</th>
+									<th>Booking</th>
+									<th>Delete</th>
 								</tr>
 							</tfoot>
 						</table>
