@@ -1,3 +1,4 @@
+--GENERATE CODE
 DELIMITER $$
 DROP FUNCTION IF EXISTS getCounterSequence
 CREATE FUNCTION getCounterSequence(tipe INT) RETURNS VARCHAR(255)
@@ -7,3 +8,25 @@ BEGIN
     SELECT CONCAT(prefix,"-",LPAD(sequence,10,'0')) INTO COUNTER_FOUND FROM pos_counter WHERE type = tipe;
   RETURN COUNTER_FOUND;
 END;
+
+--UPDATE AVAILABLESTOCK
+DELIMITER $$
+CREATE FUNCTION updateAvailableStock(stockId BIGINT,quantity INT,notes TEXT, updatedBy VARCHAR(255)) RETURNS VARCHAR(255)
+BEGIN
+  DECLARE AVAILABLE INT;
+  DECLARE SUCCESS BOOL;
+  DECLARE RESULT VARCHAR(255);
+  SET SUCCESS = false;
+  SET AVAILABLE = 0;
+  SET RESULT = "";
+  SELECT ((ps.stock-(SELECT COALESCE(SUM(pb.quantity),0) FROM pos_booking pb WHERE pb.stock_id=ps.id and pb.active=true))-quantity) INTO AVAILABLE FROM pos_stock ps WHERE ps.id=stockId;
+  IF AVAILABLE <0 THEN
+  	SET SUCCESS = FALSE;
+  ELSE
+   	INSERT INTO `pos_booking`(`stock_id`,`booking_code`, `quantity`, `notes`, `created_by`, `created_date`, `updated_by`, `updated_date`, `active`) VALUES (stockId,getCounterSequence(5),quantity,notes,updatedBy,now(),updatedBy,now(),true);
+  	SET SUCCESS = TRUE;
+	SET RESULT = CONCAT(SUCCESS,',',AVAILABLE);
+  END IF;
+    
+  RETURN RESULT;
+END

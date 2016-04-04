@@ -8,7 +8,6 @@
 						<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-transfer"></span> Pindah Stock</h4>
 					</div>
 					<div class="col-sm-6" align="right">
-						
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
 					</div>
 				</div>
@@ -25,7 +24,7 @@
 							for="name">Product Name : </label><input type="text" id="name_movement"
 							class="form-control input-sm" data-provide="typeahead"></input>
 							<label for="code">Product Code :
-						</label><br /> <span class="product_detail_movement"></span> <br />	
+						</label><br /> <span class="product_detail_movement"></span> <br />
 					</div>
 					<div class="col-sm-6">
 						<label for="lokasi_awal">Lokasi Stock Awal</label>
