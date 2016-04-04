@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class User extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -21,6 +21,7 @@ class User extends CI_Controller {
 	 
 	 function __construct(){
 		parent::__construct();
+		$this->checkSession();
 		$this->load->model("user_model");
 	}
 	 
@@ -75,7 +76,7 @@ class User extends CI_Controller {
 		header('Content-Type: application/json');
 		$data = array(
 					'username' => $_POST['username_new'],
-					'password' => $_POST['password_new'],
+					'password' => md5($_POST['password_new']),
 					'full_name' => $_POST['full_name_new'],
 					'telepon' => $_POST['hp_new'],
 					'permission' => $_POST['role_new']

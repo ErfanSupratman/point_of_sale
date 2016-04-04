@@ -48,9 +48,13 @@ if (! isset ( $_GET ['active'] )) {
 						Setting</a>
 								</li>
 								<li>
-									<a href="<?php echo base_url(); ?>">
-										<span class="glyphicon glyphicon-log-out"></span>
-						Log out</a>
+									<a href="<?php echo site_url('verifyLogin/logout') ?>">
+										<span class="glyphicon glyphicon-log-out"> </span>
+						Log out (<?php
+											$session_data = $this->session->userdata('logged_in');
+											echo $session_data['username'];
+
+										?>)</a>
 								</li>
 							</ul>
 						</div>

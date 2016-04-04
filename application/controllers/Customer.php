@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Customer extends CI_Controller {
+class Customer extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -21,6 +21,7 @@ class Customer extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();
+		$this->checkSession();
 		$this->load->model("customer_model");
 	}
 

@@ -20,8 +20,13 @@
                             $('#modal-new-stock-fullscreen #brand').append(
                                 $("<option></option>").attr("value", item.id)
                                 .text(item.name));
-                            console.log(item.id);
                             $('#modal-new-stock-fullscreen #brand').selectpicker(
+                                'refresh');
+
+                            $('#modal-move-stock-fullscreen #brand_movement').append(
+                                $("<option></option>").attr("value", item.id)
+                                .text(item.name));
+                            $('#modal-move-stock-fullscreen #brand_movement').selectpicker(
                                 'refresh');
                         });
                     });
@@ -251,6 +256,27 @@
                                 });
                         });
 
+
+                    $('#addStock').on("click", function() {
+                        $('#modal-new-stock-fullscreen').modal('show');
+                        $("#modal-new-stock-fullscreen .title_header")
+                            .text("Ubah Data");
+                        $("#modal-new-stock-fullscreen #name").val("");
+                        $("#modal-new-stock-fullscreen #lokasi").val("");
+                        $("#modal-new-stock-fullscreen #product_id").val("");
+                        $("#modal-new-stock-fullscreen #jumlah").val("");
+                        $(".product_detail").text("")
+                        $("#modal-new-stock-fullscreen #brand")
+                            .selectpicker('val', "");
+                        $("#modal-new-stock-fullscreen #hargabe").val(0);
+                        $("#modal-new-stock-fullscreen #hargada").val(0);
+                        $("#modal-new-stock-fullscreen #hargadl").val(0);
+                        $("#modal-new-stock-fullscreen #hargare").val(0);
+                        $("#modal-new-stock-fullscreen #update").hide();
+                        $("#modal-new-stock-fullscreen #insert").show();
+                    });
+
+
                     /*
                         BOOKING
                     */
@@ -274,10 +300,11 @@
 
                                 $('#modal-new-booking-fullscreen #booking_table tbody').on({
                                     mouseenter: function() {
+                                        var rowData = tableBooking.row(this).data();
                                         $(this).popover({
                                             'container': 'body',
-                                            'title': 'notes ',
-                                            'content': 'sasdasd',
+                                            'title': 'notes-'+rowData.booking_code,
+                                            'content': rowData.notes,
                                             'placement': 'top',
                                             delay: {
                                                 "show": 500,
@@ -324,6 +351,28 @@
                             });
                         });
 
+                    /*
+                        MOVEMENT
+                    
+
+                    $('#moveStock').on("click", function() {
+                        $('#modal-move-stock-fullscreen').modal('show');
+                        $("#modal-move-stock-fullscreen .title_header")
+                            .text("Pindah Stock");
+                        $("#modal-move-stock-fullscreen #name_movement").val("");
+                        $("#modal-move-stock-fullscreen #source_location").val("");
+                        $("#modal-move-stock-fullscreen #product_id").val("");
+                        $("#modal-move-stock-fullscreen #source_stock").val("");
+                        $(".product_detail_movement").text("")
+                        $("#modal-new-stock-fullscreen #brand")
+                            .selectpicker('val', "");
+                        $("#modal-new-stock-fullscreen #hargabe").val(0);
+                        $("#modal-new-stock-fullscreen #hargada").val(0);
+                        $("#modal-new-stock-fullscreen #hargadl").val(0);
+                        $("#modal-new-stock-fullscreen #hargare").val(0);
+                        $("#modal-new-stock-fullscreen #insert").show();
+                    });
+
                     $('#purchase_order').on(
                         'click',
                         '.clickable-row',
@@ -334,79 +383,58 @@
                         });
 
                     $('#brand_movement').change(function() {
-                        if ($('#brand_movement').val() == 'Bilt-Hamber') {
+                        $('#name_movement').typeahead('destroy');
+
+                        if ($('#brand_movement').val() != undefined) {
                             $('#name_movement').prop('disabled', false);
-                            $('#name_movement').typeahead({
-                                source: [{
-                                    id: "X-0001",
-                                    name: "Bilt-Hamber auto-wash"
-                                }, {
-                                    id: "X-0007",
-                                    name: "Bilt-Hamber auto-wheel"
-                                }],
-                                autoSelect: true
-                            });
-                        } else if ($('#brand_movement').val() == 'Halfords') {
-                            $('#name_movement').prop('disabled', false);
-                            $('#name_movement').typeahead({
-                                source: [{
-                                    id: "X-0002",
-                                    name: "Halfords Car Wash"
-                                }],
-                                autoSelect: true
-                            });
-                        } else if ($('#brand_movement').val() == 'Simoniz') {
-                            $('#name_movement').prop('disabled', false);
-                            $('#name_movement').typeahead({
-                                source: [{
-                                    id: "X-0005",
-                                    name: "Simoniz Alloy Clean Plus"
-                                }, {
-                                    id: "X-0003",
-                                    name: "Simoniz Protection Car Wash"
-                                }],
-                                autoSelect: true
-                            });
-                        } else {
-                            $('#name_movement').prop('disabled', true);
                         }
+
+                        $.get('Product/findProductByBrandId', {
+                            brandId: $('#brand_movement').val()
+                        }, function(data) {
+                            $("#name_movement").typeahead({
+                                source: data
+                            });
+                        }, 'json');
+
+                        $('#name_movement').val('');
+                        $('.product_detail_movement').fadeOut(500, function() {
+                            $(this).text("").fadeIn(500);
+                        });
                     });
 
-                    $('#name_movement').change(function(e) {
+                    $('#name_movement')
+                        .change(
+                            function(e) {
 
-                        var current = $('#name_movement').typeahead("getActive");
-                        if (current) {
-                            if (current.name == $('#name_movement').val()) {
-                                $('.product_detail_movement').fadeOut(500, function() {
-                                    $(this).text(current.id).fadeIn(500);
-                                });
-                            } else {
-                                console.log($('#brand_movement').val());
-                                $('.product_detail_movement').fadeOut(500, function() {
-                                    $(this).text("product not found!").fadeIn(500);
-                                });
-                            }
-                        } else {}
-                    });
-
-                    $('#addStock').on("click", function() {
-                        $('#modal-new-stock-fullscreen').modal('show');
-                        $("#modal-new-stock-fullscreen .title_header")
-                            .text("Ubah Data");
-                        $("#modal-new-stock-fullscreen #name").val("");
-                        $("#modal-new-stock-fullscreen #lokasi").val("");
-                        $("#modal-new-stock-fullscreen #product_id").val("");
-                        $("#modal-new-stock-fullscreen #jumlah").val("");
-                        $(".product_detail").text("")
-                        $("#modal-new-stock-fullscreen #brand")
-                            .selectpicker('val', "");
-                        $("#modal-new-stock-fullscreen #hargabe").val(0);
-                        $("#modal-new-stock-fullscreen #hargada").val(0);
-                        $("#modal-new-stock-fullscreen #hargadl").val(0);
-                        $("#modal-new-stock-fullscreen #hargare").val(0);
-                        $("#modal-new-stock-fullscreen #update").hide();
-                        $("#modal-new-stock-fullscreen #insert").show();
-                    });
+                                var current = $('#name_movement').typeahead(
+                                    "getActive");
+                                if (current) {
+                                    if (current.name == $('#name_movement').val()) {
+                                        $('.product_detail_movement')
+                                            .fadeOut(
+                                                500,
+                                                function() {
+                                                    $(this)
+                                                        .text(
+                                                            current.product_code)
+                                                        .fadeIn(500);
+                                                    $(
+                                                        '#modal-move-stock-fullscreen #product_id')
+                                                        .val(
+                                                            current.id);
+                                                });
+                                    } else {
+                                        $('.product_detail').fadeOut(
+                                            500,
+                                            function() {
+                                                $(this).text(
+                                                    "product not found!")
+                                                    .fadeIn(500);
+                                            });
+                                    }
+                                } else {}
+                            }); */
 
                 });
 

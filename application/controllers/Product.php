@@ -1,8 +1,9 @@
 <?php
 defined ( 'BASEPATH' ) or exit ( 'No direct script access allowed' );
-class Product extends CI_Controller {
+class Product extends MY_Controller {
 	function __construct() {
 		parent::__construct ();
+		$this->checkSession();
 		$this->load->model ( "product_model" );
 	}
 	public function index() {

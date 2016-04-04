@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
+class MY_Controller extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -18,15 +18,28 @@ class Welcome extends MY_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
 	function __construct() {
 		parent::__construct();
-		if($this->isSessionValid()){
-			redirect('inventory','refresh');
+	}
+
+	public function checkSession(){
+		if ($this->session->userdata('logged_in')) {
+		}else{
+			redirect('/', 'refresh');
 		}
 	}
 
-	public function index() {
-		$this->load->helper(array('form'));
-		$this->load->view('welcome_message');
+	public function isSessionValid(){
+		if ($this->session->userdata('logged_in')) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function getUsername(){
+		$session_data = $this->session->userdata('logged_in');
+		return $session_data['username'];
 	}
 }
