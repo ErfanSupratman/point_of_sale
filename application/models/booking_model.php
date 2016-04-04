@@ -38,7 +38,6 @@ class Booking_model extends CI_Model {
 	}
 
 	function addBooking($data) {
-		error_log(json_encode($data));
 		$sql = "SELECT updateAvailableStock(?,?,?,?) as result FROM dual";
 		$query = $this->db->query($sql, array($data['stock_id'], $data['quantity'], $data['notes'], $data['created_by']));
 		$result = $query->result();
