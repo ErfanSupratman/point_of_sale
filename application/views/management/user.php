@@ -40,13 +40,13 @@
 				</div>
 				<div class="row" style="background-color: #ffffff">
 					<br/>
-					<div class="col-sm-2">
+	<!--				<div class="col-sm-2">
 						<ul class="nav nav-pills nav-stacked">
 							<li class="active"><a href="User?active=role">List User</a></li>
 							
 						</ul>
-					</div>
-					<div class="col-sm-10">
+					</div>-->
+					<div class="col-sm-12">
 						<!-- Button modal fullscreen -->
 						<button type="button" class="btn btn-success btn-md" onClick="insertUser()">
 							<span class="glyphicon glyphicon-plus"></span>  Tambah User Baru

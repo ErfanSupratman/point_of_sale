@@ -22,15 +22,15 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<label for="receiver">Nama Penerima</label>
-						<input type="text" id="receiver" class="form-control input-sm"/>
+						<input type="text" id="receiver" name="receiver" class="form-control input-sm"/>
 						<label for="phone">No. Telepon</label>
-						<input type="text" id="phone" class="form-control input-sm"/>
+						<input type="text" id="phone" name="phone" class="form-control input-sm"/>
 						<label for="email">Email</label>
-						<input type="text" id="email" class="form-control input-sm"/>
+						<input type="text" id="email" name="email" class="form-control input-sm"/>
 					</div>
 					<div class="col-sm-6">
 						<label for="bill_address">Alamat Penagihan</label>
-						<textarea class="form-control" rows="5" id="bill_address"></textarea>
+						<textarea class="form-control" rows="5" id="bill_address" name="bill_address"></textarea>
 					</div>
 				</div>
 				<div class="row">
