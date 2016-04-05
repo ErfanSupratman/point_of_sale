@@ -9,10 +9,6 @@ $(document).ready(function() {
 		} ]
 	});
 	
-	$('.modal-new-invoice-fullscreen').on('hidden.bs.modal', '.modal', function () {
-        $(this).removeData('bs.modal');
-      });
-	
 	$('.datepicker').datepicker();
 	$(".modal-transparent").on('show.bs.modal', function() {
 		setTimeout(function() {

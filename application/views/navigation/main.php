@@ -5,7 +5,7 @@ if (! isset ( $_GET ['active'] )) {
 	$active = $_GET ['active'];
 }
 ?>
-<nav class="navbar navbar-default" style="background-image: url('<?=asset_url()?>/images/maxresdefault.jpg')">
+<nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">

@@ -17,9 +17,7 @@
 			</div>
 			<div class="modal-body">
 			<div class="row">
-				<div class="col-sm-12">
-					<button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-print"></span></button>
-				</div>
+				
 			</div>
 				<div class="row">
 					<div class="col-sm-6">
@@ -121,6 +119,7 @@
 					<br/>
 				</div>
 			</div>
+		</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger pull-left btn-lg" data-dismiss="modal"><span class="glyphicon glyphicon-thumbs-up"></span> Lunas</button>
 				<button type="button" class="btn btn-success btn-lg" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk"></span> Simpan</button>

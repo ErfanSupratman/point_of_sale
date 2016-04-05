@@ -43,18 +43,20 @@
 							<button type="button" class="btn btn-success" id="insert">Simpan</button>
 						</div>
 						<div class="col-sm-6">
-							<table id="booking_table" class="table table-striped table-hover"
-							style="font-size: 1em" cellspacing="0" width="98%">
-							<thead>
-								<tr>
-									<th>Booking Date</th>
-									<th>Created By</th>
-									<th>Booking Code</th>
-									<th>Jumlah</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-						</table>
+							<div class="table-responsive">
+								<table id="booking_table" class="table table-striped table-hover"
+								style="font-size: 1em" cellspacing="0" width="98%">
+									<thead>
+										<tr>
+											<th>Booking Date</th>
+											<th>Created By</th>
+											<th>Booking Code</th>
+											<th>Jumlah</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div>
 					</form>
 				</div>

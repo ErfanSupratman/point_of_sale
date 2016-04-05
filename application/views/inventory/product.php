@@ -25,8 +25,8 @@
 		<?php
 			$this->load->view ( 'navigation/main' );
 		?>
-		<div class="container-fluid" style="padding:10px">
-			<div id="body" style="padding:10px">
+		<div class="container-fluid">
+			<div id="body">
 				<div class="row">
 					<?php
 						// inventory top menu
@@ -49,8 +49,12 @@
 					</div>
 					<div class="col-sm-10">
 						<!-- Button modal fullscreen -->
-						<button type="button" class="btn btn-success btn-md" onclick="insertProduct()">
-							<span class="glyphicon glyphicon-plus"></span>  Tambah Barang Baru
+						<button type="button" class="btn btn-success btn-md hidden-xs hidden-sm" onclick="insertProduct()">
+							<span class="glyphicon glyphicon-plus"></span> Tambah Barang Baru
+						</button>
+
+						<button type="button" class="btn btn-success btn-md hidden-lg hidden-md btn-block" onclick="insertProduct()">
+							<span class="glyphicon glyphicon-plus"></span> Tambah Barang Baru
 						</button>
 						
 						<br/>

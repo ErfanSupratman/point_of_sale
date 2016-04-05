@@ -256,7 +256,7 @@
                                 });
                         });
 
-
+/*
                     $('#addStock').on("click", function() {
                         $('#modal-new-stock-fullscreen').modal('show');
                         $("#modal-new-stock-fullscreen .title_header")
@@ -275,7 +275,7 @@
                         $("#modal-new-stock-fullscreen #update").hide();
                         $("#modal-new-stock-fullscreen #insert").show();
                     });
-
+/*
 
                     /*
                         BOOKING
@@ -508,4 +508,21 @@
                             });
                     });
             return tableBookingNow;
+        };
+
+        function addStock(){
+            $('#modal-new-stock-fullscreen').modal('show');
+            $("#modal-new-stock-fullscreen .title_header").text("Ubah Data");
+            $("#modal-new-stock-fullscreen #name").val("");
+            $("#modal-new-stock-fullscreen #lokasi").val("");
+            $("#modal-new-stock-fullscreen #product_id").val("");
+            $("#modal-new-stock-fullscreen #jumlah").val("");
+            $(".product_detail").text("")
+            $("#modal-new-stock-fullscreen #brand").selectpicker('val', "");
+            $("#modal-new-stock-fullscreen #hargabe").val(0);
+            $("#modal-new-stock-fullscreen #hargada").val(0);
+            $("#modal-new-stock-fullscreen #hargadl").val(0);
+            $("#modal-new-stock-fullscreen #hargare").val(0);
+            $("#modal-new-stock-fullscreen #update").hide();
+            $("#modal-new-stock-fullscreen #insert").show();
         }

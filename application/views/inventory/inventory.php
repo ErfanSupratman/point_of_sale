@@ -28,8 +28,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				<?php
 				$this->load->view('navigation/main');
 				?>
-				<div class="container-fluid" style="padding: 10px">
-					<div id="body" style="padding: 10px">
+				<div class="container-fluid" >
+					<div id="body">
 						<div class="row">
 							<?php
 							// inventory top menu
@@ -50,9 +50,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<span class="glyphicon glyphicon-transfer"></span> Pindah Stock
 								</button>
 								-->
-								<button type="button" id="addStock" class="btn btn-success btn-md">
-								<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
-								Baru
+
+								<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-xs hidden-sm">
+									<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
+								</button>
+
+								<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-lg hidden-md btn-block">
+									<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
 								</button>
 								<!--<div class="select-style pull-right hidden-sm hidden-xs"
 									style="width: 200px">

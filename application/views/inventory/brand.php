@@ -24,8 +24,8 @@
 		<?php
 			$this->load->view ( 'navigation/main' );
 		?>
-		<div class="container-fluid" style="padding:10px">
-			<div id="body" style="padding:10px">
+		<div class="container-fluid">
+			<div id="body">
 				<div class="row">
 					<?php
 						// inventory top menu
