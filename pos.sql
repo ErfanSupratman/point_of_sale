@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2016 at 03:53 PM
+-- Generation Time: Apr 05, 2016 at 04:54 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -188,6 +188,59 @@ INSERT INTO `pos_customer` (`id`, `nama`, `telepon`, `alamat`, `customer_code`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pos_invoice`
+--
+
+CREATE TABLE IF NOT EXISTS `pos_invoice` (
+  `id` bigint(20) NOT NULL,
+  `invoice_code` varchar(255) COLLATE utf8_bin NOT NULL,
+  `billing_name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `billing_address` text COLLATE utf8_bin NOT NULL,
+  `customer_id` bigint(20) DEFAULT NULL,
+  `billing_phone` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `billing_email` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `location_id` bigint(20) NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `state` tinyint(4) NOT NULL,
+  `created_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pos_invoice_detail`
+--
+
+CREATE TABLE IF NOT EXISTS `pos_invoice_detail` (
+  `id` bigint(20) NOT NULL,
+  `product_id` bigint(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `invoice_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pos_invoice_status_history`
+--
+
+CREATE TABLE IF NOT EXISTS `pos_invoice_status_history` (
+  `id` bigint(20) NOT NULL,
+  `invoice_id` bigint(20) NOT NULL,
+  `notes` text COLLATE utf8_bin,
+  `state` tinyint(4) NOT NULL,
+  `executed_by` varchar(255) COLLATE utf8_bin NOT NULL,
+  `executed_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pos_permission`
 --
 
@@ -299,7 +352,7 @@ CREATE TABLE IF NOT EXISTS `pos_user` (
 --
 
 INSERT INTO `pos_user` (`id`, `username`, `password`, `full_name`, `address`, `telepon`, `permission`, `created_by`, `created_date`, `updated_by`, `updated_date`, `active`) VALUES
-(1, 'febryo', 'dine123', 'febryo agung', 'test text alamat', '082818221', 1, NULL, NULL, NULL, NULL, 0),
+(1, 'febryo', '0c3284b8ba5dcc2e84e55786ee9e7a70', 'febryo agung', 'test text alamat', '082818221', 1, NULL, NULL, NULL, NULL, 0),
 (2, 'mey', '1234', 'meyli', 'tets addr', '1234', 2, NULL, NULL, NULL, NULL, 0),
 (3, 'rendi', '213123', 'rendi testing', 'test', '02010120', 4, NULL, NULL, NULL, NULL, 0),
 (4, 'test1', '1234', 'test1-full', 'addr-test', '12345', 1, NULL, NULL, NULL, NULL, 0),
@@ -382,7 +435,29 @@ ALTER TABLE `pos_counter`
 -- Indexes for table `pos_customer`
 --
 ALTER TABLE `pos_customer`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customer_code` (`customer_code`);
+
+--
+-- Indexes for table `pos_invoice`
+--
+ALTER TABLE `pos_invoice`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `invoice_code` (`invoice_code`);
+
+--
+-- Indexes for table `pos_invoice_detail`
+--
+ALTER TABLE `pos_invoice_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `invoice_id` (`invoice_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `pos_invoice_status_history`
+--
+ALTER TABLE `pos_invoice_status_history`
+  ADD KEY `invoice_id` (`invoice_id`);
 
 --
 -- Indexes for table `pos_permission`
@@ -406,7 +481,9 @@ ALTER TABLE `pos_stock`
 -- Indexes for table `pos_user`
 --
 ALTER TABLE `pos_user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `username` (`username`,`password`),
+  ADD KEY `username_2` (`username`);
 
 --
 -- Indexes for table `pos_warehouse`
@@ -438,6 +515,16 @@ ALTER TABLE `pos_counter`
 --
 ALTER TABLE `pos_customer`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `pos_invoice`
+--
+ALTER TABLE `pos_invoice`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `pos_invoice_detail`
+--
+ALTER TABLE `pos_invoice_detail`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `pos_permission`
 --
