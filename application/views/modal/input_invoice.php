@@ -33,7 +33,7 @@
 							<textarea class="form-control" rows="3" id="billing_address" name="billing_address"></textarea>
 							<label for="lokasi">Lokasi Stock</label>
 							<div class="select-style">
-								<select class="form-control input-sm" id="lokasi" name="lokasi">
+								<select class="form-control input-sm" id="locationId" name="locationId">
 									<option>Pilih</option>
 									<option value="1">Gudang</option>
 									<option value="2">Pinjam</option>
@@ -52,7 +52,13 @@
 							<div class="well collapse in" id="insertDetailForm">
 								<div class="row">
 									<div class="col-sm-2">
-										<label for="brand">Brand</label> <select class="form-control input-xs" id="brand" name="brand"data-live-search="true" autocomplete="false" title="Pilih Brand"></select>
+										<label for="brand">Brand</label> 
+										<!-- <select class="form-control input-xs input-sm" id="brand" name="brand"data-live-search="true" autocomplete="false" title="Pilih Brand"></select> -->
+										<input type="text" id="brand"
+										class="form-control input-sm" name="brand"
+										data-provide="typeahead" autocomplete="off"></input>
+										<input type="hidden"
+										id="brand_id" name="brand_id"></input>
 									</div>
 									<div class="col-sm-2">
 										<label
@@ -68,19 +74,21 @@
 									</div>
 									<div class="col-sm-2">
 										<label for="price_type">Tipe Harga</label>
-										<select id="price_type" name="price_type">
+										<select id="price_type" class="form-control input-sm" name="price_type">
 											<option>Pilih</option>
-											<option value="1">Retail</option>
-											<option value="2">Dealer</option>
-											<option value="3">Distributor Area</option>
-											<option value="3">Bengkel</option>
+											<option >Retail</option>
+											<option >Dealer</option>
+											<option >Distributor Area</option>
+											<option >Bengkel</option>
 										</select>
 									</div>
 									<div class="col-sm-2">
-										
+										<label for="jumlah">Jumlah</label>
+										<input type="text" id="jumlah" class="form-control input-sm" name="jumlah"></input>
 									</div>
 									<div class="col-sm-2">
-										
+										<br/>
+										<button type="button" id="insert_row" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
 									</div>
 									<div class="col-sm-2">
 										
@@ -108,17 +116,6 @@
 											<th>Action</th>
 										</tr>
 									</thead>
-									<tfoot>
-									<tr>
-										<th>No.</th>
-										<th>Brand</th>
-										<th>Nama Barang</th>
-										<th>Kode Barang</th>
-										<th>Jumlah</th>
-										<th>Harga</th>
-										<th>Action</th>
-									</tr>
-									</tfoot>
 								</table>
 							</div>
 						</div>
@@ -126,19 +123,21 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<label for="notes">Catatan</label>
-							<textarea class="form-control" rows="7" id="notes"></textarea>
+							<textarea class="form-control" rows="3" id="notes"></textarea>
 						</div>
 						<div class="col-sm-6">
-							<h3>Sub Total : Rp. 300000</h3>
-							<h3>Biaya Pengiriman : Rp. 100000</h3>
-							<div class="alert alert-warning">
-								<h1 style="text-align:center"><strong>Grand Total : Rp. 400000</strong></h1>
-							</div>
+							<h3>Sub Total : Rp. <span class="subTotal">0</span></h3>
+							<h3>Biaya Pengiriman : <input type="text" class="form-control input-sm" 
+										id="freight" name="freight"></input></h3>
+							
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
 							<br/>
+							<div class="alert alert-warning">
+								<h2 style="text-align:center"><strong>Grand Total : Rp. <span class="grandTotal">0</span></strong></h2>
+							</div>
 						</div>
 					</div>
 				</div>

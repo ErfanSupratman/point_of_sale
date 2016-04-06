@@ -13,6 +13,11 @@ class Inventory extends MY_Controller {
 		$data['inventory_content'] = '';
 		$this->load->view('inventory/inventory', $data);
 	}
+	public function getPriceByProductIdAndLocationId(){
+		header('Content-Type: application/json');
+		$response = $this->inventory_model->getPriceByProductIdAndLocationId($_GET['productId'],$_GET['locationId']);
+		echo json_encode($response);
+	}
 	public function create_po() {
 		$data['inventory_content'] = $this->load->view('inventory/purchase_order_detail', NULL, TRUE);
 		$this->load->view('inventory/inventory', $data);
