@@ -38,25 +38,25 @@
 					<br/>
 					<div class="col-sm-2">
 						<ul class="nav nav-pills nav-stacked">
-							<li class="active"><a href="#">Invoice Pending <span class="badge">2</span></a></li>
+							<li id="pendingMenu"><a href="#" id="pending"><span class="label label-warning">Pending</span> <span id="pendingBadge" class="badge"></span></a></li>
+						</ul>
+						<ul class="nav nav-pills nav-stacked">
+							<li id="finishedMenu"><a href="#" id="finished"><span class="label label-success">Finished</span> <span id="finishedBadge" class="badge"></span></a></li>
 						</ul>
 					</div>
 					<div class="col-sm-10">
 						<!-- Button modal fullscreen -->
-						<button type="button" class="btn btn-success btn-md hidden-xs hidden-sm" data-toggle="modal" data-target="#modal-new-invoice-fullscreen">
-							<span class="glyphicon glyphicon-file"></span>  Buat Invoice Baru
-						</button>
-						<button type="button" class="btn btn-success btn-md hidden-lg hidden-md btn-block" data-toggle="modal" data-target="#modal-new-invoice-fullscreen">
+
+						<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#modal-new-invoice-fullscreen">
 							<span class="glyphicon glyphicon-file"></span>  Buat Invoice Baru
 						</button>
 								
 						<br/>
 						<hr/>
 						<div class="table-responsive">
-							<table id="purchase_order" class="table table-striped table-hover" style="font-size:1em" cellspacing="0">
+							<table id="invoice_table" class="table table-striped table-hover" style="font-size:1em" cellspacing="0">
 								<thead>
 									<tr>
-										<th>No.</th>
 										<th>Tgl. Invoice</th>
 										<th>No. Invoice</th>
 										<th>Customer</th>
@@ -66,7 +66,6 @@
 								</thead>
 								<tfoot>
 									<tr>
-										<th>No.</th>
 										<th>Tgl. Invoice</th>
 										<th>No. Invoice</th>
 										<th>Customer</th>
@@ -94,7 +93,7 @@
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/dataTables.buttons.min.js"></script>
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/buttons.bootstrap.min.js"></script>
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/bootstrap-select.min.js"></script>
-				<script type="text/javascript" src="<?php echo asset_url() ?>/js/invoice.js"></script>
+				<script type="text/javascript" src="<?php echo asset_url() ?>/js/invoice.js"></script><!--  -->
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/sweetalert.min.js"></script>
 	</body>
 </html>

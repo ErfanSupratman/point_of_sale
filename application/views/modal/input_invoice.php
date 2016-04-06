@@ -49,10 +49,10 @@
 							<button id="add_row" type="button" class="btn btn-success btn-sm pull-left" data-toggle="collapse" data-target="#insertDetailForm">Add Row</button>
 							<br/>
 							<br/>
-							<div class="well collapse in" id="insertDetailForm">
+							<div class="well collapse out" id="insertDetailForm">
 								<div class="row">
 									<div class="col-sm-2">
-										<label for="brand">Brand</label> 
+										<label for="brand">Brand</label>
 										<!-- <select class="form-control input-xs input-sm" id="brand" name="brand"data-live-search="true" autocomplete="false" title="Pilih Brand"></select> -->
 										<input type="text" id="brand"
 										class="form-control input-sm" name="brand"
@@ -123,12 +123,12 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<label for="notes">Catatan</label>
-							<textarea class="form-control" rows="3" id="notes"></textarea>
+							<textarea class="form-control" rows="3" id="notes" name="notes"></textarea>
 						</div>
 						<div class="col-sm-6">
 							<h3>Sub Total : Rp. <span class="subTotal">0</span></h3>
-							<h3>Biaya Pengiriman : <input type="text" class="form-control input-sm" 
-										id="freight" name="freight"></input></h3>
+							<h3>Biaya Pengiriman : <input type="text" class="form-control input-sm"
+							id="freight" name="freight"></input></h3>
 							
 						</div>
 					</div>

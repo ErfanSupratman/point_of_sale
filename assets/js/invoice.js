@@ -1,17 +1,9 @@
 $(document).ready(function() {
-    var dataHeader = {};
-    var dataDetails = [];
-    $('#name').prop('disabled', true);
-    $('#price_type').prop('disabled', true);
 
-    $('#purchase_order').DataTable({
-        "order": [],
-        "columnDefs": [{
-            "targets": [0, 1, 2, 3, 4],
-            "orderable": false,
-        }]
-    });
+    var invoiceTable = {};
 
+    invoiceTable = loadInvoiceTable(0);
+    countAllStateBadge();
     $(".modal-transparent").on('show.bs.modal', function() {
         setTimeout(function() {
             $(".modal-backdrop").addClass("modal-backdrop-transparent");
@@ -34,11 +26,8 @@ $(document).ready(function() {
         $('#modal-new-product-fullscreen').modal('show');
         $(this).addClass('active').siblings().removeClass('active');
     });
-    $('.collapse').collapse();
 
-    $('.collapse').collapse('hide');
 
-    var i = 1;
     /*
     $.get('Brand/getAllBrand', {}, function(data) {
         $.each(data.data, function(i, item) {
@@ -56,81 +45,59 @@ $(document).ready(function() {
     });*/
 
     $("#modal-new-invoice-fullscreen #add_row").on('click', function() {
-        //$('#addr' + i).html("<td>" + i + "</td><td>" + (i + 1) + "</td><td>" + (i + 1) + "</td><td>" + (i + 1) + "</td><td>" + (i + 1) + "</td><td>" + (i + 1) + "</td><td>" + (i + 1) + "</td>");
-        /*$('#invoice_item_list').append('<tr id="addr' + (i + 1) + '"><td>' + i + '</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');*/
         $('#name').prop('disabled', true);
+        $('#jumlah').prop('disabled', true);
+        $('#price_type').prop('disabled', true);
         $("#modal-new-invoice-fullscreen #name").val("");
-        $("#modal-new-invoice-fullscreen #lokasi").val("");
         $("#modal-new-invoice-fullscreen #product_id").val("");
         $("#modal-new-invoice-fullscreen #jumlah").val("");
+        $("#modal-new-invoice-fullscreen #price_type").val("");
         $(".product_detail").text("")
         $("#modal-new-invoice-fullscreen #brand").selectpicker('val', "");
         $('#brand').typeahead('destroy');
         $('#brand').val('');
         $('#name').typeahead('destroy');
         $('#name').val('');
-        $.get('Brand/getAllBrand', {
+        var getAllBrand = $.get('Brand/getAllBrand', {
 
         }, function(data) {
             $("#brand").typeahead({
                 source: data.data
             });
         }, 'json');
+        $("#modal-new-invoice-fullscreen #jumlah").keyup(function(event) {
+            if (event.keyCode == 13) {
+                addRowValue(i);
+                i++
+            }
+        });
     });
 
+    $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
+        $("#modal-new-invoice-fullscreen #billing_name").val("");
+        $("#modal-new-invoice-fullscreen #billing_phone").val("");
+        $("#modal-new-invoice-fullscreen #billing_email").val("");
+        $("#modal-new-invoice-fullscreen #billing_address").val("");
+        $("#modal-new-invoice-fullscreen #locationId").val("");
+        $("#modal-new-invoice-fullscreen #notes").val("");
+        $("#modal-new-invoice-fullscreen #freight").val("");
+        $('#modal-new-invoice-fullscreen .subTotal').text("");
+        $('#modal-new-invoice-fullscreen .grandTotal').text("");
+        $('#brand').val('');
+        $('#name').val('');
+        $('#jumlah').val('');
+        $('#price_type').val('Pilih');
+        $('#name').prop('disabled', true);
+        $('#price_type').prop('disabled', true);
+        $('#jumlah').prop('disabled', true);
+        $('.product_detail').text("");
+        removeAllRow();
+    })
+
+    var i = 1;
+
     $("#modal-new-invoice-fullscreen #insert_row").on('click', function() {
-        var brand = $('#brand').val();
-        var product = $('#name').val();
-        var productCode = $('#modal-new-invoice-fullscreen .product_detail').text();
-        var jumlah = $('#jumlah').val();
-        var productId = $('#product_id').val();
-        var locationId = $('#locationId').val();
-        var harga = 0;
-        $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + productId + '&locationId=' + locationId, {},
-            function(data) {
-
-                var priceType = $('#modal-new-invoice-fullscreen #price_type').val();
-
-                /*
-                <option >Retail</option>
-                <option >Dealer</option>
-                <option >Distributor Area</option>
-                <option >Bengkel</option>
-                */
-
-
-                if (priceType == 'Bengkel') {
-                    harga = data[0].harga_bengkel;
-                } else if (priceType == 'Dealer') {
-                    harga = data[0].harga_dealer;
-                } else if (priceType == 'Distributor Area') {
-                    harga = data[0].harga_dist_area;
-                } else if (priceType == 'Retail') {
-                    harga = data[0].harga_retail;
-                }
-
-
-
-                $('#brand').val('');
-                $('#name').val('');
-                $('#modal-new-invoice-fullscreen .product_detail').text('');
-                $('#jumlah').val('');
-                $('#price_type').val('');
-                $('#invoice_item_list').slideUp(200, function() {
-                    $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
-                        '<td id="jumlah_row">' + brand + '</td>' +
-                        '<td id="product_row    ">' + product + '</td>' +
-                        '<td>' + productCode + '</td>' +
-                        '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + jumlah + '"></input></td>' +
-                        '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + harga + '"></input></td>' +
-                        '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-                    $('#invoice_item_list').slideDown(200);
-                    calculateTotal();
-                });
-            }, 'json');
-
-
-
+        addRowValue(i);
         i++;
     });
 
@@ -147,6 +114,14 @@ $(document).ready(function() {
         .change(
             function(e) {
                 calculateTotal();
+            });
+
+    $('#price_type')
+        .change(
+            function(e) {
+                if ($('#price_type').val() != '' && $('#price_type').val() != 'Pilih') {
+                    $('#jumlah').prop('disabled', false);
+                }
             });
 
     $('#brand')
@@ -218,19 +193,75 @@ $(document).ready(function() {
                 } else {}
             });
 
+    $('#pending').on('click', function() {
+        invoiceTable.destroy();
+        invoiceTable = loadInvoiceTable(0);
+        $("#pendingMenu").addClass("active");
+        $("#finishedMenu").removeClass("active");
+    });
 
-
-
+    $('#finished').on('click', function() {
+        invoiceTable.destroy();
+        invoiceTable = loadInvoiceTable(1);
+        $("#finishedMenu").addClass("active");
+        $("#pendingMenu").removeClass("active");
+    });
 
     $('#modal-new-invoice-fullscreen #insert').on('click', function() {
-        /*	dataDetails=[{test:"1"},{test:"2"},{test:"3"}];
-        data = {dataHeader:"1", dataDetail : dataDetails};
-        $.post('Invoice/addInvoice', {invoice : JSON.stringify(data)},
-            function(data) {}
-        );*/
+        var dataHeader = {};
+        var dataDetails = [];
+        var billingName = $("#modal-new-invoice-fullscreen #billing_name").val();
+        var billingPhone = $("#modal-new-invoice-fullscreen #billing_phone").val();
+        var billingEmail = $("#modal-new-invoice-fullscreen #billing_email").val();
+        var billingAddress = $("#modal-new-invoice-fullscreen #billing_address").val();
+        var locationId = $("#modal-new-invoice-fullscreen #locationId").val();
+        var notes = $("#modal-new-invoice-fullscreen #notes").val();
+        var freight = $("#modal-new-invoice-fullscreen #freight").val();
+
+        dataHeader = {
+            billing_name: billingName,
+            billing_phone: billingPhone,
+            billing_email: billingEmail,
+            billing_address: billingAddress,
+            location_id: locationId,
+            notes: notes,
+            freight: freight
+        };
 
         $('#invoice_item_list tbody tr').each(function() {
             console.log($(this).find('#jumlah_row #jumlah').val());
+            var quantity = $(this).find('#jumlah_row #jumlah').val();
+            var price = $(this).find('#harga_row #harga').val();
+            var productId = $(this).find('#product_row #product_id').val();
+            var rowData = {
+                product_id: productId,
+                quantity: quantity,
+                price: price
+            };
+            dataDetails.push(rowData);
+        });
+
+        var data = {
+            dataHeader: dataHeader,
+            dataDetail: dataDetails
+        };
+
+        $.post('Invoice/addInvoice', {
+                invoice: JSON.stringify(data)
+            },
+            function(data) {
+                if (data.success) {
+                    swal("Success!", "Sukses tambah invoice ", "success");
+                    $('#modal-new-invoice-fullscreen').modal('hide');
+                    invoiceTable.ajax.reload();
+                    countAllStateBadge();
+                } else {
+                    swal("Failed!", "Gagal tambah invoice ", "error");
+                }
+
+            }, 'json'
+        ).fail(function() {
+            swal("Failed!", "Gagal tambah invoice", "error");
         });
     });
 
@@ -270,7 +301,7 @@ function calculateTotal() {
         $('#modal-new-invoice-fullscreen .grandTotal').text(grandTotal).fadeIn(500);
     });
 
-     $('#modal-new-invoice-fullscreen .subTotal').fadeOut(500, function() {
+    $('#modal-new-invoice-fullscreen .subTotal').fadeOut(500, function() {
         $('#modal-new-invoice-fullscreen .subTotal').text(subTotal).fadeIn(500);
     });
 
@@ -289,4 +320,112 @@ function removeRow(id) {
     });
 
     calculateTotal();
+}
+
+function removeAllRow() {
+    $('#invoice_item_list tbody').each(function() {
+        $(this).remove();
+    });
+}
+
+function loadInvoiceTable(state) {
+    return $('#invoice_table').DataTable({
+        "order": [],
+        select: 'single',
+        "processing": true,
+        "ajax": "Invoice/getAllInvoiceByState?state=" + state,
+        "columns": [{
+            "data": "created_date"
+        }, {
+            "data": "invoice_code"
+        }, {
+            "data": "billing_name"
+        }, {
+            "data": "state"
+        }],
+        "columnDefs": [{
+            "targets": 3,
+            "data": "state",
+            "render": function(data, type, full, meta) {
+                var state = "";
+                if (data == 0) {
+                    state = '<span class="label label-warning">Pending</span>';
+                } else if (data == 1) {
+                    state = '<span class="label label-success">Finished</span>';
+                }
+                return state;
+            }
+        }, {
+            "targets": [4],
+            "orderable": false,
+            "data": null,
+            "className": "delete",
+            "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash'></span></button>"
+
+        }, {
+            "targets": [0, 1, 2, 3],
+            "className": "details-control",
+        }]
+    });
+}
+
+function countAllStateBadge() {
+    $.get('Invoice/countAllStates', {}, function(data) {
+        console.log(data);
+        /*$('#pendingBadge').text(data);*/
+        for (var key in data) {
+            console.log(data[key]);
+            if (data[key].state == 0) {
+                $('#pendingBadge').text(data[key].total);
+            } else if (data[key].state == 1) {
+                $('#finishedBadge').text(data[key].total);
+            }
+
+        }
+    }, 'json');
+}
+
+function addRowValue(i) {
+    var brand = $('#brand').val();
+    var product = $('#name').val();
+    var productCode = $('#modal-new-invoice-fullscreen .product_detail').text();
+    var jumlah = $('#jumlah').val();
+    var productId = $('#product_id').val();
+    var locationId = $('#locationId').val();
+    var harga = 0;
+    $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + productId + '&locationId=' + locationId, {},
+        function(data) {
+            if (data.length > 0) {
+                var priceType = $('#modal-new-invoice-fullscreen #price_type').val();
+                if (priceType == 'Bengkel') {
+                    harga = data[0].harga_bengkel;
+                } else if (priceType == 'Dealer') {
+                    harga = data[0].harga_dealer;
+                } else if (priceType == 'Distributor Area') {
+                    harga = data[0].harga_dist_area;
+                } else if (priceType == 'Retail') {
+                    harga = data[0].harga_retail;
+                }
+
+                $('#brand').val('');
+                $('#name').val('');
+                $('#modal-new-invoice-fullscreen .product_detail').text('');
+                $('#jumlah').val('');
+                $('#price_type').val('');
+                $('#invoice_item_list').slideUp(200, function() {
+                    $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
+                        '<td id="jumlah_row">' + brand + '</td>' +
+                        '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + productId + '"></td>' +
+                        '<td>' + productCode + '</td>' +
+                        '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + jumlah + '"></input></td>' +
+                        '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + harga + '"></input></td>' +
+                        '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+                    $('#invoice_item_list').slideDown(200);
+                    calculateTotal();
+                });
+            } else {
+                swal("Failed!", "Gagal tambah product " + product, "error");
+            }
+        }, 'json');
+
 }
