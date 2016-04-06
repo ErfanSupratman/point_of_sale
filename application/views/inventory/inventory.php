@@ -50,33 +50,31 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<span class="glyphicon glyphicon-transfer"></span> Pindah Stock
 								</button>
 								-->
-
 								<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-xs hidden-sm">
-									<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
+								<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
 								</button>
-
 								<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-lg hidden-md btn-block">
-									<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
+								<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
 								</button>
 								<!--<div class="select-style pull-right hidden-sm hidden-xs"
-									style="width: 200px">
-									<select class="form-control input-md" id="lokasi_stock">
-										<option>Filter Lokasi</option>
-										<option>Gudang</option>
-										<option>Pinjam</option>
-										<option>Showroom</option>
-									</select>
+										style="width: 200px">
+										<select class="form-control input-md" id="lokasi_stock">
+												<option>Filter Lokasi</option>
+												<option>Gudang</option>
+												<option>Pinjam</option>
+												<option>Showroom</option>
+										</select>
 								</div>
 								<div class="hidden-lg hidden-md">
-									<br />
-									<div class="select-style">
-										<select class="form-control input-md" id="lokasi_stock">
-											<option>Filter Lokasi</option>
-											<option>Gudang</option>
-											<option>Pinjam</option>
-											<option>Showroom</option>
-										</select>
-									</div>
+										<br />
+										<div class="select-style">
+												<select class="form-control input-md" id="lokasi_stock">
+														<option>Filter Lokasi</option>
+														<option>Gudang</option>
+														<option>Pinjam</option>
+														<option>Showroom</option>
+												</select>
+										</div>
 								</div>-->
 								<br />
 								<hr />
