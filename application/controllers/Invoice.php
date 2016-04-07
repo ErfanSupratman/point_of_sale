@@ -20,6 +20,12 @@ class Invoice extends MY_Controller {
 		echo json_encode($response);
 	}
 
+	public  function getInvoiceHeaderAndItemByInvoiceId(){
+	header('Content-Type: application/json');
+		$response = $this->invoice_model->getInvoiceHeaderAndItemByInvoiceId($_GET['id']);
+		echo json_encode($response);	
+	}
+
 	public function getAllInvoiceByState(){
 		header('Content-Type: application/json');
 		$response = $this->invoice_model->getAllInvoiceByStateSummary($_GET['state']);

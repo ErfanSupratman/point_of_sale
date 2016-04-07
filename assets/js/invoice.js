@@ -207,6 +207,9 @@ $(document).ready(function() {
         $("#pendingMenu").removeClass("active");
     });
 
+
+
+
     $('#modal-new-invoice-fullscreen #insert').on('click', function() {
         var dataHeader = {};
         var dataDetails = [];
@@ -329,7 +332,7 @@ function removeAllRow() {
 }
 
 function loadInvoiceTable(state) {
-    return $('#invoice_table').DataTable({
+    var table = $('#invoice_table').DataTable({
         "order": [],
         select: 'single',
         "processing": true,
@@ -367,6 +370,40 @@ function loadInvoiceTable(state) {
             "className": "details-control",
         }]
     });
+
+$('#invoice_table tbody').on(
+                        'click',
+                        'td.details-control',
+                        function() {
+                            var rowData = table.row(this).data();
+                            $.get('Invoice/getInvoiceHeaderAndItemByInvoiceId?id='+rowData.id,{},function(data){
+                                console.log(data.header.billing_name);
+                                $('#modal-new-invoice-fullscreen').modal('show');
+                                $("#modal-new-invoice-fullscreen #billing_name").val(data.header.billing_name);
+                                $("#modal-new-invoice-fullscreen #billing_phone").val(data.header.billing_phone);
+                                $("#modal-new-invoice-fullscreen #billing_email").val(data.header.billing_email);
+                                $("#modal-new-invoice-fullscreen #billing_address").val(data.header.billing_address);
+                                $("#modal-new-invoice-fullscreen #locationId").val(data.header.location_id);
+                                $("#modal-new-invoice-fullscreen #notes").val(data.header.notes);
+                                $("#modal-new-invoice-fullscreen #freight").val(data.header.freight);
+                                $('#modal-new-invoice-fullscreen .subTotal').text("");
+                                $('#modal-new-invoice-fullscreen .grandTotal').text("");
+                                $('#brand').val('');
+                                $('#add_row').hide();
+                                $('#name').val('');
+                                $('#jumlah').val('');
+                                $('#price_type').val('Pilih');
+                                $('#name').prop('disabled', true);
+                                $('#price_type').prop('disabled', true);
+                                $('#jumlah').prop('disabled', true);
+                                $('.product_detail').text("");
+                                putValueForEachRow(data.detail);
+                                calculateTotal();
+                            })
+                          
+                        });
+
+return table;
 }
 
 function countAllStateBadge() {
@@ -383,6 +420,22 @@ function countAllStateBadge() {
 
         }
     }, 'json');
+}
+
+function putValueForEachRow(data){
+        var x = 1
+        for (var key in data) {
+            console.log(data[key]);
+          $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + x + '</td>' +
+                        '<td id="jumlah_row">' + data[key].brand_name + '</td>' +
+                        '<td id="product_row">' + data[key].product_name + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + data[key].product_id + '"></td>' +
+                        '<td>' + data[key].product_code + '</td>' +
+                        '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + data[key].quantity + '"></input></td>' +
+                        '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + data[key].price + '"></input></td>' +
+                        '<td><button type="button" onclick="removeRow(' + x + ')" data-id="' + x + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+          x++;
+        }
+                    
 }
 
 function addRowValue(i) {

@@ -5,6 +5,7 @@ class Invoice_model extends CI_Model {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('dataWrapper_dto');
+		$this->load->model('document_dto');
 	}
 
 	function getAllInvoiceSummary() {
@@ -24,6 +25,47 @@ class Invoice_model extends CI_Model {
 				ORDER BY created_date asc';
 		$query = $this->db->query($sql);
 		$dataWrapper->data = $query->result();
+		return $dataWrapper;
+	}
+
+	function getInvoiceHeaderAndItemByInvoiceId($id){
+$dataWrapper = new $this->document_dto();
+		$sql = 'SELECT pi.id,
+				pi.invoice_code,
+				pi.billing_name,
+				pi.billing_address,
+				pi.customer_id,
+				pi.billing_phone,
+				pi.billing_email,
+				pi.location_id,
+				pi.freight,
+				pi.notes,
+				pw.name,
+				pi.state,
+				pi.created_by,
+				pi.created_date
+				FROM pos_invoice pi
+				JOIN pos_warehouse pw ON pi.location_id=pw.id
+				WHERE pi.id=?';
+		$queryH = $this->db->query($sql, array($id));
+
+		$sql = 'SELECT 
+				pi.id,
+				pp.name as product_name,
+				pp.id as product_id,
+				pp.product_code,
+				pb.name as brand_name,
+				pi.quantity,
+				pi.price,
+				pi.invoice_id
+				FROM pos_invoice_detail pi 
+				JOIN pos_product pp ON pp.id=pi.product_id
+				JOIN pos_brand pb ON pb.id=pp.brand_id
+				WHERE pi.id=?';
+		$queryD = $this->db->query($sql, array($id));
+
+		$dataWrapper->header = $queryH->result()[0];
+		$dataWrapper->detail = $queryD->result();
 		return $dataWrapper;
 	}
 
