@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-/*    $("#modal-new-invoice-fullscreen #print").on("click", function() {
+    /*    $("#modal-new-invoice-fullscreen #print").on("click", function() {
         var divContents = $("#modal-new-invoice-fullscreen .modal-body").html();
         var printWindow = window.open('', '', 'height=400,width=800');
         printWindow.document.write('<html><head><title>DIV Contents</title>');
@@ -133,18 +133,18 @@ $(document).ready(function() {
         });
     });
 
-    $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
-        $("#modal-new-invoice-fullscreen #invoice_code").val("");
-        $("#modal-new-invoice-fullscreen #billing_name").val("");
-        $("#modal-new-invoice-fullscreen #billing_phone").val("");
-        $("#modal-new-invoice-fullscreen #billing_email").val("");
-        $("#modal-new-invoice-fullscreen #billing_address").val("");
-        $("#modal-new-invoice-fullscreen #locationId").val("");
-        $("#modal-new-invoice-fullscreen #notes").val("");
-        $("#modal-new-invoice-fullscreen #invoice_id").val("");
-        $("#modal-new-invoice-fullscreen #freight").val("");
-        $('#modal-new-invoice-fullscreen .subTotal').text("");
-        $('#modal-new-invoice-fullscreen .grandTotal').text("");
+    $('#modal-new-invoice-fullscreen').on('hidden.bs.modal', function(e) {
+        $("#invoice_code").val("");
+        $("#billing_name").val("");
+        $("#billing_phone").val("");
+        $("#billing_email").val("");
+        $("#billing_address").val("");
+        $("#locationId").val("");
+        $("#notes").val("");
+        $("#invoice_id").val("");
+        $("#freight").val("");
+        $('.subTotal').text("");
+        $('.grandTotal').text("");
         $('#brand').val('');
         $('#name').val('');
         $('#jumlah').val('');
@@ -154,6 +154,10 @@ $(document).ready(function() {
         $('#jumlah').prop('disabled', true);
         $('.product_detail').text("");
         removeAllRow();
+    })
+
+    $('#modal-new-invoice-fullscreen').on('shown.bs.modal', function(e) {
+        $("#modal-new-invoice-fullscreen #billing_name").focus();
     })
 
     var i = 1;

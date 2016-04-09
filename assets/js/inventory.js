@@ -122,19 +122,29 @@
                             }, {
                                 "data": "location_name"
                             }],
-                            "columnDefs": [{
+                            "columnDefs": [
+/*                            {
                                 "targets": [10],
                                 "orderable": false,
                                 "data": null,
                                 "className": "booking",
                                 "defaultContent": "<button id='booking' type='button' class='btn btn-info btn-sm'><i class='fa fa-bookmark'></i></button>"
 
-                            }, {
+                            }, */
+ {
+                                "targets": [10],
+                                "orderable": false,
+                                "data": null,
+                                "className": "delete",
+                                "defaultContent": "<button type='button' id='delete' class='btn btn-default btn-sm'><span class='fa fa-history fa-2x'></span></button>"
+
+                            },
+                            {
                                 "targets": [11],
                                 "orderable": false,
                                 "data": null,
                                 "className": "delete",
-                                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash'></span></button>"
+                                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='fa fa-trash-o fa-large'></span></button>"
 
                             }, {
                                 "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],

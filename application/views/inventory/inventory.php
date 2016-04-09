@@ -94,7 +94,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 												<th>Hrg. Dealer</th>
 												<th>Hrg. Retail</th>
 												<th>Lokasi</th>
-												<th>Booking</th>
+												<!-- <th>Booking</th> -->
+												<th>History</th>
 												<th>Delete</th>
 											</tr>
 										</thead>
@@ -110,7 +111,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 											<th>Hrg. Dealer</th>
 											<th>Hrg. Retail</th>
 											<th>Lokasi</th>
-											<th>Booking</th>
+											<th>History</th>
+											<!-- <th>Booking</th> -->
 											<th>Delete</th>
 										</tr>
 										</tfoot>
