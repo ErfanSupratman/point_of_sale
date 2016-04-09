@@ -24,7 +24,7 @@
 			$this->load->view ( 'navigation/main' );
 		?>
 		<div class="container-fluid">
-			<div id="body">
+			<div id="body" class="padding-top-80px">
 				<div class="row">
 					<?php
 						// invoice top menu

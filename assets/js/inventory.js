@@ -136,7 +136,7 @@
                                 "orderable": false,
                                 "data": null,
                                 "className": "delete",
-                                "defaultContent": "<button type='button' id='delete' class='btn btn-default btn-sm'><span class='fa fa-history fa-2x'></span></button>"
+                                "defaultContent": "<button type='button' id='delete' class='btn btn-info btn-sm'><span class='fa fa-history fa-lg'></span></button>"
 
                             },
                             {
@@ -144,7 +144,7 @@
                                 "orderable": false,
                                 "data": null,
                                 "className": "delete",
-                                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='fa fa-trash-o fa-large'></span></button>"
+                                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='fa fa-trash-o fa-lg'></span></button>"
 
                             }, {
                                 "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],

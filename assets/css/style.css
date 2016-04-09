@@ -6,6 +6,20 @@ table.dataTable {
     width: 98% !important;
 }
 
+body{
+	background-color: #BFBFBF !important;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    border-top: 4px solid #FCED05 !important;
+    color:#000000 !important;
+}
+
+.padding-top-80px{
+	padding-top: 80px !important;
+	    border-bottom: 4px solid #FCED05 !important;
+}
+
 .typeahead { z-index: 1051; }
 
 .loginPanel{
@@ -41,7 +55,7 @@ input:-webkit-autofill {
 				font-size: 20px;
 			}
 
-			.navbar-inverse {
+			.navbar-default {
 				border-radius: 0px !important;
 			}
 			/* .modal-fullscreen 

@@ -5,7 +5,7 @@ if (! isset ( $_GET ['active'] )) {
 	$active = $_GET ['active'];
 }
 ?>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
@@ -15,7 +15,7 @@ if (! isset ( $_GET ['active'] )) {
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">LOGO</a>
+			<a class="navbar-brand" href="#"><img src="<?php echo asset_url() ?>/images/logo.png"></a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->

@@ -24,12 +24,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			<link rel="stylesheet"
 				href="<?php echo asset_url() ?>/css/bootstrap-flaty.min.css">
 			</head>
-			<body style="background-color: #F2F2F2">
+			<body>
 				<?php
 				$this->load->view('navigation/main');
 				?>
 				<div class="container-fluid" >
-					<div id="body">
+					<div id="body" class="padding-top-80px">
 						<div class="row">
 							<?php
 							// inventory top menu
