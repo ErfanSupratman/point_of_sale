@@ -8,7 +8,6 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Invoice</title>
-		<link rel="stylesheet" href="<?=asset_url()?>/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?=asset_url()?>/css/font-awesome.min.css">
 		<link rel="stylesheet" href="<?=asset_url()?>/css/bootstrap-datepicker3.css">
 		<link rel="stylesheet" href="<?=asset_url()?>/css/normalize.css">
@@ -50,7 +49,6 @@
 						<button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#modal-new-invoice-fullscreen">
 							<span class="glyphicon glyphicon-file"></span>  Buat Invoice Baru
 						</button>
-								
 						<br/>
 						<hr/>
 						<div class="table-responsive">
@@ -93,7 +91,10 @@
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/dataTables.buttons.min.js"></script>
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/buttons.bootstrap.min.js"></script>
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/bootstrap-select.min.js"></script>
-				<script type="text/javascript" src="<?php echo asset_url() ?>/js/invoice.js"></script><!--  -->
+				<script type="text/javascript" src="<?php echo asset_url() ?>/js/jQuery.print.js"></script>
 				<script type="text/javascript" src="<?php echo asset_url() ?>/js/sweetalert.min.js"></script>
+				<script type="text/javascript" src="<?php echo asset_url() ?>/js/invoice.js"></script><!--  -->
+				
+
 	</body>
 </html>

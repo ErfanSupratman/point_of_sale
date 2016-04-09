@@ -20,10 +20,16 @@ class Invoice extends MY_Controller {
 		echo json_encode($response);
 	}
 
-	public  function getInvoiceHeaderAndItemByInvoiceId(){
+	public function getInvoiceHeaderAndItemByInvoiceId(){
 	header('Content-Type: application/json');
 		$response = $this->invoice_model->getInvoiceHeaderAndItemByInvoiceId($_GET['id']);
 		echo json_encode($response);	
+	}
+
+	public function finalizeInvoice(){
+		header('Content-Type: application/json');
+		$response = $this->invoice_model->finalizeInvoice($_GET['id']);
+		echo json_encode($response);
 	}
 
 	public function getAllInvoiceByState(){
@@ -41,7 +47,18 @@ class Invoice extends MY_Controller {
 	public function addInvoice(){
 		header('Content-Type: application/json');
 		$data = json_decode($_POST['invoice']);
-		$response = $this->invoice_model->addInvoice($data);
+		$username = $this->getUsername();
+		$response = $this->invoice_model->addInvoice($data, $username);
+		echo json_encode($response);
+
+	}
+
+	public function updateInvoice(){
+		header('Content-Type: application/json');
+		$data = json_decode($_POST['invoice']);
+		$headerId = $_POST['headerId'];
+		error_log("headerId ".$headerId);
+		$response = $this->invoice_model->updateInvoice($data, $headerId);
 		echo json_encode($response);
 
 	}

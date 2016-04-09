@@ -6,6 +6,7 @@ class Invoice_model extends CI_Model {
 		parent::__construct();
 		$this->load->model('dataWrapper_dto');
 		$this->load->model('document_dto');
+		$this->load->model('inventory_model');
 	}
 
 	function getAllInvoiceSummary() {
@@ -61,12 +62,19 @@ $dataWrapper = new $this->document_dto();
 				FROM pos_invoice_detail pi 
 				JOIN pos_product pp ON pp.id=pi.product_id
 				JOIN pos_brand pb ON pb.id=pp.brand_id
-				WHERE pi.id=?';
+				WHERE pi.invoice_id=?';
 		$queryD = $this->db->query($sql, array($id));
 
 		$dataWrapper->header = $queryH->result()[0];
 		$dataWrapper->detail = $queryD->result();
 		return $dataWrapper;
+	}
+
+	function finalizeInvoice($id){
+		$sql = 'UPDATE pos_invoice SET state=1 WHERE id=?';
+		$query = $this->db->query($sql, array($id));
+		$response = array('success' => true);
+		return $response;
 	}
 
 	function getAllInvoiceByStateSummary($state) {
@@ -112,7 +120,7 @@ $dataWrapper = new $this->document_dto();
 		return $dataWrapper;
 	}
 
-	function addInvoice($data) {
+	function addInvoice($data, $username) {
 		$success = true;
 		error_log("addInvoice " . json_encode($data));
 		error_log("dataHeader " . json_encode($data->dataHeader));
@@ -120,15 +128,20 @@ $dataWrapper = new $this->document_dto();
 		foreach ($data->dataDetail as $obj) {
 			error_log($obj->product_id);
 		}
+		$headerId = 0;
 		try {
 			$this->db->trans_start();
 			$this->db->set('invoice_code', 'getCounterSequence(6)', FALSE);
 			$this->db->set('created_date', 'now()', FALSE);
+			$this->db->set('created_by', "'".$username."'", FALSE);
 			$this->db->insert('pos_invoice', $data->dataHeader);
 			$headerId = $this->db->insert_id();
 			foreach ($data->dataDetail as $obj) {
+				$result = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$data->dataHeader->location_id);
 				$this->db->set('invoice_id', $headerId, FALSE);
 				$this->db->insert('pos_invoice_detail', $obj);
+				$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$data->dataHeader->location_id );
+				$this->inventory_model->decreaseStock( $stock, 'addInvoice',  $username);
 			}
 			$this->db->trans_complete();
 		} catch (Exception $e) {
@@ -136,7 +149,7 @@ $dataWrapper = new $this->document_dto();
 			error_log($e->getMessage());
 			$success = false;
 		}
-		$response = array('success' => $success);
+		$response = array('success' => $success,'id' =>$headerId);
 		return $response;
 	}
 
@@ -148,10 +161,33 @@ $dataWrapper = new $this->document_dto();
 		return $query->result();
 	}
 
-	function updateInvoice($data) {
-		$this->db->set('updated_date', 'now()', FALSE);
-		$this->db->insert('pos_invoice', $data);
-		$response = array('success' => true);
+	function updateInvoice($data,$headerId) {
+		$success = true;
+		error_log("updateInvoice id ".$headerId." data :" . json_encode($data));
+		error_log("dataHeader " . json_encode($data->dataHeader));
+		error_log("dataDetail " . json_encode($data->dataDetail));
+		foreach ($data->dataDetail as $obj) {
+			error_log($obj->product_id);
+		}
+
+		try {
+			$this->db->trans_start();
+			$this->db->set('updated_date', 'now()', FALSE);
+			$this->db->update('pos_invoice', $data->dataHeader, array('id' => $headerId));
+
+			$this->db->delete('pos_invoice_detail', array('invoice_id' => $headerId)); 
+
+			foreach ($data->dataDetail as $obj) {
+				$this->db->set('invoice_id', $headerId, FALSE);
+				$this->db->insert('pos_invoice_detail', $obj);
+			}
+			$this->db->trans_complete();
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			error_log($e->getMessage());
+			$success = false;
+		}
+		$response = array('success' => $success,'id' =>$headerId);
 		return $response;
 	}
 

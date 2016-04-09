@@ -8,8 +8,6 @@ class Inventory extends MY_Controller {
 		$this->load->model('history_stock_model');
 	}
 	public function index() {
-		$session_data = $this->session->userdata('logged_in');
-		$data['username'] = $session_data['username'];
 		$data['inventory_content'] = '';
 		$this->load->view('inventory/inventory', $data);
 	}
@@ -42,7 +40,7 @@ class Inventory extends MY_Controller {
 			'id' => $_GET['id'],
 		);
 
-		$response = $this->inventory_model->updateStock($data);
+		$response = $this->inventory_model->updateStock($data,$this->getUsername());
 		echo json_encode($response);
 	}
 
@@ -64,7 +62,7 @@ class Inventory extends MY_Controller {
 			'harga_retail' => $_POST['hargare'],
 			'harga_dealer' => $_POST['hargadl'],
 		);
-		$response = $this->inventory_model->addStock($data, 'addStock');
+		$response = $this->inventory_model->addStock($data, 'addStock',$this->getUsername());
 		echo json_encode($response);
 	}
 	public function deactiveStock() {

@@ -1,32 +1,92 @@
 $(document).ready(function() {
 
-    var invoiceTable = {};
+/*    $("#modal-new-invoice-fullscreen #print").on("click", function() {
+        var divContents = $("#modal-new-invoice-fullscreen .modal-body").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>DIV Contents</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });*/
 
-    invoiceTable = loadInvoiceTable(0);
+    $('#modal-new-invoice-fullscreen #print').on('click', function() {
+        $("#modal-new-invoice-fullscreen").print({
+            globalStyles: true,
+            mediaPrint: false,
+            stylesheet: null,
+            noPrintSelector: ".no-print",
+            iframe: false,
+            append: null,
+            prepend: null,
+            manuallyCopyFormValues: true,
+            deferred: $.Deferred(),
+            timeout: 1000,
+            title: null,
+            doctype: '<!doctype html>'
+        });
+    })
+
+    var invoiceTable = {};
+    $("#pendingMenu").addClass("active");
+    $("#finishedMenu").removeClass("active");
+    invoiceTable =
+        $('#invoice_table').DataTable({
+            "order": [],
+            select: 'single',
+            "processing": true,
+            "ajax": "Invoice/getAllInvoiceByState?state=0",
+            "columns": [{
+                "data": "created_date"
+            }, {
+                "data": "invoice_code"
+            }, {
+                "data": "billing_name"
+            }, {
+                "data": "state"
+            }],
+            "columnDefs": [{
+                "targets": 3,
+                "data": "state",
+                "render": function(data, type, full, meta) {
+                    var state = "";
+                    if (data == 0) {
+                        state = '<span class="label label-warning">Pending</span>';
+                    } else if (data == 1) {
+                        state = '<span class="label label-success">Finished</span>';
+                    }
+                    return state;
+                }
+            }, {
+                "targets": [4],
+                "orderable": false,
+                "data": null,
+                "className": "delete",
+                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash'></span></button>"
+
+            }, {
+                "targets": [0, 1, 2, 3],
+                "className": "details-control",
+            }]
+        });
+
+    $('#invoice_table tbody').on(
+        'click',
+        'td.details-control',
+        function() {
+            var rowData = invoiceTable.row(this).data();
+            console.log("rowData >>>" + rowData);
+            getInvoiceDetail(rowData.id);
+        });
+
     countAllStateBadge();
+
     $(".modal-transparent").on('show.bs.modal', function() {
         setTimeout(function() {
             $(".modal-backdrop").addClass("modal-backdrop-transparent");
         }, 0);
     });
-    $(".modal-transparent").on('hidden.bs.modal', function() {
-        $(".modal-backdrop").addClass("modal-backdrop-transparent");
-    });
-
-    $(".modal-fullscreen").on('show.bs.modal', function() {
-        setTimeout(function() {
-            $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
-        }, 0);
-    });
-    $(".modal-fullscreen").on('hidden.bs.modal', function() {
-        $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
-    });
-
-    $('#purchase_order').on('click', '.clickable-row', function(event) {
-        $('#modal-new-product-fullscreen').modal('show');
-        $(this).addClass('active').siblings().removeClass('active');
-    });
-
 
     /*
     $.get('Brand/getAllBrand', {}, function(data) {
@@ -74,12 +134,14 @@ $(document).ready(function() {
     });
 
     $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
+        $("#modal-new-invoice-fullscreen #invoice_code").val("");
         $("#modal-new-invoice-fullscreen #billing_name").val("");
         $("#modal-new-invoice-fullscreen #billing_phone").val("");
         $("#modal-new-invoice-fullscreen #billing_email").val("");
         $("#modal-new-invoice-fullscreen #billing_address").val("");
         $("#modal-new-invoice-fullscreen #locationId").val("");
         $("#modal-new-invoice-fullscreen #notes").val("");
+        $("#modal-new-invoice-fullscreen #invoice_id").val("");
         $("#modal-new-invoice-fullscreen #freight").val("");
         $('#modal-new-invoice-fullscreen .subTotal').text("");
         $('#modal-new-invoice-fullscreen .grandTotal').text("");
@@ -194,23 +256,62 @@ $(document).ready(function() {
             });
 
     $('#pending').on('click', function() {
-        invoiceTable.destroy();
-        invoiceTable = loadInvoiceTable(0);
+        invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=0');
+        invoiceTable.ajax.reload();
         $("#pendingMenu").addClass("active");
         $("#finishedMenu").removeClass("active");
     });
 
     $('#finished').on('click', function() {
-        invoiceTable.destroy();
-        invoiceTable = loadInvoiceTable(1);
+        invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=1');
+        invoiceTable.ajax.reload();
         $("#finishedMenu").addClass("active");
         $("#pendingMenu").removeClass("active");
     });
 
 
+    $('#modal-new-invoice-fullscreen #finalize').on('click', function() {
+        var invoiceId = $("#modal-new-invoice-fullscreen #invoice_id").val();
+        if (invoiceId == "") {
+            saveInvoice(true);
+        } else {
+            updateInvoice(true, invoiceId);
+        }
 
+
+    });
 
     $('#modal-new-invoice-fullscreen #insert').on('click', function() {
+        var invoiceId = $('#modal-new-invoice-fullscreen #invoice_id').val();
+
+        if (invoiceId == "") {
+            saveInvoice(false);
+        } else {
+            updateInvoice(false, invoiceId)
+        }
+
+    });
+
+    $('#invoice_item_list tbody')
+        .on(
+            'click',
+            'td.delete',
+            function() {
+                alert('delete');
+            });
+
+    function saveInvoice(finalize) {
+        var data = invoiceConverter(finalize);
+        insertInvoiceToDB(data);
+    }
+
+    function updateInvoice(finalize, headerId) {
+        var data = invoiceConverter(finalize);
+        updateInvoiceToDB(data, headerId);
+    }
+
+    function invoiceConverter(finalize) {
+        var state = 0;
         var dataHeader = {};
         var dataDetails = [];
         var billingName = $("#modal-new-invoice-fullscreen #billing_name").val();
@@ -221,10 +322,15 @@ $(document).ready(function() {
         var notes = $("#modal-new-invoice-fullscreen #notes").val();
         var freight = $("#modal-new-invoice-fullscreen #freight").val();
 
+        if (finalize) {
+            state = 1;
+        }
+
         dataHeader = {
             billing_name: billingName,
             billing_phone: billingPhone,
             billing_email: billingEmail,
+            state: state,
             billing_address: billingAddress,
             location_id: locationId,
             notes: notes,
@@ -249,6 +355,10 @@ $(document).ready(function() {
             dataDetail: dataDetails
         };
 
+        return data;
+    }
+
+    function insertInvoiceToDB(data) {
         $.post('Invoice/addInvoice', {
                 invoice: JSON.stringify(data)
             },
@@ -266,22 +376,154 @@ $(document).ready(function() {
         ).fail(function() {
             swal("Failed!", "Gagal tambah invoice", "error");
         });
-    });
+    }
 
-    $('#invoice_item_list tbody')
-        .on(
-            'click',
-            'td.delete',
-            function() {
-                alert('delete');
-            });
+    function updateInvoiceToDB(data, headerId) {
+        $.post('Invoice/updateInvoice', {
+                invoice: JSON.stringify(data),
+                headerId: headerId
+            },
+            function(data) {
+                if (data.success) {
+                    swal("Success!", "Sukses update invoice ", "success");
+                    $('#modal-new-invoice-fullscreen').modal('hide');
+                    invoiceTable.ajax.reload();
+                    countAllStateBadge();
+                } else {
+                    swal("Failed!", "Gagal update invoice ", "error");
+                }
 
+            }, 'json'
+        ).fail(function() {
+            swal("Failed!", "Gagal update invoice", "error");
+        });
+    }
+
+    function detailInvoice() {
+        $('#modal-new-invoice-fullscreen').modal('show');
+    };
+
+
+
+    function getInvoiceDetail(id) {
+        $.get('Invoice/getInvoiceHeaderAndItemByInvoiceId?id=' + id, {}, function(data) {
+            $('#modal-new-invoice-fullscreen').modal('show');
+            $("#modal-new-invoice-fullscreen #invoice_code").val(data.header.invoice_code);
+            $("#modal-new-invoice-fullscreen #invoice_id").val(data.header.id);
+            $("#modal-new-invoice-fullscreen #billing_name").val(data.header.billing_name);
+            $("#modal-new-invoice-fullscreen #billing_phone").val(data.header.billing_phone);
+            $("#modal-new-invoice-fullscreen #billing_email").val(data.header.billing_email);
+            $("#modal-new-invoice-fullscreen #billing_address").val(data.header.billing_address);
+            $("#modal-new-invoice-fullscreen #locationId").val(data.header.location_id);
+            $("#modal-new-invoice-fullscreen #notes").val(data.header.notes);
+            $("#modal-new-invoice-fullscreen #freight").val(data.header.freight);
+            $('#modal-new-invoice-fullscreen .subTotal').text("");
+            $('#modal-new-invoice-fullscreen .grandTotal').text("");
+            $('#brand').val('');
+
+            $('#name').val('');
+            $('#jumlah').val('');
+            $('#price_type').val('Pilih');
+            $('#name').prop('disabled', true);
+            $('#price_type').prop('disabled', true);
+            $('#jumlah').prop('disabled', true);
+            $('.product_detail').text("");
+            putValueForEachRow(data.detail, data.header.state);
+            calculateTotal();
+            if (data.header.state == 1) {
+                $('#modal-new-invoice-fullscreen #finalize').hide();
+                $('#modal-new-invoice-fullscreen #insert').hide();
+                $('.add_row_div').hide();
+            } else {
+                $('#modal-new-invoice-fullscreen #finalize').show();
+                $('#modal-new-invoice-fullscreen #insert').show();
+                $('.add_row_div').show();
+            }
+
+        })
+    }
+
+    function countAllStateBadge() {
+        $.get('Invoice/countAllStates', {}, function(data) {
+            /*$('#pendingBadge').text(data);*/
+            for (var key in data) {
+                if (data[key].state == 0) {
+                    $('#pendingBadge').text(data[key].total);
+                } else if (data[key].state == 1) {
+                    $('#finishedBadge').text(data[key].total);
+                }
+
+            }
+        }, 'json');
+    }
+
+    function putValueForEachRow(data, state) {
+        var x = 1
+        for (var key in data) {
+            console.log("data row :" + data[key]);
+            var hidden = "";
+            if (state == 1) {
+                hidden = "hidden";
+            }
+            $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + x + '</td>' +
+                '<td id="jumlah_row">' + data[key].brand_name + '</td>' +
+                '<td id="product_row">' + data[key].product_name + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + data[key].product_id + '"></td>' +
+                '<td>' + data[key].product_code + '</td>' +
+                '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + data[key].quantity + '"></input></td>' +
+                '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + data[key].price + '"></input></td>' +
+                '<td><button type="button" onclick="removeRow(' + x + ')" data-id="' + x + '" id="delete" class="' + hidden + ' btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+            x++;
+        }
+
+    }
+
+    function addRowValue(i) {
+        var brand = $('#brand').val();
+        var product = $('#name').val();
+        var productCode = $('#modal-new-invoice-fullscreen .product_detail').text();
+        var jumlah = $('#jumlah').val();
+        var productId = $('#product_id').val();
+        var locationId = $('#locationId').val();
+        var harga = 0;
+        $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + productId + '&locationId=' + locationId, {},
+            function(data) {
+                if (data.length > 0) {
+                    var priceType = $('#modal-new-invoice-fullscreen #price_type').val();
+                    if (priceType == 'Bengkel') {
+                        harga = data[0].harga_bengkel;
+                    } else if (priceType == 'Dealer') {
+                        harga = data[0].harga_dealer;
+                    } else if (priceType == 'Distributor Area') {
+                        harga = data[0].harga_dist_area;
+                    } else if (priceType == 'Retail') {
+                        harga = data[0].harga_retail;
+                    }
+
+                    $('#brand').val('');
+                    $('#name').val('');
+                    $('#modal-new-invoice-fullscreen .product_detail').text('');
+                    $('#jumlah').val('');
+                    $('#price_type').val('');
+                    $('#invoice_item_list').slideUp(200, function() {
+                        $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
+                            '<td id="jumlah_row">' + brand + '</td>' +
+                            '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + productId + '"></td>' +
+                            '<td>' + productCode + '</td>' +
+                            '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + jumlah + '"></input></td>' +
+                            '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + harga + '"></input></td>' +
+                            '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+                        $('#invoice_item_list').slideDown(200);
+                        calculateTotal();
+                    });
+                } else {
+                    swal("Failed!", "Gagal tambah product " + product, "error");
+                }
+            }, 'json');
+
+    }
 
 });
 
-function detailInvoice() {
-    $('#modal-new-invoice-fullscreen').modal('show');
-};
 
 function calculateTotal() {
     var subTotal = 0;
@@ -329,156 +571,4 @@ function removeAllRow() {
     $('#invoice_item_list tbody').each(function() {
         $(this).remove();
     });
-}
-
-function loadInvoiceTable(state) {
-    var table = $('#invoice_table').DataTable({
-        "order": [],
-        select: 'single',
-        "processing": true,
-        "ajax": "Invoice/getAllInvoiceByState?state=" + state,
-        "columns": [{
-            "data": "created_date"
-        }, {
-            "data": "invoice_code"
-        }, {
-            "data": "billing_name"
-        }, {
-            "data": "state"
-        }],
-        "columnDefs": [{
-            "targets": 3,
-            "data": "state",
-            "render": function(data, type, full, meta) {
-                var state = "";
-                if (data == 0) {
-                    state = '<span class="label label-warning">Pending</span>';
-                } else if (data == 1) {
-                    state = '<span class="label label-success">Finished</span>';
-                }
-                return state;
-            }
-        }, {
-            "targets": [4],
-            "orderable": false,
-            "data": null,
-            "className": "delete",
-            "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash'></span></button>"
-
-        }, {
-            "targets": [0, 1, 2, 3],
-            "className": "details-control",
-        }]
-    });
-
-$('#invoice_table tbody').on(
-                        'click',
-                        'td.details-control',
-                        function() {
-                            var rowData = table.row(this).data();
-                            $.get('Invoice/getInvoiceHeaderAndItemByInvoiceId?id='+rowData.id,{},function(data){
-                                console.log(data.header.billing_name);
-                                $('#modal-new-invoice-fullscreen').modal('show');
-                                $("#modal-new-invoice-fullscreen #billing_name").val(data.header.billing_name);
-                                $("#modal-new-invoice-fullscreen #billing_phone").val(data.header.billing_phone);
-                                $("#modal-new-invoice-fullscreen #billing_email").val(data.header.billing_email);
-                                $("#modal-new-invoice-fullscreen #billing_address").val(data.header.billing_address);
-                                $("#modal-new-invoice-fullscreen #locationId").val(data.header.location_id);
-                                $("#modal-new-invoice-fullscreen #notes").val(data.header.notes);
-                                $("#modal-new-invoice-fullscreen #freight").val(data.header.freight);
-                                $('#modal-new-invoice-fullscreen .subTotal').text("");
-                                $('#modal-new-invoice-fullscreen .grandTotal').text("");
-                                $('#brand').val('');
-                                $('#add_row').hide();
-                                $('#name').val('');
-                                $('#jumlah').val('');
-                                $('#price_type').val('Pilih');
-                                $('#name').prop('disabled', true);
-                                $('#price_type').prop('disabled', true);
-                                $('#jumlah').prop('disabled', true);
-                                $('.product_detail').text("");
-                                putValueForEachRow(data.detail);
-                                calculateTotal();
-                            })
-                          
-                        });
-
-return table;
-}
-
-function countAllStateBadge() {
-    $.get('Invoice/countAllStates', {}, function(data) {
-        console.log(data);
-        /*$('#pendingBadge').text(data);*/
-        for (var key in data) {
-            console.log(data[key]);
-            if (data[key].state == 0) {
-                $('#pendingBadge').text(data[key].total);
-            } else if (data[key].state == 1) {
-                $('#finishedBadge').text(data[key].total);
-            }
-
-        }
-    }, 'json');
-}
-
-function putValueForEachRow(data){
-        var x = 1
-        for (var key in data) {
-            console.log(data[key]);
-          $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + x + '</td>' +
-                        '<td id="jumlah_row">' + data[key].brand_name + '</td>' +
-                        '<td id="product_row">' + data[key].product_name + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + data[key].product_id + '"></td>' +
-                        '<td>' + data[key].product_code + '</td>' +
-                        '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + data[key].quantity + '"></input></td>' +
-                        '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + data[key].price + '"></input></td>' +
-                        '<td><button type="button" onclick="removeRow(' + x + ')" data-id="' + x + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-          x++;
-        }
-                    
-}
-
-function addRowValue(i) {
-    var brand = $('#brand').val();
-    var product = $('#name').val();
-    var productCode = $('#modal-new-invoice-fullscreen .product_detail').text();
-    var jumlah = $('#jumlah').val();
-    var productId = $('#product_id').val();
-    var locationId = $('#locationId').val();
-    var harga = 0;
-    $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + productId + '&locationId=' + locationId, {},
-        function(data) {
-            if (data.length > 0) {
-                var priceType = $('#modal-new-invoice-fullscreen #price_type').val();
-                if (priceType == 'Bengkel') {
-                    harga = data[0].harga_bengkel;
-                } else if (priceType == 'Dealer') {
-                    harga = data[0].harga_dealer;
-                } else if (priceType == 'Distributor Area') {
-                    harga = data[0].harga_dist_area;
-                } else if (priceType == 'Retail') {
-                    harga = data[0].harga_retail;
-                }
-
-                $('#brand').val('');
-                $('#name').val('');
-                $('#modal-new-invoice-fullscreen .product_detail').text('');
-                $('#jumlah').val('');
-                $('#price_type').val('');
-                $('#invoice_item_list').slideUp(200, function() {
-                    $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
-                        '<td id="jumlah_row">' + brand + '</td>' +
-                        '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + productId + '"></td>' +
-                        '<td>' + productCode + '</td>' +
-                        '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + jumlah + '"></input></td>' +
-                        '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + harga + '"></input></td>' +
-                        '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-                    $('#invoice_item_list').slideDown(200);
-                    calculateTotal();
-                });
-            } else {
-                swal("Failed!", "Gagal tambah product " + product, "error");
-            }
-        }, 'json');
-
 }

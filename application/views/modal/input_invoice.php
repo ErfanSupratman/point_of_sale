@@ -5,13 +5,13 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form action="#" id="invoice_form">
-				<div class="modal-header">
+				<div class="modal-header no-print">
 					<div class="row">
 						<div class="col-sm-6">
 							<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-file"></span> Invoice</h4>
 						</div>
 						<div class="col-sm-6" align="right">
-							<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-print"></span></button>
+							<button type="button" class="btn btn-default btn-sm" id="print"><span class="glyphicon glyphicon-print"></span></button>
 							<button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
 						</div>
 					</div>
@@ -21,6 +21,9 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6">
+							<input type="hidden" id="invoice_id" name="invoice_id"/>
+							<label for="billing_name">No. Invoice</label>
+							<input type="text" id="invoice_code" name="invoice_code" readonly="true" class="form-control input-sm"/>
 							<label for="billing_name">Nama Penerima</label>
 							<input type="text" id="billing_name" name="billing_name" class="form-control input-sm"/>
 							<label for="billing_phone">No. Telepon</label>
@@ -32,23 +35,25 @@
 							<label for="billing_address">Alamat Penagihan</label>
 							<textarea class="form-control" rows="3" id="billing_address" name="billing_address"></textarea>
 							<label for="lokasi">Lokasi Stock</label>
-							<div class="select-style">
+							
 								<select class="form-control input-sm" id="locationId" name="locationId">
 									<option>Pilih</option>
 									<option value="1">Gudang</option>
 									<option value="2">Pinjam</option>
 									<option value="3">Showroom</option>
 								</select>
-							</div>
+							
 						</div>
 					</div>
 					<div class="row">
 						
 						<div class="col-sm-12">
 							<hr/>
+							<div class="add_row_div">
 							<button id="add_row" type="button" class="btn btn-success btn-sm pull-left" data-toggle="collapse" data-target="#insertDetailForm">Add Row</button>
 							<br/>
 							<br/>
+						</div>
 							<div class="well collapse out" id="insertDetailForm">
 								<div class="row">
 									<div class="col-sm-2">
@@ -141,8 +146,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger pull-left btn-lg" data-dismiss="modal"><span class="glyphicon glyphicon-thumbs-up"></span> Lunas</button>
+				<div class="modal-footer no-print">
+					<button type="button" id="finalize" class="btn btn-danger pull-left btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span> Lunas</button>
 					<button type="button" class="btn btn-success btn-lg" id="insert"><span class="glyphicon glyphicon-floppy-disk"></span> Simpan</button>
 				</div>
 			</form>
