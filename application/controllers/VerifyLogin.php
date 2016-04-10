@@ -36,7 +36,7 @@ class VerifyLogin extends CI_Controller {
 			$this->load->view('welcome_message');
 		} else {
 			//Go to private area
-			redirect('Inventory', 'refresh');
+			redirect('Home', 'refresh');
 		}
 	}
 

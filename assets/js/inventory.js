@@ -92,6 +92,7 @@
                             });
 
 
+
                     /*
                         STOCK
                     */
@@ -123,7 +124,7 @@
                                 "data": "location_name"
                             }],
                             "columnDefs": [
-/*                            {
+                                /*                            {
                                 "targets": [10],
                                 "orderable": false,
                                 "data": null,
@@ -131,25 +132,25 @@
                                 "defaultContent": "<button id='booking' type='button' class='btn btn-info btn-sm'><i class='fa fa-bookmark'></i></button>"
 
                             }, */
- {
-                                "targets": [10],
-                                "orderable": false,
-                                "data": null,
-                                "className": "delete",
-                                "defaultContent": "<button type='button' id='delete' class='btn btn-info btn-sm'><span class='fa fa-history fa-lg'></span></button>"
+                                {
+                                    "targets": [10],
+                                    "orderable": false,
+                                    "data": null,
+                                    "className": "history",
+                                    "defaultContent": "<button type='button' id='history' class='btn btn-info btn-sm'><span class='fa fa-history fa-lg'></span></button>"
 
-                            },
-                            {
-                                "targets": [11],
-                                "orderable": false,
-                                "data": null,
-                                "className": "delete",
-                                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='fa fa-trash-o fa-lg'></span></button>"
+                                }, {
+                                    "targets": [11],
+                                    "orderable": false,
+                                    "data": null,
+                                    "className": "delete",
+                                    "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='fa fa-trash-o fa-lg'></span></button>"
 
-                            }, {
-                                "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                                "className": "details-control",
-                            }]
+                                }, {
+                                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                    "className": "details-control",
+                                }
+                            ]
                         });
                     $('#modal-new-stock-fullscreen #brand').selectpicker({
                         style: 'btn-info',
@@ -229,10 +230,11 @@
                                     });
                             });
 
+
+
                     $("#modal-new-stock-fullscreen #insert").click(
                         function() {
-                            var fullName = $(
-                                "#modal-new-stock-fullscreen #name").val();
+                            var fullName = $("#modal-new-stock-fullscreen #name").val();
                             $.post('Inventory/addStock', $('form#stock_form')
                                 .serialize(),
                                 function(data) {
@@ -266,26 +268,40 @@
                                 });
                         });
 
-/*
-                    $('#addStock').on("click", function() {
-                        $('#modal-new-stock-fullscreen').modal('show');
-                        $("#modal-new-stock-fullscreen .title_header")
-                            .text("Ubah Data");
-                        $("#modal-new-stock-fullscreen #name").val("");
-                        $("#modal-new-stock-fullscreen #lokasi").val("");
-                        $("#modal-new-stock-fullscreen #product_id").val("");
-                        $("#modal-new-stock-fullscreen #jumlah").val("");
-                        $(".product_detail").text("")
-                        $("#modal-new-stock-fullscreen #brand")
-                            .selectpicker('val', "");
-                        $("#modal-new-stock-fullscreen #hargabe").val(0);
-                        $("#modal-new-stock-fullscreen #hargada").val(0);
-                        $("#modal-new-stock-fullscreen #hargadl").val(0);
-                        $("#modal-new-stock-fullscreen #hargare").val(0);
-                        $("#modal-new-stock-fullscreen #update").hide();
-                        $("#modal-new-stock-fullscreen #insert").show();
-                    });
-/*
+                    /*
+                        HISTORY STOCK
+                    */
+
+                    var tableHistory = $('#modal-history-stock-fullscreen #history_table')
+                        .DataTable({
+                            select: 'single',
+                            "processing": true,
+                            "serverSide":true,
+                            "ajax": "Inventory/getHistoryStock?id=0",
+                            "columns": [{
+                                "data": "created_date"
+                            }, {
+                                "data": "created_by"
+                            }, {
+                                "data": "stock_in"
+                            }, {
+                                "data": "stock_out"
+                            }, {
+                                "data": "notes"
+                            }]
+                        });
+
+                    $('#stock_table tbody')
+                        .on(
+                            'click',
+                            'td.history',
+                            function() {
+                                var rowData = table.row(this).data();
+                                $("#modal-history-stock-fullscreen").modal('show');
+                                $("#modal-history-stock-fullscreen .title_header").text('History Stock ' + rowData.product_name + ' | ' + rowData.location_name);
+                                tableHistory.ajax.url('Inventory/getHistoryStock?id='+rowData.id);
+                                tableHistory.ajax.reload();
+                            });
 
                     /*
                         BOOKING
@@ -313,7 +329,7 @@
                                         var rowData = tableBooking.row(this).data();
                                         $(this).popover({
                                             'container': 'body',
-                                            'title': 'notes-'+rowData.booking_code,
+                                            'title': 'notes-' + rowData.booking_code,
                                             'content': rowData.notes,
                                             'placement': 'top',
                                             delay: {
@@ -363,7 +379,7 @@
 
                     /*
                         MOVEMENT
-                    
+
 
                     $('#moveStock').on("click", function() {
                         $('#modal-move-stock-fullscreen').modal('show');
@@ -520,7 +536,7 @@
             return tableBookingNow;
         };
 
-        function addStock(){
+        function addStock() {
             $('#modal-new-stock-fullscreen').modal('show');
             $("#modal-new-stock-fullscreen .title_header").text("Ubah Data");
             $("#modal-new-stock-fullscreen #name").val("");

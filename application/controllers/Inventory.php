@@ -46,7 +46,9 @@ class Inventory extends MY_Controller {
 
 	public function getHistoryStock() {
 		header('Content-Type: application/json');
-		$response = $this->history_stock_model->getHistoryStockByStockId($_GET['id'], 5);
+		$search = $_GET['search'];
+		error_log($search['value']);
+		$response = $this->history_stock_model->getHistoryStockByStockId(intval($_GET['draw']),$_GET['id'],intval($_GET['start'])+1,intval($_GET['length']), $search['value']);
 		echo json_encode($response);
 	}
 
