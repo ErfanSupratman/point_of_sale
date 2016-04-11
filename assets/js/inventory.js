@@ -71,13 +71,14 @@
                                             $('#modal-new-stock-fullscreen #product_id').val(current.id);
                                             $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + current.id + '&locationId=' + $('#modal-new-stock-fullscreen #lokasi').val(), {},
                                                 function(data) {
-                                                    console.log(data);
-                                                    $("#modal-new-stock-fullscreen #id").val(data.data.id);
-                                                    $("#modal-new-stock-fullscreen #lokasi").val(data.data.warehouse_id);
-                                                    $("#modal-new-stock-fullscreen #hargabe").val(data.data.harga_bengkel);
-                                                    $("#modal-new-stock-fullscreen #hargada").val(data.data.harga_dist_area);
-                                                    $("#modal-new-stock-fullscreen #hargadl").val(data.data.harga_dealer);
-                                                    $("#modal-new-stock-fullscreen #hargare").val(data.data.harga_retail);
+                                                    if(data.length>0){
+                                                        $("#modal-new-stock-fullscreen #id").val(data[0].id);
+                                                        $("#modal-new-stock-fullscreen #hargabe").val(data[0].harga_bengkel);
+                                                        $("#modal-new-stock-fullscreen #hargada").val(data[0].harga_dist_area);
+                                                        $("#modal-new-stock-fullscreen #hargadl").val(data[0].harga_dealer);
+                                                        $("#modal-new-stock-fullscreen #hargare").val(data[0].harga_retail);
+                                                        $("#modal-new-stock-fullscreen #hargab").val(data[0].harga_beli);
+                                                    }
                                                 })
 
                                         });
@@ -177,6 +178,8 @@
                                 .selectpicker('val', rowData.brand_id);
                             $("#modal-new-stock-fullscreen #hargabe").val(
                                 rowData.harga_bengkel);
+                            $("#modal-new-stock-fullscreen #hargab").val(
+                                rowData.harga_beli);
                             $("#modal-new-stock-fullscreen #hargada").val(
                                 rowData.harga_dist_area);
                             $("#modal-new-stock-fullscreen #hargadl").val(
@@ -543,6 +546,7 @@
             $(".product_detail").text("")
             $("#modal-new-stock-fullscreen #brand").selectpicker('val', "");
             $("#modal-new-stock-fullscreen #hargabe").val(0);
+            $("#modal-new-stock-fullscreen #hargab").val(0);
             $("#modal-new-stock-fullscreen #hargada").val(0);
             $("#modal-new-stock-fullscreen #hargadl").val(0);
             $("#modal-new-stock-fullscreen #hargare").val(0);
