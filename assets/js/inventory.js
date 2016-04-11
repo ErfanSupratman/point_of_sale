@@ -66,31 +66,28 @@
                                     "getActive");
                                 if (current) {
                                     if (current.name == $('#name').val()) {
-                                        $('.product_detail')
-                                            .fadeOut(
-                                                500,
-                                                function() {
-                                                    $(this)
-                                                        .text(
-                                                            current.product_code)
-                                                        .fadeIn(500);
-                                                    $(
-                                                        '#modal-new-stock-fullscreen #product_id')
-                                                        .val(
-                                                            current.id);
-                                                });
+                                        $('.product_detail').fadeOut(500, function() {
+                                            $(this).text(current.product_code).fadeIn(500);
+                                            $('#modal-new-stock-fullscreen #product_id').val(current.id);
+                                            $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + current.id + '&locationId=' + $('#modal-new-stock-fullscreen #lokasi').val(), {},
+                                                function(data) {
+                                                    console.log(data);
+                                                    $("#modal-new-stock-fullscreen #id").val(data.data.id);
+                                                    $("#modal-new-stock-fullscreen #lokasi").val(data.data.warehouse_id);
+                                                    $("#modal-new-stock-fullscreen #hargabe").val(data.data.harga_bengkel);
+                                                    $("#modal-new-stock-fullscreen #hargada").val(data.data.harga_dist_area);
+                                                    $("#modal-new-stock-fullscreen #hargadl").val(data.data.harga_dealer);
+                                                    $("#modal-new-stock-fullscreen #hargare").val(data.data.harga_retail);
+                                                })
+
+                                        });
                                     } else {
-                                        $('.product_detail').fadeOut(
-                                            500,
-                                            function() {
-                                                $(this).text(
-                                                    "product not found!")
-                                                    .fadeIn(500);
-                                            });
+                                        $('.product_detail').fadeOut(500, function() {
+                                            $(this).text("product not found!").fadeIn(500);
+                                        });
                                     }
                                 } else {}
                             });
-
 
 
                     /*
@@ -276,7 +273,7 @@
                         .DataTable({
                             select: 'single',
                             "processing": true,
-                            "serverSide":true,
+                            "serverSide": true,
                             "ajax": "Inventory/getHistoryStock?id=0",
                             "columns": [{
                                 "data": "created_date"
@@ -299,7 +296,7 @@
                                 var rowData = table.row(this).data();
                                 $("#modal-history-stock-fullscreen").modal('show');
                                 $("#modal-history-stock-fullscreen .title_header").text('History Stock ' + rowData.product_name + ' | ' + rowData.location_name);
-                                tableHistory.ajax.url('Inventory/getHistoryStock?id='+rowData.id);
+                                tableHistory.ajax.url('Inventory/getHistoryStock?id=' + rowData.id);
                                 tableHistory.ajax.reload();
                             });
 
