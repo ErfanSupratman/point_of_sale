@@ -30,6 +30,8 @@
 							<input type="text" id="billing_phone" name="billing_phone" class="form-control input-sm"/>
 							<label for="billing_email">Email</label>
 							<input type="text" id="billing_email" name="billing_email" class="form-control input-sm"/>
+							<label for="term_of_payment">Term Of Payment</label>
+							<input type="text" id="term_of_payment" name="term_of_payment" class="form-control input-sm"/>
 						</div>
 						<div class="col-sm-6">
 							<label for="billing_address">Alamat Penagihan</label>

@@ -139,6 +139,7 @@ $(document).ready(function() {
         $("#billing_phone").val("");
         $("#billing_email").val("");
         $("#billing_address").val("");
+        $("#term_of_payment").val("");
         $("#locationId").val("");
         $("#notes").val("");
         $("#invoice_id").val("");
@@ -325,6 +326,7 @@ $(document).ready(function() {
         var locationId = $("#modal-new-invoice-fullscreen #locationId").val();
         var notes = $("#modal-new-invoice-fullscreen #notes").val();
         var freight = $("#modal-new-invoice-fullscreen #freight").val();
+        var termOfPayment = $("#modal-new-invoice-fullscreen #term_of_payment").val();
 
         if (finalize) {
             state = 1;
@@ -338,7 +340,8 @@ $(document).ready(function() {
             billing_address: billingAddress,
             location_id: locationId,
             notes: notes,
-            freight: freight
+            freight: freight,
+            term_of_payment: termOfPayment
         };
 
         $('#invoice_item_list tbody tr').each(function() {
@@ -418,6 +421,7 @@ $(document).ready(function() {
             $("#modal-new-invoice-fullscreen #billing_phone").val(data.header.billing_phone);
             $("#modal-new-invoice-fullscreen #billing_email").val(data.header.billing_email);
             $("#modal-new-invoice-fullscreen #billing_address").val(data.header.billing_address);
+            $("#modal-new-invoice-fullscreen #term_of_payment").val(data.header.term_of_payment);
             $("#modal-new-invoice-fullscreen #locationId").val(data.header.location_id);
             $("#modal-new-invoice-fullscreen #notes").val(data.header.notes);
             $("#modal-new-invoice-fullscreen #freight").val(data.header.freight);

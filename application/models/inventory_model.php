@@ -11,7 +11,7 @@ class Inventory_model extends CI_Model {
 	}
 	function getAllStockSummary() {
 		$dataWrapper = new $this->dataWrapper_dto();
-		$sql = 'SELECT ps.id,ps.stock_code, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
+		$sql = 'SELECT ps.id,ps.stock_code, ps.harga_beli, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
 				ps.stock-(select COALESCE(sum(pbo.quantity),0) as quantity FROM pos_booking pbo WHERE pbo.active=true and pbo.stock_id=ps.id) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id

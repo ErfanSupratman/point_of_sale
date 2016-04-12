@@ -42,6 +42,7 @@ $dataWrapper = new $this->document_dto();
 				pi.freight,
 				pi.notes,
 				pw.name,
+				pi.term_of_payment,
 				pi.state,
 				pi.created_by,
 				pi.created_date
@@ -108,6 +109,7 @@ $dataWrapper = new $this->document_dto();
 				pi.billing_phone,
 				pi.billing_email,
 				pi.location_id,
+				pi.term_of_payment,
 				pw.name,
 				pi.state,
 				pi.created_by,

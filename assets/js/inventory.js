@@ -71,7 +71,7 @@
                                             $('#modal-new-stock-fullscreen #product_id').val(current.id);
                                             $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + current.id + '&locationId=' + $('#modal-new-stock-fullscreen #lokasi').val(), {},
                                                 function(data) {
-                                                    if(data.length>0){
+                                                    if (data.length > 0) {
                                                         $("#modal-new-stock-fullscreen #id").val(data[0].id);
                                                         $("#modal-new-stock-fullscreen #hargabe").val(data[0].harga_bengkel);
                                                         $("#modal-new-stock-fullscreen #hargada").val(data[0].harga_dist_area);
