@@ -28,7 +28,7 @@ class Invoice extends MY_Controller {
 
 	public function finalizeInvoice(){
 		header('Content-Type: application/json');
-		$response = $this->invoice_model->finalizeInvoice($_GET['id']);
+		$response = $this->invoice_model->finalizeInvoice($_GET['id'],$_GET['finalizeDate']);
 		echo json_encode($response);
 	}
 

@@ -22,27 +22,31 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<input type="hidden" id="invoice_id" name="invoice_id"/>
+							<label for="billing_name">No. Booking</label>
+							<input type="text" id="invoice_code" name="invoice_code" readonly="true" class="form-control input-sm"/>
 							<label for="billing_name">No. Invoice</label>
 							<input type="text" id="invoice_code" name="invoice_code" readonly="true" class="form-control input-sm"/>
 							<label for="billing_name">Nama Penerima</label>
 							<input type="text" id="billing_name" name="billing_name" class="form-control input-sm"/>
 							<label for="billing_phone">No. Telepon</label>
 							<input type="text" id="billing_phone" name="billing_phone" class="form-control input-sm"/>
-							<label for="billing_email">Email</label>
+						<label for="billing_email">Email</label>
 							<input type="text" id="billing_email" name="billing_email" class="form-control input-sm"/>
-							<label for="term_of_payment">Term Of Payment</label>
-							<input type="text" id="term_of_payment" name="term_of_payment" class="form-control input-sm"/>
 						</div>
 						<div class="col-sm-6">
+						
+							<label for="term_of_payment">Term Of Payment</label>
+							<input type="text" id="term_of_payment" name="term_of_payment" class="form-control input-sm"/>
 							<label for="billing_address">Alamat Penagihan</label>
 							<textarea class="form-control" rows="3" id="billing_address" name="billing_address"></textarea>
 							<label for="lokasi">Lokasi Stock</label>
 							
 								<select class="form-control input-sm" id="locationId" name="locationId">
 									<option>Pilih</option>
-									<option value="1">Gudang</option>
-									<option value="2">Pinjam</option>
-									<option value="3">Showroom</option>
+									<option value="1">Gudang Ryan</option>
+									<option value="2">Gudang Willy</option>
+									<option value="3">Gudang Showroom</option>
+									<option value="4">Gudang Pinjaman</option>
 								</select>
 							
 						</div>
@@ -142,15 +146,27 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<br/>
-							<div class="alert alert-warning">
+							<div class="alert">
 								<h2 style="text-align:center"><strong>Grand Total : Rp. <span class="grandTotal">0</span></strong></h2>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer no-print">
-					<button type="button" id="finalize" class="btn btn-danger pull-left btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span> Lunas</button>
-					<button type="button" class="btn btn-success btn-lg" id="insert"><span class="glyphicon glyphicon-floppy-disk"></span> Simpan</button>
+					<div class="row">
+						<div class="col-sm-4">
+							<button type="button" id="finalize_btn" class="btn btn-block btn-success btn-lg">Lunas</button>
+						</div>
+						<div class="col-sm-4">
+							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">Confirm</button> 
+						</div>
+						<div class="col-sm-4">
+							<button type="button" id="booking_btn" class="btn btn-block btn-info btn-lg">Booking</button>
+						</div>
+						<div class="col-sm-4" id="update">
+							<button type="button" id="update_btn" class="btn btn-block btn-info btn-lg">Update</button>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>

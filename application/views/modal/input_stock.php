@@ -29,9 +29,10 @@
 							<div class="select-style">
 								<select class="form-control input-sm" id="lokasi" name="lokasi">
 									<option>Pilih</option>
-									<option value="1">Gudang</option>
-									<option value="2">Pinjam</option>
-									<option value="3">Showroom</option>
+									<option value="1">Gudang Ryan</option>
+									<option value="2">Gudang Willy</option>
+									<option value="3">Gudang Showroom</option>
+									<option value="4">Gudang Pinjaman</option>
 								</select>
 							</div>
 							<div class="form-group">
@@ -56,18 +57,16 @@
 								class="form-control input-sm" name="jumlah" />
 						</div>
 						<div class="col-sm-6">
-
 							<label  for="hargab">Harga Beli</label>	
-							<input id="hargab" type="text" class="form-control input-sm" name="hargab" />	
+							<input id="hargab" type="text" class="form-control input-sm" name="hargab" />
+							<label for="hargabe">Harga CNT.</label> 
+							<input id="hargabe" type="text" class="form-control input-sm" name="hargabe" />
 							<label for="hargada">Harga Distributor Area</label> 
 							<input id="hargada" type="text" class="form-control input-sm" name="hargada" /> 
-							<label for="hargabe">Harga Bengkel</label> <input
-								id="hargabe" type="text" class="form-control input-sm"
-								name="hargabe" /> <label for="hargare">Harga Retail</label> <input
-								id="hargare" type="text" class="form-control input-sm"
-								name="hargare" /> <label for="hargare">Harga Dealer</label> <input
-								id="hargadl" type="text" class="form-control input-sm"
-								name="hargadl" />
+							<label for="hargare">Harga Dealer</label>
+							<input id="hargadl" type="text" class="form-control input-sm" name="hargadl" />
+							<label for="hargare">Harga Retail</label>
+							<input id="hargare" type="text" class="form-control input-sm" name="hargare" />
 						</div>
 					</form>
 				</div>

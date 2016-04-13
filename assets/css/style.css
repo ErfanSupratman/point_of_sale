@@ -11,6 +11,10 @@ body{
 	margin-bottom: 60px !important;
 }
 
+.nav-up {
+  top: -40px;
+}
+
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
     border-top: 4px solid #FCED05 !important;
     color:#000000 !important;

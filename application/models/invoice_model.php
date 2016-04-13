@@ -71,9 +71,9 @@ $dataWrapper = new $this->document_dto();
 		return $dataWrapper;
 	}
 
-	function finalizeInvoice($id){
-		$sql = 'UPDATE pos_invoice SET state=1 WHERE id=?';
-		$query = $this->db->query($sql, array($id));
+	function finalizeInvoice($id, $finalizeDate){
+		$sql = 'UPDATE pos_invoice SET state=1,finalize_date=? WHERE id=?';
+		$query = $this->db->query($sql, array($finalizeDate, $id));
 		$response = array('success' => true);
 		return $response;
 	}

@@ -29,7 +29,8 @@ $(document).ready(function() {
     })
 
     var invoiceTable = {};
-    $("#pendingMenu").addClass("active");
+    $("#bookingMenu").addClass("active");
+    $("#pendingMenu").removeClass("active");
     $("#finishedMenu").removeClass("active");
     invoiceTable =
         $('#invoice_table').DataTable({
@@ -52,19 +53,14 @@ $(document).ready(function() {
                 "render": function(data, type, full, meta) {
                     var state = "";
                     if (data == 0) {
-                        state = '<span class="label label-warning">Pending</span>';
-                    } else if (data == 1) {
+                        state = '<span class="label label-info">Booking</span>';
+                    }else if (data == 1) {
+                        state = '<span class="label label-danger">Pending</span>';
+                    } else if (data == 2) {
                         state = '<span class="label label-success">Finished</span>';
                     }
                     return state;
                 }
-            }, {
-                "targets": [4],
-                "orderable": false,
-                "data": null,
-                "className": "delete",
-                "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash'></span></button>"
-
             }, {
                 "targets": [0, 1, 2, 3],
                 "className": "details-control",
@@ -159,6 +155,17 @@ $(document).ready(function() {
 
     $('#modal-new-invoice-fullscreen').on('shown.bs.modal', function(e) {
         $("#modal-new-invoice-fullscreen #billing_name").focus();
+        $("#modal-new-invoice-fullscreen #insertDetailForm").removeClass("in");
+    })
+
+    $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
+        $("#modal-new-invoice-fullscreen #finalize_btn").show();
+        $("#modal-new-invoice-fullscreen #update_btn").hide();
+    })
+
+    $('#modal-finalize-fullscreen').on('shown.bs.modal', function(e) {
+        $("#modal-finalize-fullscreen #finalize_date").val("");
+        $("#modal-finalize-fullscreen #finalize_date").focus();
     })
 
     var i = 1;
@@ -260,39 +267,76 @@ $(document).ready(function() {
                 } else {}
             });
 
-    $('#pending').on('click', function() {
+    $('#booking').on('click', function() {
         invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=0');
         invoiceTable.ajax.reload();
+        $("#bookingMenu").addClass("active");
+        $("#pendingMenu").removeClass("active");
+        $("#finishedMenu").removeClass("active");
+    });
+
+    $('#pending').on('click', function() {
+        invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=1');
+        invoiceTable.ajax.reload();
         $("#pendingMenu").addClass("active");
+        $("#bookingMenu").removeClass("active");
         $("#finishedMenu").removeClass("active");
     });
 
     $('#finished').on('click', function() {
-        invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=1');
+        invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=2');
         invoiceTable.ajax.reload();
         $("#finishedMenu").addClass("active");
         $("#pendingMenu").removeClass("active");
+        $("#bookingMenu").removeClass("active");
     });
 
 
-    $('#modal-new-invoice-fullscreen #finalize').on('click', function() {
+    $('#modal-new-invoice-fullscreen #finalize_btn').on('click', function() {
         var invoiceId = $("#modal-new-invoice-fullscreen #invoice_id").val();
-        if (invoiceId == "") {
-            saveInvoice(true);
-        } else {
-            updateInvoice(true, invoiceId);
-        }
-
-
+        swal({
+            title: "Apakah anda yakin?",
+            text: "Untuk finalisasi invoice ini?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ya",
+            cancelButtonText: "Batal",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                swal({
+                    title: "Processing!",
+                    text: "",
+                    timer: 1,
+                    showConfirmButton: false
+                }, function() {
+                    $("#modal-finalize-fullscreen").modal("show");
+                    swal.close();
+                    $('#modal-finalize-fullscreen #insert').on('click', function() {
+                        console.log($("#modal-finalize-fullscreen #finalize_date").val());
+                        if (invoiceId == "") {
+                            saveInvoice(1);
+                        } else {
+                            updateInvoice(1, invoiceId);
+                        }
+                    });
+                });
+            } else {
+                swal.close();
+                $("#modal-finalize-fullscreen #finalize_date").val("");
+            }
+        });
     });
 
-    $('#modal-new-invoice-fullscreen #insert').on('click', function() {
+    $('#modal-new-invoice-fullscreen #booking_btn').on('click', function() {
         var invoiceId = $('#modal-new-invoice-fullscreen #invoice_id').val();
 
         if (invoiceId == "") {
-            saveInvoice(false);
+            saveInvoice(0);
         } else {
-            updateInvoice(false, invoiceId)
+            updateInvoice(0, invoiceId)
         }
 
     });
@@ -305,21 +349,21 @@ $(document).ready(function() {
                 alert('delete');
             });
 
-    function saveInvoice(finalize) {
-        var data = invoiceConverter(finalize);
+    function saveInvoice(state) {
+        var data = invoiceConverter(state);
         insertInvoiceToDB(data);
     }
 
-    function updateInvoice(finalize, headerId) {
-        var data = invoiceConverter(finalize);
+    function updateInvoice(state, headerId) {
+        var data = invoiceConverter(state);
         updateInvoiceToDB(data, headerId);
     }
 
-    function invoiceConverter(finalize) {
-        var state = 0;
+    function invoiceConverter(state) {
         var dataHeader = {};
         var dataDetails = [];
         var billingName = $("#modal-new-invoice-fullscreen #billing_name").val();
+        var finalizeDate = $("#modal-finalize-fullscreen #finalize_date").val();
         var billingPhone = $("#modal-new-invoice-fullscreen #billing_phone").val();
         var billingEmail = $("#modal-new-invoice-fullscreen #billing_email").val();
         var billingAddress = $("#modal-new-invoice-fullscreen #billing_address").val();
@@ -328,14 +372,11 @@ $(document).ready(function() {
         var freight = $("#modal-new-invoice-fullscreen #freight").val();
         var termOfPayment = $("#modal-new-invoice-fullscreen #term_of_payment").val();
 
-        if (finalize) {
-            state = 1;
-        }
-
         dataHeader = {
             billing_name: billingName,
             billing_phone: billingPhone,
             billing_email: billingEmail,
+            finalize_date: finalizeDate,
             state: state,
             billing_address: billingAddress,
             location_id: locationId,
@@ -373,6 +414,7 @@ $(document).ready(function() {
                 if (data.success) {
                     swal("Success!", "Sukses tambah invoice ", "success");
                     $('#modal-new-invoice-fullscreen').modal('hide');
+                    $("#modal-new-invoice-fullscreen").modal("hide");
                     invoiceTable.ajax.reload();
                     countAllStateBadge();
                 } else {
@@ -394,6 +436,7 @@ $(document).ready(function() {
                 if (data.success) {
                     swal("Success!", "Sukses update invoice ", "success");
                     $('#modal-new-invoice-fullscreen').modal('hide');
+                    $('#modal-finalize-fullscreen').modal('hide');
                     invoiceTable.ajax.reload();
                     countAllStateBadge();
                 } else {
@@ -428,7 +471,6 @@ $(document).ready(function() {
             $('#modal-new-invoice-fullscreen .subTotal').text("");
             $('#modal-new-invoice-fullscreen .grandTotal').text("");
             $('#brand').val('');
-
             $('#name').val('');
             $('#jumlah').val('');
             $('#price_type').val('Pilih');
@@ -438,14 +480,17 @@ $(document).ready(function() {
             $('.product_detail').text("");
             putValueForEachRow(data.detail, data.header.state);
             calculateTotal();
-            if (data.header.state == 1) {
-                $('#modal-new-invoice-fullscreen #finalize').hide();
-                $('#modal-new-invoice-fullscreen #insert').hide();
-                $('.add_row_div').hide();
-            } else {
-                $('#modal-new-invoice-fullscreen #finalize').show();
-                $('#modal-new-invoice-fullscreen #insert').show();
+            if (data.header.state == 0) {
+                $('#modal-new-invoice-fullscreen #finalize_btn').hide();
+                $('#modal-new-invoice-fullscreen #update_btn').show();
+                $('#modal-new-invoice-fullscreen #confirm_btn').show();
+                $('#modal-new-invoice-fullscreen #booking_btn').hide();
                 $('.add_row_div').show();
+            } else {
+                $('#modal-new-invoice-fullscreen #finalize_btn').hide();
+                $('#modal-new-invoice-fullscreen #update_btn').hide();
+                $('.add_row_div').hide();
+
             }
 
         })
@@ -456,8 +501,10 @@ $(document).ready(function() {
             /*$('#pendingBadge').text(data);*/
             for (var key in data) {
                 if (data[key].state == 0) {
-                    $('#pendingBadge').text(data[key].total);
+                    $('#bookingBadge').text(data[key].total);
                 } else if (data[key].state == 1) {
+                    $('#pendingBadge').text(data[key].total);
+                } else if (data[key].state == 2) {
                     $('#finishedBadge').text(data[key].total);
                 }
 

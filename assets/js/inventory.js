@@ -101,13 +101,9 @@
                             "processing": true,
                             "ajax": "Inventory/getAllStock",
                             "columns": [{
-                                "data": "stock_code"
-                            }, {
-                                "data": "product_code"
+                                "data": "brand_name"
                             }, {
                                 "data": "product_name"
-                            }, {
-                                "data": "brand_name"
                             }, {
                                 "data": "stock"
                             }, {
@@ -131,21 +127,21 @@
 
                             }, */
                                 {
-                                    "targets": [10],
+                                    "targets": [8],
                                     "orderable": false,
                                     "data": null,
                                     "className": "history",
                                     "defaultContent": "<button type='button' id='history' class='btn btn-info btn-sm'><span class='fa fa-history fa-lg'></span></button>"
 
                                 }, {
-                                    "targets": [11],
+                                    "targets": [9],
                                     "orderable": false,
                                     "data": null,
                                     "className": "delete",
                                     "defaultContent": "<button type='button' id='delete' class='btn btn-danger btn-sm'><span class='fa fa-trash-o fa-lg'></span></button>"
 
                                 }, {
-                                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                    "targets": [0, 1, 2, 3, 4, 5, 6, 7],
                                     "className": "details-control",
                                 }
                             ]

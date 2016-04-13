@@ -102,7 +102,6 @@ function insertUser(){
 	$("#modal-new-user-fullscreen #active").prop('checked', true);
 	$("#modal-new-user-fullscreen #active").prop('disabled', true);
 	$("#modal-new-user-fullscreen .checkbox").hide();
-	
     $("#modal-new-user-fullscreen #update").hide();
 	$("#modal-new-user-fullscreen #insert").show();
   
