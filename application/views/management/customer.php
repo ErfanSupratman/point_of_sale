@@ -60,21 +60,17 @@
 				</div>
 			</div>
 		</div>
+		<?php
+			$this->load->view('navigation/footer');
+		?>
 		<!--
 			<p>Page rendered in <strong>{elapsed_time}</strong> seconds. 
 			<?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?>
 			<br/> 
 			<?php echo  (ENVIRONMENT === 'development') ?  'POS Application Version <strong>' . APP_VERSION . '</strong>' : '' ?></p>
 		-->
-		<script type="text/javascript" src="<?=asset_url()?>/js/jquery.min.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/bootstrap.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/bootstrap3-typeahead.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/jquery.dataTables.min.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/dataTables.bootstrap.min.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/dataTables.buttons.min.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/buttons.bootstrap.min.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/bootstrap-datepicker.js"></script>
+		
 		<script type="text/javascript" src="<?=asset_url()?>/js/customer.js"></script>
-		<script type="text/javascript" src="<?=asset_url()?>/js/sweetalert.min.js"></script>
+		
 	</body>
 </html>

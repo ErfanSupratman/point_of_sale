@@ -12,7 +12,9 @@ class Inventory_model extends CI_Model {
 	function getAllStockSummary() {
 		$dataWrapper = new $this->dataWrapper_dto();
 		$sql = 'SELECT ps.id,ps.stock_code, ps.harga_beli, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
-				ps.stock-(select COALESCE(sum(pbo.quantity),0) as quantity FROM pos_booking pbo WHERE pbo.active=true and pbo.stock_id=ps.id) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
+				ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
+JOIN pos_invoice pi ON pi.id=pid.invoice_id
+WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -29,7 +31,9 @@ class Inventory_model extends CI_Model {
 	function getAllStockSummaryFilter() {
 		$dataWrapper = new $this->dataWrapper_dto();
 		$sql = 'SELECT ps.id,ps.stock_code, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
-				ps.stock-(select COALESCE(sum(pbo.quantity),0) as quantity FROM pos_booking pbo WHERE pbo.active=true and pbo.stock_id=ps.id) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
+				ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
+JOIN pos_invoice pi ON pi.id=pid.invoice_id
+WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -53,7 +57,9 @@ class Inventory_model extends CI_Model {
 
 	function getProduct( $id ) {
 		$sql = 'SELECT ps.id,ps.stock_code, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
-				ps.stock-(select COALESCE(sum(pbo.quantity),0) as quantity FROM pos_booking pbo WHERE pbo.active=true and pbo.stock_id=ps.id) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
+				ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
+JOIN pos_invoice pi ON pi.id=pid.invoice_id
+WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -65,13 +71,18 @@ class Inventory_model extends CI_Model {
 	}
 
 	function getStockByProductIdAndLocationId( $productId, $locationId ) {
-		$sql = 'SELECT id FROM pos_stock WHERE product_id=? and location_id=? and active=true';
+		$sql = 'SELECT ps.id, pp.name as product_name, pw.name as warehouse_name FROM pos_stock ps
+		JOIN pos_product pp ON pp.id=ps.product_id 
+		JOIN pos_warehouse pw ON pw.id=ps.location_id 
+		WHERE ps.product_id=? and ps.location_id=? and ps.active=true';
 		$query = $this->db->query( $sql, array( $productId, $locationId ) );
-		return $query->result();
+		return $query->row();
 	}
 
 	function getAvailableQuantity( $id ) {
-		$sql = 'SELECT ps.stock-(select COALESCE(sum(pbo.quantity),0) as quantity FROM pos_booking pbo WHERE pbo.active=true and pbo.stock_id=ps.id) as stock
+		$sql = 'SELECT ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
+JOIN pos_invoice pi ON pi.id=pid.invoice_id
+WHERE pid.product_id=ps.product_id and pi.state in (0,1,2)) as stock
 				FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -79,7 +90,7 @@ class Inventory_model extends CI_Model {
 				WHERE
 					ps.active=true and ps.id=' . $id;
 		$query = $this->db->query( $sql );
-		return $query->result();
+		return $query->row();
 	}
 
 	function modifyStock( $data, $operand, $operationName, $username ) {
@@ -100,16 +111,16 @@ class Inventory_model extends CI_Model {
 				$stockAdded = $stockAdded * ( -1 );
 			}
 
-			$result = $this->getStockByProductIdAndLocationId( $productId, $locationId );
-			if ( $result == null ) {
+			$row = $this->getStockByProductIdAndLocationId( $productId, $locationId );
+			if ( $row == null ) {
 				$this->db->set( 'stock_code', 'getCounterSequence(4)', FALSE );
 				$this->db->set( 'created_date', 'now()', FALSE );
 				$this->db->set( 'created_by', "'".$username."'", FALSE );
 				$this->db->insert( 'pos_stock', $data );
-				$resultInsert = $this->getStockByProductIdAndLocationId( $productId, $locationId );
-				$this->history_stock_model->addHistory( $resultInsert[0]->id, $stockAdded, $operationName );
+				$row = $this->getStockByProductIdAndLocationId( $productId, $locationId );
+				$this->history_stock_model->addHistory( $row->id, $stockAdded, $operationName );
 			} else {
-				$stockId = $result[0]->id;
+				$stockId = $row->id;
 				error_log( "UPDATE NOW ".$stockId );
 
 				if ( !isset( $data['harga_bengkel'] )) {
@@ -154,7 +165,7 @@ class Inventory_model extends CI_Model {
 				}
 				error_log( $this->db->affected_rows() );
 				$resultFinal = $this->getAvailableQuantity( $stockId );
-				if ( $resultFinal[0]->stock < 0 ) {
+				if ( $resultFinal->stock < 0 ) {
 					throw new Exception( 'Stock cannot min' );
 				}
 
@@ -193,7 +204,7 @@ class Inventory_model extends CI_Model {
 	function updateStock( $data, $username ) {
 		error_log( "UPDATED" );
 		$resultAvailable = $this->getAvailableQuantity( $data['id'] );
-		$difference = intval( $data['stock'] ) - intval( $resultAvailable[0]->stock );
+		$difference = intval( $data['stock'] ) - intval( $resultAvailable->stock );
 		$data['stock'] = $difference;
 		$modifyStockResult = $this->modifyStock( $data, '+', 'updateStock', $username );
 		$response = array(

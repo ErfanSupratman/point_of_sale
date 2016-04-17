@@ -11,8 +11,8 @@ $(document).ready(function() {
         printWindow.print();
     });*/
 
-    $('#modal-new-invoice-fullscreen #print').on('click', function() {
-        $("#modal-new-invoice-fullscreen").print({
+    $('#modal-new-invoice-fullscreen #export_xls').on('click', function() {
+       /* $("#modal-new-invoice-fullscreen").print({
             globalStyles: true,
             mediaPrint: false,
             stylesheet: null,
@@ -25,7 +25,26 @@ $(document).ready(function() {
             timeout: 1000,
             title: null,
             doctype: '<!doctype html>'
-        });
+        });*/
+        window.location.href = 'PrintExcel/invoiceXls?id='+$("#modal-new-invoice-fullscreen #invoice_id").val();
+    });
+
+    $('#modal-new-invoice-fullscreen #print').on('click', function() {
+       /* $("#modal-new-invoice-fullscreen").print({
+            globalStyles: true,
+            mediaPrint: false,
+            stylesheet: null,
+            noPrintSelector: ".no-print",
+            iframe: false,
+            append: null,
+            prepend: null,
+            manuallyCopyFormValues: true,
+            deferred: $.Deferred(),
+            timeout: 1000,
+            title: null,
+            doctype: '<!doctype html>'
+        });*/
+        window.open('invoice/printInvoice?id='+$("#modal-new-invoice-fullscreen #invoice_id").val());
     })
 
     var invoiceTable = {};
@@ -54,7 +73,7 @@ $(document).ready(function() {
                     var state = "";
                     if (data == 0) {
                         state = '<span class="label label-info">Booking</span>';
-                    }else if (data == 1) {
+                    } else if (data == 1) {
                         state = '<span class="label label-danger">Pending</span>';
                     } else if (data == 2) {
                         state = '<span class="label label-success">Finished</span>';
@@ -150,7 +169,10 @@ $(document).ready(function() {
         $('#price_type').prop('disabled', true);
         $('#jumlah').prop('disabled', true);
         $('.product_detail').text("");
+        $("#booking_code").val("");
+        $('.add_row_div').show();
         removeAllRow();
+
     })
 
     $('#modal-new-invoice-fullscreen').on('shown.bs.modal', function(e) {
@@ -159,8 +181,16 @@ $(document).ready(function() {
     })
 
     $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
-        $("#modal-new-invoice-fullscreen #finalize_btn").show();
+        $("#modal-new-invoice-fullscreen #finalize_btn").hide();
         $("#modal-new-invoice-fullscreen #update_btn").hide();
+        $('#modal-new-invoice-fullscreen #finalize_btn').hide();
+        $('#modal-new-invoice-fullscreen #update_btn').hide();
+        $('#modal-new-invoice-fullscreen #confirm_btn').hide();
+        $('#modal-new-invoice-fullscreen #void_btn').hide();
+        $('#modal-new-invoice-fullscreen #booking_btn').show();
+        $('#modal-new-invoice-fullscreen #state').val("");
+        $('#modal-new-invoice-fullscreen #print').hide();
+        $('#modal-new-invoice-fullscreen #export_xls').hide();
     })
 
     $('#modal-finalize-fullscreen').on('shown.bs.modal', function(e) {
@@ -317,15 +347,78 @@ $(document).ready(function() {
                     $('#modal-finalize-fullscreen #insert').on('click', function() {
                         console.log($("#modal-finalize-fullscreen #finalize_date").val());
                         if (invoiceId == "") {
-                            saveInvoice(1);
+                            saveInvoice(2);
                         } else {
-                            updateInvoice(1, invoiceId);
+                            updateInvoice(2, invoiceId);
                         }
                     });
                 });
             } else {
                 swal.close();
                 $("#modal-finalize-fullscreen #finalize_date").val("");
+            }
+        });
+    });
+
+
+    $('#modal-new-invoice-fullscreen #void_btn').on('click', function() {
+        var invoiceId = $("#modal-new-invoice-fullscreen #invoice_id").val();
+        swal({
+            title: "Apakah anda yakin?",
+            text: "Untuk Void invoice ini?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ya",
+            cancelButtonText: "Batal",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                swal({
+                    title: "Processing!",
+                    text: "",
+                    timer: 1,
+                    showConfirmButton: false
+                }, function() {
+                    voidInvoiceToDB(invoiceId);
+                    swal.close();
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
+
+    $('#modal-new-invoice-fullscreen #confirm_btn').on('click', function() {
+        var invoiceId = $("#modal-new-invoice-fullscreen #invoice_id").val();
+        swal({
+            title: "Apakah anda yakin?",
+            text: "Untuk untuk create invoice pending?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ya",
+            cancelButtonText: "Batal",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                swal({
+                    title: "Processing!",
+                    text: "",
+                    timer: 1,
+                    showConfirmButton: false
+                }, function() {
+                    if (invoiceId == "") {
+                        saveInvoice(1);
+                    } else {
+                        updateInvoice(1, invoiceId);
+                    }
+                    swal.close();
+                });
+            } else {
+                swal.close();
             }
         });
     });
@@ -339,6 +432,11 @@ $(document).ready(function() {
             updateInvoice(0, invoiceId)
         }
 
+    });
+
+    $('#modal-new-invoice-fullscreen #update_btn').on('click', function() {
+        var invoiceId = $('#modal-new-invoice-fullscreen #invoice_id').val();
+        updateInvoice("", invoiceId)
     });
 
     $('#invoice_item_list tbody')
@@ -372,6 +470,12 @@ $(document).ready(function() {
         var freight = $("#modal-new-invoice-fullscreen #freight").val();
         var termOfPayment = $("#modal-new-invoice-fullscreen #term_of_payment").val();
 
+        if (state == '') {
+            state = $("#modal-new-invoice-fullscreen #state").val();
+        }
+
+        console.log('state ' + state);
+
         dataHeader = {
             billing_name: billingName,
             billing_phone: billingPhone,
@@ -386,10 +490,11 @@ $(document).ready(function() {
         };
 
         $('#invoice_item_list tbody tr').each(function() {
-            console.log($(this).find('#jumlah_row #jumlah').val());
-            var quantity = $(this).find('#jumlah_row #jumlah').val();
-            var price = $(this).find('#harga_row #harga').val();
-            var productId = $(this).find('#product_row #product_id').val();
+            console.log($(this).find('#jumlah_row #jumlahs').val());
+            console.log($(this).find('#product_row #product_ids').val());
+            var quantity = $(this).find('#jumlah_row #jumlahs').val();
+            var price = removeCommas($(this).find('#harga_row #hargas').val());
+            var productId = $(this).find('#product_row #product_ids').val();
             var rowData = {
                 product_id: productId,
                 quantity: quantity,
@@ -427,6 +532,22 @@ $(document).ready(function() {
         });
     }
 
+    function voidInvoiceToDB(invoiceId) {
+        $.get('Invoice/voidInvoice?id=' + invoiceId, {}, function(data) {
+            if (data.success) {
+                swal("Success!", "Sukses void invoice ", "success");
+                $('#modal-new-invoice-fullscreen').modal('hide');
+                invoiceTable.ajax.reload();
+                countAllStateBadge();
+            } else {
+                swal("Failed!", "Gagal tambah invoice ", "error");
+            }
+        }).fail(function() {
+            swal("Failed!", "Gagal void invoice", "error");
+        });;
+
+    }
+
     function updateInvoiceToDB(data, headerId) {
         $.post('Invoice/updateInvoice', {
                 invoice: JSON.stringify(data),
@@ -440,12 +561,12 @@ $(document).ready(function() {
                     invoiceTable.ajax.reload();
                     countAllStateBadge();
                 } else {
-                    swal("Failed!", "Gagal update invoice ", "error");
+                    swal("Failed!", "Gagal update invoice," + data.error, "error");
                 }
 
             }, 'json'
         ).fail(function() {
-            swal("Failed!", "Gagal update invoice", "error");
+            swal("Failed!", "Gagal update invoice 2", "error");
         });
     }
 
@@ -453,12 +574,11 @@ $(document).ready(function() {
         $('#modal-new-invoice-fullscreen').modal('show');
     };
 
-
-
     function getInvoiceDetail(id) {
         $.get('Invoice/getInvoiceHeaderAndItemByInvoiceId?id=' + id, {}, function(data) {
             $('#modal-new-invoice-fullscreen').modal('show');
             $("#modal-new-invoice-fullscreen #invoice_code").val(data.header.invoice_code);
+            $("#modal-new-invoice-fullscreen #booking_code").val(data.header.booking_code);
             $("#modal-new-invoice-fullscreen #invoice_id").val(data.header.id);
             $("#modal-new-invoice-fullscreen #billing_name").val(data.header.billing_name);
             $("#modal-new-invoice-fullscreen #billing_phone").val(data.header.billing_phone);
@@ -468,6 +588,7 @@ $(document).ready(function() {
             $("#modal-new-invoice-fullscreen #locationId").val(data.header.location_id);
             $("#modal-new-invoice-fullscreen #notes").val(data.header.notes);
             $("#modal-new-invoice-fullscreen #freight").val(data.header.freight);
+            $("#modal-new-invoice-fullscreen #state").val(data.header.state);
             $('#modal-new-invoice-fullscreen .subTotal').text("");
             $('#modal-new-invoice-fullscreen .grandTotal').text("");
             $('#brand').val('');
@@ -480,17 +601,41 @@ $(document).ready(function() {
             $('.product_detail').text("");
             putValueForEachRow(data.detail, data.header.state);
             calculateTotal();
+            $('#modal-new-invoice-fullscreen #export_xls').show();
+            $('#modal-new-invoice-fullscreen #print').show();
             if (data.header.state == 0) {
                 $('#modal-new-invoice-fullscreen #finalize_btn').hide();
                 $('#modal-new-invoice-fullscreen #update_btn').show();
                 $('#modal-new-invoice-fullscreen #confirm_btn').show();
                 $('#modal-new-invoice-fullscreen #booking_btn').hide();
                 $('.add_row_div').show();
+            } else if (data.header.state == 1) {
+                $('#modal-new-invoice-fullscreen #finalize_btn').show();
+                $('#modal-new-invoice-fullscreen #update_btn').show();
+                $('#modal-new-invoice-fullscreen #confirm_btn').hide();
+                $('#modal-new-invoice-fullscreen #void_btn').show();
+                $('#modal-new-invoice-fullscreen #booking_btn').hide();
+                $('.add_row_div').show();
+            } else if (data.header.state == 2) {
+                $('#modal-new-invoice-fullscreen #finalize_btn').hide();
+                $('#modal-new-invoice-fullscreen #update_btn').hide();
+                $('#modal-new-invoice-fullscreen #confirm_btn').hide();
+                $('#modal-new-invoice-fullscreen #void_btn').show();
+                $('#modal-new-invoice-fullscreen #booking_btn').hide();
+                $('.add_row_div').hide();
+            } else if (data.header.state == 3) {
+                $('#modal-new-invoice-fullscreen #finalize_btn').hide();
+                $('#modal-new-invoice-fullscreen #update_btn').hide();
+                $('#modal-new-invoice-fullscreen #confirm_btn').hide();
+                $('#modal-new-invoice-fullscreen #void_btn').hide();
+                $('#modal-new-invoice-fullscreen #booking_btn').hide();
+                $('.add_row_div').hide();
             } else {
                 $('#modal-new-invoice-fullscreen #finalize_btn').hide();
                 $('#modal-new-invoice-fullscreen #update_btn').hide();
-                $('.add_row_div').hide();
-
+                $('#modal-new-invoice-fullscreen #confirm_btn').hide();
+                $('#modal-new-invoice-fullscreen #void_btn').hide();
+                $('#modal-new-invoice-fullscreen #booking_btn').show();
             }
 
         })
@@ -499,6 +644,9 @@ $(document).ready(function() {
     function countAllStateBadge() {
         $.get('Invoice/countAllStates', {}, function(data) {
             /*$('#pendingBadge').text(data);*/
+            $('#bookingBadge').text("");
+            $('#pendingBadge').text("");
+            $('#finishedBadge').text("");
             for (var key in data) {
                 if (data[key].state == 0) {
                     $('#bookingBadge').text(data[key].total);
@@ -517,20 +665,23 @@ $(document).ready(function() {
         for (var key in data) {
             console.log("data row :" + data[key]);
             var hidden = "";
-            if (state == 1) {
+            var price = addCommas(data[key].price);
+            if (state >= 2) {
                 hidden = "hidden";
             }
             $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + x + '</td>' +
                 '<td id="jumlah_row">' + data[key].brand_name + '</td>' +
-                '<td id="product_row">' + data[key].product_name + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + data[key].product_id + '"></td>' +
+                '<td id="product_row">' + data[key].product_name + '<input type="hidden" class="form-control input-sm" id="product_ids" name="product_ids" value="' + data[key].product_id + '"></td>' +
                 '<td>' + data[key].product_code + '</td>' +
-                '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + data[key].quantity + '"></input></td>' +
-                '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + data[key].price + '"></input></td>' +
+                '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlahs" name="jumlahs" value="' + data[key].quantity + '"></input></td>' +
+                '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="hargas" name="hargas" value="' + price + '"></input></td>' +
                 '<td><button type="button" onclick="removeRow(' + x + ')" data-id="' + x + '" id="delete" class="' + hidden + ' btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
             x++;
         }
 
     }
+
+
 
     function addRowValue(i) {
         var brand = $('#brand').val();
@@ -562,10 +713,10 @@ $(document).ready(function() {
                     $('#invoice_item_list').slideUp(200, function() {
                         $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
                             '<td id="jumlah_row">' + brand + '</td>' +
-                            '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_id" name="product_id" value="' + productId + '"></td>' +
+                            '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_ids" name="product_ids" value="' + productId + '"></td>' +
                             '<td>' + productCode + '</td>' +
-                            '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlah" name="jumlah" value="' + jumlah + '"></input></td>' +
-                            '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="harga" name="harga" value="' + harga + '"></input></td>' +
+                            '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlahs" name="jumlah" value="' + jumlah + '"></input></td>' +
+                            '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="hargas" name="harga" value="' + harga + '"></input></td>' +
                             '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
                         $('#invoice_item_list').slideDown(200);
                         calculateTotal();
@@ -579,7 +730,6 @@ $(document).ready(function() {
 
 });
 
-
 function calculateTotal() {
     var subTotal = 0;
     var grandTotal = 0;
@@ -588,15 +738,19 @@ function calculateTotal() {
         freight = $('#modal-new-invoice-fullscreen #freight').val();
     }
     $('#invoice_item_list tbody tr').each(function() {
-        var quantity = parseInt($(this).find('#jumlah_row #jumlah').val());
+        var quantity = parseInt($(this).find('#jumlah_row #jumlahs').val());
         console.log('quantity ' + quantity);
-        var price = parseInt($(this).find('#harga_row #harga').val());
+        var price = parseInt(removeCommas($(this).find('#harga_row #hargas').val()));
+
         console.log('price ' + price);
         var total = quantity * price;
         subTotal += total;
+        $(this).find('#harga_row #hargas').val(addCommas(price));
     });
 
     grandTotal = subTotal + parseInt(freight);
+    subTotal = addCommas(subTotal);
+    grandTotal = addCommas(grandTotal);
     $('#modal-new-invoice-fullscreen .grandTotal').fadeOut(500, function() {
         $('#modal-new-invoice-fullscreen .grandTotal').text(grandTotal).fadeIn(500);
     });
@@ -627,3 +781,19 @@ function removeAllRow() {
         $(this).remove();
     });
 }
+
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+
+    function removeCommas(price){
+        return parseFloat(price.replace(/,/g,''));
+    }

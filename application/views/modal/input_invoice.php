@@ -11,7 +11,8 @@
 							<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-file"></span> Invoice</h4>
 						</div>
 						<div class="col-sm-6" align="right">
-							<button type="button" class="btn btn-default btn-sm" id="print"><span class="glyphicon glyphicon-print"></span></button>
+							<button type="button" class="btn btn-default btn-sm" id="export_xls" title="export to xls"><span class="fa fa-file-excel-o"></span></button>
+							<button type="button" class="btn btn-default btn-sm" id="print" title="print"><span class="glyphicon glyphicon-print"></span></button>
 							<button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
 						</div>
 					</div>
@@ -22,8 +23,9 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<input type="hidden" id="invoice_id" name="invoice_id"/>
+							<input type="hidden" id="state" name="state"/>
 							<label for="billing_name">No. Booking</label>
-							<input type="text" id="invoice_code" name="invoice_code" readonly="true" class="form-control input-sm"/>
+							<input type="text" id="booking_code" name="booking_code" readonly="true" class="form-control input-sm"/>
 							<label for="billing_name">No. Invoice</label>
 							<input type="text" id="invoice_code" name="invoice_code" readonly="true" class="form-control input-sm"/>
 							<label for="billing_name">Nama Penerima</label>
@@ -154,17 +156,18 @@
 				</div>
 				<div class="modal-footer no-print">
 					<div class="row">
-						<div class="col-sm-4">
-							<button type="button" id="finalize_btn" class="btn btn-block btn-success btn-lg">Lunas</button>
+						
+						<div class="col-sm-3">
+							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button> 
+							<button type="button" id="void_btn" class="btn btn-block btn-warning  btn-lg">VOID</button> 
 						</div>
-						<div class="col-sm-4">
-							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">Confirm</button> 
+						<div class="col-sm-3">
+							<button type="button" id="update_btn" class="btn btn-block btn-info btn-lg">UPDATE</button>
 						</div>
-						<div class="col-sm-4">
-							<button type="button" id="booking_btn" class="btn btn-block btn-info btn-lg">Booking</button>
-						</div>
-						<div class="col-sm-4" id="update">
-							<button type="button" id="update_btn" class="btn btn-block btn-info btn-lg">Update</button>
+						<div class="col-sm-3 pull-right">
+							<button type="button" id="booking_btn" class="btn btn-block btn-info btn-lg">BOOKING</button>
+							<button type="button" id="finalize_btn" class="btn btn-block btn-success btn-lg">PAID</button>
+							
 						</div>
 					</div>
 				</div>

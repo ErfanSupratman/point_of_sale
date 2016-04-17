@@ -3,7 +3,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta NAME="robots" CONTENT="noindex,nofollow">
-		<title>Invoice</title>
+		<title>Inventory System</title>
 		<link rel="stylesheet" href="<?=asset_url()?>/css/font-awesome.min.css">
 		<link rel="stylesheet" href="<?=asset_url()?>/css/bootstrap-datepicker3.css">
 		<link rel="stylesheet" href="<?=asset_url()?>/css/normalize.css">

@@ -37,8 +37,8 @@ if (! isset ( $_GET ['active'] )) {
 				<li <?php if($active=='cust'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('Customer?active=cust') ?>"><i class="fa fa-user"></i> Customer Management</a>
 				</li>
-				<li>
-					<a href="#"><i class="fa fa-area-chart"></i> Reports</a>
+				<li <?php if($active=='report'){echo 'class="active"';}?>>
+					<a href="<?php echo site_url('Report?active=report') ?>"><i class="fa fa-area-chart"></i> Reports</a>
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
