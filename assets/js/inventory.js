@@ -165,6 +165,8 @@
                                 rowData.id);
                             $("#modal-new-stock-fullscreen #lokasi").val(
                                 rowData.warehouse_id);
+                            $("#modal-new-stock-fullscreen #lokasi").hide();
+                            $("#modal-new-stock-fullscreen #lokasi_detail").text(rowData.location_name);
                             $("#modal-new-stock-fullscreen #product_id").val(
                                 rowData.product_id);
                             $("#modal-new-stock-fullscreen #jumlah").val(
@@ -546,6 +548,8 @@
             $("#modal-new-stock-fullscreen #hargada").val(0);
             $("#modal-new-stock-fullscreen #hargadl").val(0);
             $("#modal-new-stock-fullscreen #hargare").val(0);
+            $("#modal-new-stock-fullscreen #lokasi").show();
+            $("#modal-new-stock-fullscreen #lokasi_detail").text("");
             $("#modal-new-stock-fullscreen #update").hide();
             $("#modal-new-stock-fullscreen #insert").show();
         }

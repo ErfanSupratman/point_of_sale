@@ -25,7 +25,8 @@
 					<form action="/" id="stock_form">
 						<div class="col-sm-6">
 							<input type="hidden" id="id" name="id"></input>
-							<label for="lokasi">Lokasi Stock</label>	
+							<label for="lokasi">Lokasi Stock</label><br/>
+							<span id="lokasi_detail"></span>
 							<div class="select-style">
 								<select class="form-control input-sm" id="lokasi" name="lokasi">
 									<option>Pilih</option>

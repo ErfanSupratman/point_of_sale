@@ -20,7 +20,7 @@ class PrintExcel extends MY_Controller {
 			if($result!=null){
 				$countList = count($result->detail);
 
-				$objPHPexcel = PHPExcel_IOFactory::load(APPPATH.'third_party\template\invoice.xlsx');
+				$objPHPexcel = PHPExcel_IOFactory::load(APPPATH.'third_party/template/invoice.xlsx');
 				$objWorksheet = $objPHPexcel->getActiveSheet();
 				/*$objWorksheet->insertNewRowBefore(2,1);*/
 				$objWorksheet->getCell('F4')->setValue(date("d/m/Y"));
@@ -89,7 +89,7 @@ class PrintExcel extends MY_Controller {
 			$result = $this->invoice_model->invoiceIncomeReport($startDate, $endDate);
 			$countList = count($result);
 
-			$objPHPexcel = PHPExcel_IOFactory::load(APPPATH.'third_party\template\invoice_report.xlsx');
+			$objPHPexcel = PHPExcel_IOFactory::load(APPPATH.'third_party/template/invoice_report.xlsx');
 			$objWorksheet = $objPHPexcel->getActiveSheet();
 			/*$objWorksheet->insertNewRowBefore(2,1);*/
 			$objWorksheet->getCell('G1')->setValue(date("d/m/Y"));

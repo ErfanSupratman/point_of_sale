@@ -82,7 +82,7 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_ben
 	function getAvailableQuantity( $id ) {
 		$sql = 'SELECT ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
 JOIN pos_invoice pi ON pi.id=pid.invoice_id
-WHERE pid.product_id=ps.product_id and pi.state in (0,1,2)) as stock
+WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock
 				FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -118,7 +118,7 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1,2)) as stock
 				$this->db->set( 'created_by', "'".$username."'", FALSE );
 				$this->db->insert( 'pos_stock', $data );
 				$row = $this->getStockByProductIdAndLocationId( $productId, $locationId );
-				$this->history_stock_model->addHistory( $row->id, $stockAdded, $operationName );
+				$this->history_stock_model->addHistory( $row->id, $stockAdded, $operationName, $username );
 			} else {
 				$stockId = $row->id;
 				error_log( "UPDATE NOW ".$stockId );
@@ -139,6 +139,7 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1,2)) as stock
 					);
 
 				}else {
+					$availableBefore = $this->getAvailableQuantity( $stockId );
 					$sqlUpdateStock = "UPDATE pos_stock SET
 					stock=(SELECT * FROM (SELECT SUM(stock) FROM pos_stock WHERE id=?) AS X)+? ,
 					updated_date=now(),
@@ -168,8 +169,9 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1,2)) as stock
 				if ( $resultFinal->stock < 0 ) {
 					throw new Exception( 'Stock cannot min' );
 				}
+				//$resultDiff = intval($resultFinal->stock)-intval($availableBefore->stock);
 
-				$this->history_stock_model->addHistory( $stockId, $stockAdded, $operationName );
+				$this->history_stock_model->addHistory( $stockId, $stockAdded, $operationName, $username );
 
 			}
 			$this->db->trans_complete();

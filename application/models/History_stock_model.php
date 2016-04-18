@@ -48,18 +48,20 @@ class History_stock_model extends CI_Model {
 		return $query->row();
 	}
 
-	function addHistory($stockId, $stockChange, $notes) {
+	function addHistory($stockId, $stockChange, $notes, $username) {
 		if ($stockChange < 0) {
 			$data = array(
 				'stock_id' => $stockId,
 				'stock_out' => abs($stockChange),
 				'notes' => $notes,
+				'created_by' => $username
 			);
 		} else {
 			$data = array(
 				'stock_id' => $stockId,
 				'stock_in' => $stockChange,
 				'notes' => $notes,
+				'created_by' => $username
 			);
 		}
 
