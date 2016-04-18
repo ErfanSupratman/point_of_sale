@@ -47,15 +47,9 @@ class User extends MY_Controller {
 		header('Content-Type: application/json');
 		
 		if(!empty($_POST['password_new'])){
-			if(!empty($_POST['password_new_confirmation'])){
-				if($_POST['password_new']!=$_POST['password_new_confirmation']){
-					echo '{"success":false,"errorMessage":"Konfirmasi password tidak sama!"}';
-				}
-			}
-
 			$data = array(
 				'username' => $_POST['username_new'],
-				'password' => $_POST['password_new'],
+				'password' => MD5($_POST['password_new']),
 				'full_name' => $_POST['full_name_new'],
 				'telepon' => $_POST['hp_new'],
 				'permission' => $_POST['role_new']
