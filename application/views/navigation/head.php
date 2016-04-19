@@ -14,4 +14,5 @@
 		<link href="<?=asset_url()?>/css/dataTables.bootstrap.min.css" rel="stylesheet">
 		<link href="<?=asset_url()?>/css/buttons.bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="<?=asset_url()?>/css/bootstrap-flaty.min.css">
+		<link rel="shortcut icon" href="<?=asset_url()?>/icon/favicon.ico" type="image/x-icon"/>
 	</head>

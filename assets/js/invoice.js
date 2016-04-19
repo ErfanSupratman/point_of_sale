@@ -51,6 +51,7 @@ $(document).ready(function() {
     $("#bookingMenu").addClass("active");
     $("#pendingMenu").removeClass("active");
     $("#finishedMenu").removeClass("active");
+    $("#voidMenu").removeClass("active");
     invoiceTable =
         $('#invoice_table').DataTable({
             "order": [],
@@ -60,6 +61,10 @@ $(document).ready(function() {
             "columns": [{
                 "data": "created_date"
             }, {
+                "data": "booking_code"
+            },{
+                "data": "finalize_date"
+            },{
                 "data": "invoice_code"
             }, {
                 "data": "billing_name"
@@ -67,21 +72,23 @@ $(document).ready(function() {
                 "data": "state"
             }],
             "columnDefs": [{
-                "targets": 3,
+                "targets": 5,
                 "data": "state",
                 "render": function(data, type, full, meta) {
                     var state = "";
                     if (data == 0) {
                         state = '<span class="label label-info">Booking</span>';
                     } else if (data == 1) {
-                        state = '<span class="label label-danger">Pending</span>';
+                        state = '<span class="label label-warning">Pending</span>';
                     } else if (data == 2) {
                         state = '<span class="label label-success">Finished</span>';
+                    } else if (data == 3) {
+                        state = '<span class="label label-danger">Void</span>';
                     }
                     return state;
                 }
             }, {
-                "targets": [0, 1, 2, 3],
+                "targets": [0, 1, 2, 3,4,5],
                 "className": "details-control",
             }]
         });
@@ -303,6 +310,7 @@ $(document).ready(function() {
         $("#bookingMenu").addClass("active");
         $("#pendingMenu").removeClass("active");
         $("#finishedMenu").removeClass("active");
+        $("#voidMenu").removeClass("active");
     });
 
     $('#pending').on('click', function() {
@@ -311,6 +319,7 @@ $(document).ready(function() {
         $("#pendingMenu").addClass("active");
         $("#bookingMenu").removeClass("active");
         $("#finishedMenu").removeClass("active");
+        $("#voidMenu").removeClass("active");
     });
 
     $('#finished').on('click', function() {
@@ -319,6 +328,16 @@ $(document).ready(function() {
         $("#finishedMenu").addClass("active");
         $("#pendingMenu").removeClass("active");
         $("#bookingMenu").removeClass("active");
+        $("#voidMenu").removeClass("active");
+    });
+
+    $('#void').on('click', function() {
+        invoiceTable.ajax.url('Invoice/getAllInvoiceByState?state=3');
+        invoiceTable.ajax.reload();
+        $("#finishedMenu").removeClass("active");
+        $("#pendingMenu").removeClass("active");
+        $("#bookingMenu").removeClass("active");
+        $("#voidMenu").addClass("active");
     });
 
 
@@ -519,15 +538,14 @@ $(document).ready(function() {
                 if (data.success) {
                     swal("Success!", "Sukses tambah invoice ", "success");
                     $('#modal-new-invoice-fullscreen').modal('hide');
-                    $("#modal-new-invoice-fullscreen").modal("hide");
                     invoiceTable.ajax.reload();
                     countAllStateBadge();
                 } else {
-                    swal("Failed!", "Gagal tambah invoice ", "error");
+                    swal("Failed!", "Gagal tambah invoice "+data.error, "error");
                 }
 
             }, 'json'
-        ).fail(function() {
+        ).fail(function(error) {
             swal("Failed!", "Gagal tambah invoice", "error");
         });
     }
@@ -607,6 +625,7 @@ $(document).ready(function() {
                 $('#modal-new-invoice-fullscreen #finalize_btn').hide();
                 $('#modal-new-invoice-fullscreen #update_btn').show();
                 $('#modal-new-invoice-fullscreen #confirm_btn').show();
+                $('#modal-new-invoice-fullscreen #void_btn').show();
                 $('#modal-new-invoice-fullscreen #booking_btn').hide();
                 $('.add_row_div').show();
             } else if (data.header.state == 1) {
@@ -647,6 +666,7 @@ $(document).ready(function() {
             $('#bookingBadge').text("");
             $('#pendingBadge').text("");
             $('#finishedBadge').text("");
+            $('#voidBadge').text("");
             for (var key in data) {
                 if (data[key].state == 0) {
                     $('#bookingBadge').text(data[key].total);
@@ -654,6 +674,8 @@ $(document).ready(function() {
                     $('#pendingBadge').text(data[key].total);
                 } else if (data[key].state == 2) {
                     $('#finishedBadge').text(data[key].total);
+                } else if (data[key].state == 3) {
+                    $('#voidBadge').text(data[key].total);
                 }
 
             }
@@ -722,7 +744,7 @@ $(document).ready(function() {
                         calculateTotal();
                     });
                 } else {
-                    swal("Failed!", "Gagal tambah product " + product, "error");
+                    swal("Failed!", "Gagal, karena product" + product+ " tidak ada di warehouse tersebut", "error");
                 }
             }, 'json');
 

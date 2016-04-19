@@ -13,6 +13,7 @@ class Invoice_model extends CI_Model {
 		$dataWrapper = new $this->dataWrapper_dto();
 		$sql = 'SELECT id,
 				invoice_code,
+				finalize_date,
 				billing_name,
 				billing_address,
 				customer_id,
@@ -101,7 +102,7 @@ $dataWrapper = new $this->document_dto();
 		$sqlHeader = 'UPDATE pos_invoice SET state=3,updated_date=now(),updated_by=? WHERE id=?';
 		$queryHeader = $this->db->query($sqlHeader, array($username,$id));
 
-		$sqlDetail = 'SELECT pid.product_id,pid.quantity,pi.location_id FROM pos_invoice pi JOIN pos_invoice_detail pid ON pid.invoice_id=pi.id WHERE pi.id=?';
+		$sqlDetail = 'SELECT pid.product_id,pid.quantity,pi.location_id FROM pos_invoice pi JOIN pos_invoice_detail pid ON pid.invoice_id=pi.id WHERE pi.id=? and pi.state=2';
 		$queryDetail = $this->db->query($sqlDetail, array($id));
 
 		foreach ($queryDetail->result() as $obj) {
@@ -116,6 +117,7 @@ $dataWrapper = new $this->document_dto();
 		$dataWrapper = new $this->dataWrapper_dto();
 		$sql = 'SELECT id,
 				invoice_code,
+				finalize_date,
 				booking_code,
 				billing_name,
 				billing_address,
@@ -160,15 +162,23 @@ $dataWrapper = new $this->document_dto();
 
 	function addInvoice($data, $username) {
 		$success = true;
+		
 		error_log("addInvoice " . json_encode($data));
 		error_log("dataHeader " . json_encode($data->dataHeader));
 		error_log("dataDetail " . json_encode($data->dataDetail));
-		foreach ($data->dataDetail as $obj) {
-			error_log($obj->product_id);
-		}
+		$error= "";
+
 		$headerId = 0;
 		try {
 			$this->db->trans_start();
+			$listExists = false;
+			foreach ($data->dataDetail as $obj) {
+				$listExists = true;
+			}
+
+			if(!$listExists){
+				throw new Exception('Stock tidak mencukupi');	
+			}
 
 			if($data->dataHeader->state==0){
 				$this->db->set('booking_code', 'getCounterSequence(5)', FALSE);
@@ -196,9 +206,10 @@ $dataWrapper = new $this->document_dto();
 		} catch (Exception $e) {
 			$this->db->trans_rollback();
 			error_log($e->getMessage());
+			$error = $e->getMessage(); 
 			$success = false;
 		}
-		$response = array('success' => $success,'id' =>$headerId);
+		$response = array('success' => $success,'id' =>$headerId, 'error' => $error);
 		return $response;
 	}
 
@@ -224,15 +235,19 @@ $dataWrapper = new $this->document_dto();
 		error_log("updateInvoice id ".$headerId." data :" . json_encode($data));
 		error_log("dataHeader " . json_encode($data->dataHeader));
 		error_log("dataDetail " . json_encode($data->dataDetail));
-		foreach ($data->dataDetail as $obj) {
-			error_log($obj->product_id);
-		}
 
 		try {
 			$this->db->trans_start();
+			$listExists = false;
+			foreach ($data->dataDetail as $obj) {
+				$listExists = true;
+			}
 
+			if(!$listExists){
+				throw new Exception('Stock tidak mencukupi');	
+			}
 			$queryInvCode = $this->db->query('SELECT invoice_code FROM pos_invoice WHERE id=?',array('id' => $headerId));
-			$invoice_code = $queryInvCode->row();
+			$invoice_code = $queryInvCode->row()->invoice_code;
 
 			if($data->dataHeader->state==1){
 				$invoice_code = "";
@@ -262,18 +277,15 @@ $dataWrapper = new $this->document_dto();
 
 			if($data->dataHeader->state==2){
 				foreach ($data->dataDetail as $obj) {
-					$result = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$data->dataHeader->location_id);
 					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$data->dataHeader->location_id );
-					error_log("update stock ".json_encode($stock));
-					$this->inventory_model->decreaseStock( $stock, 'PAID Invoice '+$invoice_code,  $username);
+					$this->inventory_model->decreaseStock( $stock, 'PAID Invoice '.$invoice_code,  $username);
 				}
 			}
 
 			if($data->dataHeader->state==3){
 				foreach ($data->dataDetail as $obj) {
-					$result = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$data->dataHeader->location_id);
 					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$data->dataHeader->location_id );
-					$this->inventory_model->addStock( $stock, 'VOID Invoice '+$invoice_code,  $username);
+					$this->inventory_model->addStock( $stock, 'VOID Invoice '.$invoice_code,  $username);
 				}
 			}
 

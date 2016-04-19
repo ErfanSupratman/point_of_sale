@@ -16,16 +16,17 @@
 		<div class="container-fluid">
 			<div id="body" class="padding-top-80px">
 				
-				<div class="row" style="background-color: #ffffff">
-					<br/>
-					<div class="col-sm-4">
-					    <button class="btn btn-warning btn-block"><h2>Booking<br/><span id="bookingBadge"></span></h2></button>
-					</div>
-					<div class="col-sm-4">
-					    <button class="btn btn-danger btn-block"><h2>Pending<br/><span id="pendingBadge"></span></h2></button>
-					</div>
-					<div class="col-sm-4">
+				<div class="row">
+					<div class="col-md-4">
+					    <button class="btn btn-primary btn-block"><h2>Booking<br/><span id="bookingBadge"></span></h2></button>
+					    <button class="btn btn-warning btn-block"><h2>Pending<br/><span id="pendingBadge"></span></h2></button>
 					    <button class="btn btn-success btn-block"><h2>Finished<br/><span id="finishedBadge"></span></h2></button>
+					</div>
+					<div class="col-md-8">
+					     <div style="width:75%;">
+        <canvas id="canvas"></canvas>
+    </div>
+					
 					</div>
 				</div>
 			</div>
@@ -41,6 +42,20 @@
 		?>
 		
 		<script type="text/javascript" src="<?php echo asset_url() ?>/js/home.js"></script>
-		
+		<script type="text/javascript" src="<?php echo asset_url() ?>/js/chart.js"></script>
+		<script type="text/javascript">
+var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        
+        var randomScalingFactor = function() {
+            return Math.round(Math.random() * 100);
+            //return 0;
+        };
+        var randomColorFactor = function() {
+            return Math.round(Math.random() * 255);
+        };
+        var randomColor = function(opacity) {
+            return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+        };
+		</script>
 	</body>
 </html>

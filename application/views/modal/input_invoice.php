@@ -156,10 +156,12 @@
 				</div>
 				<div class="modal-footer no-print">
 					<div class="row">
-						
+						<div class="col-sm-3">
+							<button type="button" id="void_btn" class="btn btn-block btn-warning  btn-lg">VOID</button> 
+						</div>
 						<div class="col-sm-3">
 							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button> 
-							<button type="button" id="void_btn" class="btn btn-block btn-warning  btn-lg">VOID</button> 
+							
 						</div>
 						<div class="col-sm-3">
 							<button type="button" id="update_btn" class="btn btn-block btn-info btn-lg">UPDATE</button>

@@ -14,7 +14,7 @@ class Inventory_model extends CI_Model {
 		$sql = 'SELECT ps.id,ps.stock_code, ps.harga_beli, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
 				ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
 JOIN pos_invoice pi ON pi.id=pid.invoice_id
-WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
+WHERE pid.product_id=ps.product_id and pi.location_id=ps.location_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -33,7 +33,7 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_ben
 		$sql = 'SELECT ps.id,ps.stock_code, pp.id as product_id, pb.id as brand_id, pp.product_code, pp.name as product_name, pb.name as brand_name,
 				ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
 JOIN pos_invoice pi ON pi.id=pid.invoice_id
-WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
+WHERE pid.product_id=ps.product_id and pi.location_id=ps.location_id and pi.state in (0,1)) as stock, ps.harga_bengkel, ps.harga_dist_area, ps.harga_dealer, ps.harga_retail, pw.id as  warehouse_id,
 				pw.name as location_name   FROM pos_stock ps
 				JOIN pos_product pp ON pp.id=ps.product_id
 				JOIN pos_warehouse pw ON pw.id=ps.location_id
@@ -99,7 +99,8 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock
 			$this->db->trans_start();
 			$productId = intval( $data['product_id'] );
 			$locationId = intval( $data['location_id'] );
-			$stockAdded = intval( $data['stock'] );
+			error_log("stock ".$data['stock']);
+			$stockAdded = $data['stock'];
 			if ( isset( $data['harga_bengkel'] ) ) {
 				$hargaBeli = $data['harga_beli'];
 				$hargaBengkel = $data['harga_bengkel'];
@@ -172,13 +173,12 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock
 				//$resultDiff = intval($resultFinal->stock)-intval($availableBefore->stock);
 
 				$this->history_stock_model->addHistory( $stockId, $stockAdded, $operationName, $username );
-
 			}
 			$this->db->trans_complete();
 		} catch ( Exception $e ) {
 			$this->db->trans_rollback();
-			error_log( $e->getMessage() );
-			$success = false;
+			error_log( 'Error Modify '.$e->getMessage() );
+			throw new Exception( $e->getMessage() );
 		}
 
 		$response = array(
@@ -195,7 +195,7 @@ WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock
 		return $response;
 	}
 
-	function decreaseStock( $data, $operationName, $username ) {
+	function decreaseStock($data, $operationName, $username ) {
 		$result = $this->modifyStock( $data, '-', $operationName, $username );
 		$response = array(
 			'success' => $result['success'],

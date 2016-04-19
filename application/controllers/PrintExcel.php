@@ -35,7 +35,7 @@ class PrintExcel extends MY_Controller {
 				$number = 1;
 				foreach ($result->detail as $obj) {
 					$objWorksheet->getCell('A'.$i)->setValue($number);
-					$objWorksheet->getCell('B'.$i)->setValue($obj->product_code);
+					$objWorksheet->getCell('B'.$i)->setValue($obj->product_name);
 					$objWorksheet->getCell('D'.$i)->setValue($obj->quantity);
 					$objWorksheet->getCell('E'.$i)->setValue($obj->price);
 					$objWorksheet->getCell('F'.$i)->setValue(intval($obj->price)*intval($obj->quantity));

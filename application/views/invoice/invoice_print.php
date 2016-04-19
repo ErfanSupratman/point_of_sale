@@ -97,7 +97,7 @@ Mobile : 081808171007<br/>
   ?>
   <tr>
     <td class="tg-yw4l-center"><?=$number?></td>
-    <td class="tg-yw4l"><?=$obj->product_code?></td>
+    <td class="tg-yw4l"><?=$obj->product_name?></td>
     <td class="tg-yw4l"><?=$obj->quantity?></td>
     <td class="tg-yw4l"><?=number_format($obj->price)?></td>
     <td class="tg-yw4l-right"><?=number_format(intval($obj->price)*intval($obj->quantity))?></td>

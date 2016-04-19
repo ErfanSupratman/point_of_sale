@@ -34,6 +34,9 @@
 						<ul class="nav nav-pills nav-stacked">
 							<li id="finishedMenu"><a href="#" id="finished"><span class="label label-success">Finished</span> <span id="finishedBadge" class="badge"></span></a></li>
 						</ul>
+						<ul class="nav nav-pills nav-stacked">
+							<li id="voidMenu"><a href="#" id="void"><span class="label label-danger">Void</span> <span id="voidBadge" class="badge"></span></a></li>
+						</ul>
 					</div>
 					<div class="col-sm-10">
 						<!-- Button modal fullscreen -->
@@ -48,6 +51,8 @@
 								<thead>
 									<tr>
 										<th>Tgl. Invoice</th>
+										<th>No. Booking</th>
+										<th>Tgl. Payment</th>
 										<th>No. Invoice</th>
 										<th>Customer</th>
 										<th>Status</th>
@@ -56,6 +61,8 @@
 								<tfoot>
 									<tr>
 										<th>Tgl. Invoice</th>
+										<th>No. Booking</th>
+										<th>Tgl. Payment</th>
 										<th>No. Invoice</th>
 										<th>Customer</th>
 										<th>Status</th>
