@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2016 at 11:02 AM
+-- Generation Time: Apr 19, 2016 at 05:05 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -168,9 +168,9 @@ INSERT INTO `pos_counter` (`id`, `type`, `sequence`, `prefix`, `updated_date`) V
 (1, 1, 2, 'CST', '2016-04-17 14:33:48'),
 (3, 2, 5, 'BRN', '2016-04-12 11:00:37'),
 (4, 3, 4, 'PRD', '2016-04-12 11:13:48'),
-(5, 4, 11, 'STC', '2016-03-23 00:00:00'),
-(6, 5, 13, 'BOK', '2016-04-16 22:03:46'),
-(7, 6, 16, 'INV', '2016-04-16 22:06:25');
+(5, 4, 1, 'STC', '2016-04-18 20:46:42'),
+(6, 5, 22, 'BOK', '2016-04-19 18:23:12'),
+(7, 6, 24, 'INV', '2016-04-19 18:28:46');
 
 -- --------------------------------------------------------
 
@@ -293,7 +293,44 @@ INSERT INTO `pos_history_stock` (`id`, `stock_id`, `stock_in`, `stock_out`, `not
 (0, 8, 10, 0, 'addInvoice', '2016-04-16 15:10:27', NULL),
 (0, 10, 0, 20, 'addInvoice', '2016-04-16 21:55:53', NULL),
 (0, 9, 0, 10, 'addInvoice', '2016-04-16 21:55:53', NULL),
-(0, 10, 0, 5, 'addInvoice', '2016-04-16 22:06:38', NULL);
+(0, 10, 0, 5, 'addInvoice', '2016-04-16 22:06:38', NULL),
+(0, 10, 10, 0, 'addStock', '2016-04-18 20:25:32', NULL),
+(0, 10, 50, 0, 'updateStock', '2016-04-18 20:27:17', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:30:37', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:30:39', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:30:46', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:31:33', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:32:16', 'febryo'),
+(0, 10, 50, 0, 'updateStock', '2016-04-18 20:32:31', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:32:49', 'febryo'),
+(0, 10, 0, 100, 'updateStock', '2016-04-18 20:36:07', 'febryo'),
+(0, 10, 0, 100, 'updateStock', '2016-04-18 20:36:16', 'febryo'),
+(0, 8, 2, 0, 'addInvoice', '2016-04-18 20:37:59', 'febryo'),
+(0, 10, 125, 0, 'updateStock', '2016-04-18 20:38:36', 'febryo'),
+(0, 10, 100, 0, 'addStock', '2016-04-18 20:40:19', 'febryo'),
+(0, 10, 100, 0, 'updateStock', '2016-04-18 20:43:10', 'febryo'),
+(0, 10, 0, 200, 'updateStock', '2016-04-18 20:43:17', 'febryo'),
+(0, 12, 100, 0, 'addStock', '2016-04-18 20:46:42', 'febryo'),
+(0, 10, 0, 0, 'updateStock', '2016-04-18 20:51:12', 'febryo'),
+(0, 10, 0, 5, '1', '2016-04-19 11:25:04', 'febryo'),
+(0, 10, 0, 5, '1', '2016-04-19 11:25:27', 'febryo'),
+(0, 10, 0, 5, '1', '2016-04-19 11:25:36', 'febryo'),
+(0, 10, 0, 10, '1', '2016-04-19 12:22:09', 'febryo'),
+(0, 10, 0, 10, '1', '2016-04-19 12:25:12', 'febryo'),
+(0, 10, 0, 10, '1', '2016-04-19 12:25:58', 'febryo'),
+(0, 10, 0, 10, '1', '2016-04-19 12:27:40', 'febryo'),
+(0, 10, 0, 10, '1', '2016-04-19 12:28:32', 'febryo'),
+(0, 10, 0, 10, 'PAID Invoice ', '2016-04-19 12:29:20', 'febryo'),
+(0, 10, 0, 10, 'PAID Invoice ', '2016-04-19 12:29:48', 'febryo'),
+(0, 10, 0, 10, 'PAID Invoice ', '2016-04-19 12:29:55', 'febryo'),
+(0, 10, 50045, 0, 'updateStock', '2016-04-19 12:32:48', 'febryo'),
+(0, 12, 0, 50, 'PAID Invoice INV/4-2016/00020', '2016-04-19 12:34:59', 'febryo'),
+(0, 10, 20, 0, 'addInvoice', '2016-04-19 12:35:11', 'febryo'),
+(0, 9, 10, 0, 'addInvoice', '2016-04-19 12:35:11', 'febryo'),
+(0, 10, 0, 70, 'updateStock', '2016-04-19 12:35:59', 'febryo'),
+(0, 10, 5000, 0, 'addInvoice', '2016-04-19 12:41:57', 'febryo'),
+(0, 10, 0, 50000, 'updateStock', '2016-04-19 12:43:31', 'febryo'),
+(0, 10, 0, 10, 'PAID Invoice INV/4-2016/00024', '2016-04-19 18:29:05', 'febryo');
 
 -- --------------------------------------------------------
 
@@ -320,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `pos_invoice` (
   `created_date` datetime DEFAULT NULL,
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_invoice`
@@ -329,8 +366,17 @@ CREATE TABLE IF NOT EXISTS `pos_invoice` (
 INSERT INTO `pos_invoice` (`id`, `invoice_code`, `booking_code`, `billing_name`, `billing_address`, `customer_id`, `billing_phone`, `billing_email`, `freight`, `term_of_payment`, `location_id`, `notes`, `state`, `finalize_date`, `created_by`, `created_date`, `updated_by`, `updated_date`) VALUES
 (32, 'INV/4-2016/00012', 'BOK/4-2016/00010', 'febryo', 'asdasd', NULL, '0901293019', 'asdasd@asdasd.com', 5000, 'sadasd', 3, '1000\n', 3, '2016-04-08 00:00:00', 'febryo', '2016-04-15 15:59:42', 'febryo', '2016-04-15 18:17:05'),
 (33, 'INV/4-2016/00014', 'BOK/4-2016/00011', 'febryo', 'test', NULL, '123456', 'febryo.agung@gmail.com', 50000, 'pembayaran cicil 5 hari', 3, '', 3, '2016-04-14 00:00:00', 'febryo', '2016-04-16 15:07:47', 'febryo', '2016-04-16 15:10:27'),
-(34, 'INV/4-2016/00015', 'BOK/4-2016/00012', 'meyli', 'asdasd', NULL, '0129301293', 'asdasdasd', 5000, 'asdasd', 3, 'test', 2, '2016-04-07 00:00:00', 'febryo', '2016-04-16 21:55:16', NULL, '2016-04-16 21:55:53'),
-(40, 'INV/4-2016/00016', 'BOK/4-2016/00013', 'febryo', 'asdasd', NULL, '0998', 'asdasd', 0, 'asd', 3, '', 2, '2016-04-08 00:00:00', 'febryo', '2016-04-16 22:03:46', 'febryo', '2016-04-16 22:06:38');
+(34, 'INV/4-2016/00015', 'BOK/4-2016/00012', 'meyli', 'asdasd', NULL, '0129301293', 'asdasdasd', 5000, 'asdasd', 3, 'test', 3, '2016-04-07 00:00:00', 'febryo', '2016-04-16 21:55:16', 'febryo', '2016-04-19 12:35:11'),
+(40, 'INV/4-2016/00016', 'BOK/4-2016/00013', 'febryo', 'asdasd', NULL, '0998', 'asdasd', 0, 'asd', 3, '', 2, '2016-04-08 00:00:00', 'febryo', '2016-04-16 22:03:46', 'febryo', '2016-04-16 22:06:38'),
+(41, 'INV/4-2016/00017', 'BOK/4-2016/00014', 'sdfks;dkf', 'sdjkfhsdf', NULL, 's;lfksdl;fkjsdfjsdkfhsdf', 'sjkfhsdjfh', 6000, 'sjkfhsdjf', 3, 'test', 3, '0000-00-00 00:00:00', 'febryo', '2016-04-17 17:02:13', 'febryo', '2016-04-18 20:37:59'),
+(43, 'INV/4-2016/00019', 'BOK/4-2016/00015', 'febryo', 'asdsad', NULL, '0219301293', 'asdasd@adasd.com', 50000, 'asdasd', 3, 'test', 2, '2016-04-08 00:00:00', 'febryo', '2016-04-19 11:14:36', 'febryo', '2016-04-19 12:29:55'),
+(44, 'INV/4-2016/00018', 'BOK/4-2016/00016', 'asdsad', 'asdasd', NULL, 'asdsad', 'asdasd', 0, 'asdasd', 3, '', 2, '2016-04-19 00:00:00', 'febryo', '2016-04-19 11:23:09', 'febryo', '2016-04-19 11:25:36'),
+(45, 'INV/4-2016/00020', 'BOK/4-2016/00017', 'asdas', 'asdasd', NULL, 'dasdasd', 'asdasd', 50000, 'asdasd', 2, '6000', 2, '2016-04-02 00:00:00', 'febryo', '2016-04-19 12:32:30', 'febryo', '2016-04-19 12:34:59'),
+(46, 'INV/4-2016/00021', 'BOK/4-2016/00018', 'dsadas', 'asdasd', NULL, 'dasdas', 'dasdasd', 500, 'asdasd', 3, '', 3, '0000-00-00 00:00:00', 'febryo', '2016-04-19 12:39:22', 'febryo', '2016-04-19 12:41:57'),
+(47, 'INV/4-2016/00022', 'BOK/4-2016/00019', 'xasdas', 'asdasd', NULL, 'dasdasd', 'asdasdas', 0, 'asdasd', 3, '', 3, '0000-00-00 00:00:00', 'febryo', '2016-04-19 12:43:54', 'febryo', '2016-04-19 12:44:14'),
+(48, '', 'BOK/4-2016/00020', 'asdasd', 'asdsad', NULL, 'asdasdasd', 'asdasdas', 500, 'asdasd', 3, '', 3, '0000-00-00 00:00:00', 'febryo', '2016-04-19 12:44:35', 'febryo', '2016-04-19 12:50:50'),
+(49, 'INV/4-2016/00023', 'BOK/4-2016/00021', 'casca', 'cac', NULL, 'cacac', 'acaca', 0, 'caca', 3, '', 1, '0000-00-00 00:00:00', 'febryo', '2016-04-19 12:45:30', 'febryo', '2016-04-19 12:54:40'),
+(50, 'INV/4-2016/00024', 'BOK/4-2016/00022', 'asd', 'dasdasd', NULL, 'asdsad', 'asdasdasd', 5000, 'asdsa', 3, '', 2, '2016-04-10 00:00:00', 'febryo', '2016-04-19 18:23:12', 'febryo', '2016-04-19 18:29:05');
 
 -- --------------------------------------------------------
 
@@ -345,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `pos_invoice_detail` (
   `price` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `invoice_id` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_invoice_detail`
@@ -359,7 +405,18 @@ INSERT INTO `pos_invoice_detail` (`id`, `product_id`, `quantity`, `price`, `acti
 (129, 3, 10, 100, 1, 33),
 (136, 6, 20, 10000000, 1, 34),
 (137, 4, 10, 10000, 1, 34),
-(141, 6, 5, 10000000, 1, 40);
+(141, 6, 5, 10000000, 1, 40),
+(149, 6, 10, 50000, 1, 41),
+(150, 4, 5, 10000, 1, 41),
+(151, 3, 2, 100, 1, 41),
+(159, 6, 5, 50000, 1, 44),
+(168, 6, 10, 900000, 1, 43),
+(173, 6, 50, 100000, 1, 45),
+(177, 6, 5000, 50000, 1, 46),
+(179, 6, 500, 6000, 1, 47),
+(181, 6, 50, 6000, 1, 48),
+(183, 6, 10, 50000, 1, 49),
+(186, 6, 10, 6000, 1, 50);
 
 -- --------------------------------------------------------
 
@@ -456,23 +513,17 @@ CREATE TABLE IF NOT EXISTS `pos_stock` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_stock`
 --
 
 INSERT INTO `pos_stock` (`id`, `stock_code`, `product_id`, `location_id`, `stock`, `reserved_stock`, `harga_beli`, `harga_bengkel`, `harga_dist_area`, `harga_dealer`, `harga_retail`, `created_by`, `created_date`, `updated_by`, `updated_date`, `active`) VALUES
-(1, 'STC-0000000001', 3, 1, 0, 0, 0, 0, 0, 0, 0, NULL, '2016-03-23 22:54:40', NULL, '2016-03-24 22:54:14', 0),
-(2, 'STC-0000000002', 3, 3, 0, 0, 0, 0, 0, 0, 0, NULL, '2016-03-24 18:13:49', NULL, '2016-03-24 22:54:18', 0),
-(3, 'STC-0000000003', 3, 1, 0, 0, 0, 0, 0, 0, 0, NULL, '2016-03-24 18:14:10', NULL, '2016-03-24 22:54:22', 0),
-(4, 'STC-0000000004', 3, 3, 100, 0, 0, 0, 0, 0, 0, NULL, '2016-03-24 18:15:21', NULL, '2016-03-24 22:54:26', 0),
-(5, 'STC-0000000005', 3, 1, 100, 0, 0, 2000, 1100, 1250, 1200, NULL, '2016-03-24 22:48:24', NULL, '2016-04-16 14:38:02', 0),
-(6, 'STC-0000000007', 5, 3, -50, 0, 0, 100, 100, 100, 100, NULL, '2016-03-30 12:57:41', 'febryo', '2016-04-13 12:47:30', 0),
-(8, 'STC-0000000008', 3, 3, 100, 0, 0, 100, 100, 100, 100, NULL, '2016-04-09 04:37:24', 'febryo', '2016-04-16 15:10:27', 1),
-(9, 'STC-0000000009', 4, 3, 90, 0, 0, 1, 1000, 1, 10000, 'febryo', '2016-04-09 10:32:25', 'username', '2016-04-16 21:55:53', 1),
-(10, 'STC-0000000010', 6, 3, 75, 0, 7000, 10000000, 10000000, 10000000, 10000000, 'febryo', '2016-04-09 11:56:07', 'username', '2016-04-16 22:06:38', 1),
-(11, 'STC-0000000011', 6, 2, 200, 0, 0, 2, 1, 4, 3, 'febryo', '2016-04-09 12:09:10', NULL, '2016-04-16 14:38:05', 0);
+(8, 'STC-0000000008', 3, 3, 0, 0, 0, 100, 100, 100, 100, NULL, '2016-04-09 04:37:24', 'febryo', '2016-04-18 20:37:59', 1),
+(9, 'STC-0000000009', 4, 3, 10, 0, 0, 1, 1000, 1, 10000, 'febryo', '2016-04-09 10:32:25', 'febryo', '2016-04-19 12:35:11', 1),
+(10, 'STC-0000000010', 6, 3, 4990, 0, 0, 0, 0, 0, 0, 'febryo', '2016-04-09 11:56:07', 'febryo', '2016-04-19 18:29:05', 1),
+(12, 'STC/4-2016/00001', 6, 2, 50, 0, 0, 0, 0, 0, 0, 'febryo', '2016-04-18 20:46:42', 'febryo', '2016-04-19 12:34:59', 1);
 
 -- --------------------------------------------------------
 
@@ -500,7 +551,7 @@ CREATE TABLE IF NOT EXISTS `pos_user` (
 --
 
 INSERT INTO `pos_user` (`id`, `username`, `password`, `full_name`, `address`, `telepon`, `permission`, `created_by`, `created_date`, `updated_by`, `updated_date`, `active`) VALUES
-(1, 'febryo', '0c3284b8ba5dcc2e84e55786ee9e7a70', 'febryo agung', 'test text alamat', '082818221', 1, NULL, NULL, NULL, NULL, 0),
+(1, 'febryo', '0c3284b8ba5dcc2e84e55786ee9e7a70', 'febryo agung', 'test text alamat', '082818221', 1, NULL, NULL, NULL, NULL, 1),
 (2, 'mey', '1234', 'meyli', 'tets addr', '1234', 2, NULL, NULL, NULL, NULL, 0),
 (3, 'rendi', '213123', 'rendi testing', 'test', '02010120', 4, NULL, NULL, NULL, NULL, 0),
 (4, 'test1', '1234', 'test1-full', 'addr-test', '12345', 1, NULL, NULL, NULL, NULL, 0),
@@ -626,7 +677,8 @@ ALTER TABLE `pos_product`
 -- Indexes for table `pos_stock`
 --
 ALTER TABLE `pos_stock`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `product_id` (`product_id`,`location_id`);
 
 --
 -- Indexes for table `pos_user`
@@ -670,12 +722,12 @@ ALTER TABLE `pos_customer`
 -- AUTO_INCREMENT for table `pos_invoice`
 --
 ALTER TABLE `pos_invoice`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT for table `pos_invoice_detail`
 --
 ALTER TABLE `pos_invoice_detail`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=142;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=187;
 --
 -- AUTO_INCREMENT for table `pos_permission`
 --
@@ -690,7 +742,7 @@ ALTER TABLE `pos_product`
 -- AUTO_INCREMENT for table `pos_stock`
 --
 ALTER TABLE `pos_stock`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `pos_user`
 --
