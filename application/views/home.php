@@ -19,14 +19,12 @@
 				<div class="row">
 					<div class="col-md-4">
 					    <button class="btn btn-primary btn-block"><h2>Booking<br/><span id="bookingBadge"></span></h2></button>
-					    <button class="btn btn-warning btn-block"><h2>Pending<br/><span id="pendingBadge"></span></h2></button>
-					    <button class="btn btn-success btn-block"><h2>Finished<br/><span id="finishedBadge"></span></h2></button>
 					</div>
-					<div class="col-md-8">
-					     <div style="width:75%;">
-        <canvas id="canvas"></canvas>
-    </div>
-					
+					<div class="col-md-4">
+					    <button class="btn btn-warning btn-block"><h2>Pending<br/><span id="pendingBadge"></span></h2></button>
+					</div>
+					<div class="col-md-4">
+					    <button class="btn btn-success btn-block"><h2>Finished<br/><span id="finishedBadge"></span></h2></button>
 					</div>
 				</div>
 			</div>
