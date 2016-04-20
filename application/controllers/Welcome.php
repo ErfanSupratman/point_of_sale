@@ -21,7 +21,7 @@ class Welcome extends MY_Controller {
 	function __construct() {
 		parent::__construct();
 		if($this->isSessionValid()){
-			redirect('inventory','refresh');
+			redirect('home','refresh');
 		}
 	}
 

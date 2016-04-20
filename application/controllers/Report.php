@@ -21,6 +21,7 @@ class Report extends MY_Controller {
 	 
 	function __construct(){
 		parent::__construct();
+		$this->checkSession();
 		$this->load->model("invoice_model");
 		$this->load->model('dataWrapper_dto');
 	}

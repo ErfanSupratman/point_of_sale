@@ -131,11 +131,11 @@
                                 "data": "location_name"
                             }],
                             "columnDefs": [{
-                                    "targets": [3,4,5,6,7],
+                                    "targets": [3, 4, 5, 6, 7],
                                     "render": function(data, type, full, meta) {
-                                        var hargaRetail = addCommas(data);
+                                        var harga = addCommas(data);
 
-                                        return hargaRetail;
+                                        return harga;
                                     }
                                 },
                                 /*                            {

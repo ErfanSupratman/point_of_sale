@@ -71,7 +71,7 @@ $(document).ready(function() {
 				table.ajax.reload();
 				$('#modal-new-user-fullscreen').modal('hide');
 			}else{
-				swal("Failed!", "Gagal mengupdate "+fullName+"", "error");
+				swal("Failed!", data.error, "error");
 			}
 		});
 	});
@@ -84,7 +84,7 @@ $(document).ready(function() {
 				table.ajax.reload();
 				$('#modal-new-user-fullscreen').modal('hide');
 			}else{
-				swal("Failed!", "Gagal menyimpan "+fullName+"", "error");
+				swal("Failed!", data.error, "error");
 			}
 		});
 	});
@@ -97,6 +97,8 @@ function insertUser(){
 	$("#modal-new-user-fullscreen .title_header").text("Tambah Data");
     $("#modal-new-user-fullscreen #usrname_new").val("");
 	$("#modal-new-user-fullscreen #full_name_new").val("");
+	$("#modal-new-user-fullscreen #user_id").val("");
+	$("#modal-new-user-fullscreen #password_new").val("");
 	$("#modal-new-user-fullscreen #hp_new").val("");
 	$("#modal-new-user-fullscreen #role_new").val("0");
 	$("#modal-new-user-fullscreen #active").prop('checked', true);
@@ -104,5 +106,6 @@ function insertUser(){
 	$("#modal-new-user-fullscreen .checkbox").hide();
     $("#modal-new-user-fullscreen #update").hide();
 	$("#modal-new-user-fullscreen #insert").show();
+
   
 };

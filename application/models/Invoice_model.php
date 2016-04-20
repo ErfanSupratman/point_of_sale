@@ -58,16 +58,13 @@ $dataWrapper = new $this->document_dto();
 				pi.customer_id,
 				pi.billing_phone,
 				pi.billing_email,
-				pi.location_id,
 				pi.freight,
 				pi.notes,
-				pw.name,
 				pi.term_of_payment,
 				pi.state,
 				pi.created_by,
 				pi.created_date
 				FROM pos_invoice pi
-				JOIN pos_warehouse pw ON pi.location_id=pw.id
 				WHERE pi.id=?';
 		$queryH = $this->db->query($sql, array($id));
 
@@ -79,10 +76,13 @@ $dataWrapper = new $this->document_dto();
 				pb.name as brand_name,
 				pi.quantity,
 				pi.price,
-				pi.invoice_id
+				pi.invoice_id,
+				pw.id as location_id,
+				pw.name as location_name
 				FROM pos_invoice_detail pi 
 				JOIN pos_product pp ON pp.id=pi.product_id
 				JOIN pos_brand pb ON pb.id=pp.brand_id
+				JOIN pos_warehouse pw ON pi.location_id=pw.id
 				WHERE pi.invoice_id=?';
 		$queryD = $this->db->query($sql, array($id));
 		
@@ -98,9 +98,9 @@ $dataWrapper = new $this->document_dto();
 		return $response;
 	}
 
-	function voidInvoice($id,$username){
-		$sqlHeader = 'UPDATE pos_invoice SET state=3,updated_date=now(),updated_by=? WHERE id=?';
-		$queryHeader = $this->db->query($sqlHeader, array($username,$id));
+	function voidInvoice($id,$username,$notes){
+		$sqlHeader = 'UPDATE pos_invoice SET state=3,updated_date=now(),updated_by=?,notes=? WHERE id=?';
+		$queryHeader = $this->db->query($sqlHeader, array($username,$notes,$id));
 
 		$sqlDetail = 'SELECT pid.product_id,pid.quantity,pi.location_id FROM pos_invoice pi JOIN pos_invoice_detail pid ON pid.invoice_id=pi.id WHERE pi.id=? and pi.state=2';
 		$queryDetail = $this->db->query($sqlDetail, array($id));
@@ -192,7 +192,7 @@ $dataWrapper = new $this->document_dto();
 			$this->db->insert('pos_invoice', $data->dataHeader);
 			$headerId = $this->db->insert_id();
 			foreach ($data->dataDetail as $obj) {
-				$stockId = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$data->dataHeader->location_id);
+				$stockId = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$obj->location_id );
 				$availableStock = $this->inventory_model->getAvailableQuantity($stockId->id);
 				if((intval($availableStock->stock) - intval($obj->quantity)) < 0){
 					throw new Exception('Stock tidak mencukupi');		
@@ -264,7 +264,7 @@ $dataWrapper = new $this->document_dto();
 			$this->db->delete('pos_invoice_detail', array('invoice_id' => $headerId)); 
 
 			foreach ($data->dataDetail as $obj) {
-				$stockId = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$data->dataHeader->location_id);
+				$stockId = $this->inventory_model->getStockByProductIdAndLocationId($obj->product_id,$obj->location_id );
 				$availableStock = $this->inventory_model->getAvailableQuantity($stockId->id);
 				if((intval($availableStock->stock) - intval($obj->quantity)) < 0){
 					throw new Exception('Stock tidak mencukupi untuk product '.$stockId->product_name.' di lokasi '.$stockId->warehouse_name);		
@@ -277,14 +277,14 @@ $dataWrapper = new $this->document_dto();
 
 			if($data->dataHeader->state==2){
 				foreach ($data->dataDetail as $obj) {
-					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$data->dataHeader->location_id );
+					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$obj->location_id );
 					$this->inventory_model->decreaseStock( $stock, 'PAID Invoice '.$invoice_code,  $username);
 				}
 			}
 
 			if($data->dataHeader->state==3){
 				foreach ($data->dataDetail as $obj) {
-					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$data->dataHeader->location_id );
+					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$obj->location_id );
 					$this->inventory_model->addStock( $stock, 'VOID Invoice '.$invoice_code,  $username);
 				}
 			}

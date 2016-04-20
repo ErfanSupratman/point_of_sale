@@ -32,24 +32,16 @@
 							<input type="text" id="billing_name" name="billing_name" class="form-control input-sm"/>
 							<label for="billing_phone">No. Telepon</label>
 							<input type="text" id="billing_phone" name="billing_phone" class="form-control input-sm"/>
-						<label for="billing_email">Email</label>
+							<label for="billing_email">Email</label>
 							<input type="text" id="billing_email" name="billing_email" class="form-control input-sm"/>
 						</div>
 						<div class="col-sm-6">
-						
+							
 							<label for="term_of_payment">Term Of Payment</label>
 							<input type="text" id="term_of_payment" name="term_of_payment" class="form-control input-sm"/>
 							<label for="billing_address">Alamat Penagihan</label>
 							<textarea class="form-control" rows="3" id="billing_address" name="billing_address"></textarea>
-							<label for="lokasi">Lokasi Stock</label>
 							
-								<select class="form-control input-sm" id="locationId" name="locationId">
-									<option>Pilih</option>
-									<option value="1">Gudang Ryan</option>
-									<option value="2">Gudang Willy</option>
-									<option value="3">Gudang Showroom</option>
-									<option value="4">Gudang Pinjaman</option>
-								</select>
 							
 						</div>
 					</div>
@@ -58,12 +50,23 @@
 						<div class="col-sm-12">
 							<hr/>
 							<div class="add_row_div">
-							<button id="add_row" type="button" class="btn btn-success btn-sm pull-left" data-toggle="collapse" data-target="#insertDetailForm">Add Row</button>
-							<br/>
-							<br/>
-						</div>
+								<button id="add_row" type="button" class="btn btn-success btn-sm pull-left" data-toggle="collapse" data-target="#insertDetailForm">Add Row</button>
+								<br/>
+								<br/>
+							</div>
 							<div class="well collapse out" id="insertDetailForm">
 								<div class="row">
+									<div class="col-sm-2">
+										<label for="lokasi">Lokasi Stock</label>
+										
+										<select class="form-control input-sm" id="locationId" name="locationId">
+											<option>Pilih</option>
+											<option value="1">Gudang Ryan</option>
+											<option value="2">Gudang Willy</option>
+											<option value="3">Gudang Showroom</option>
+											<option value="4">Gudang Pinjaman</option>
+										</select>
+									</div>
 									<div class="col-sm-2">
 										<label for="brand">Brand</label>
 										<!-- <select class="form-control input-xs input-sm" id="brand" name="brand"data-live-search="true" autocomplete="false" title="Pilih Brand"></select> -->
@@ -121,6 +124,7 @@
 									<thead>
 										<tr>
 											<th>No.</th>
+											<th>Lokasi</th>
 											<th>Brand</th>
 											<th>Nama Barang</th>
 											<th>Kode Barang</th>
@@ -157,10 +161,10 @@
 				<div class="modal-footer no-print">
 					<div class="row">
 						<div class="col-sm-3">
-							<button type="button" id="void_btn" class="btn btn-block btn-warning  btn-lg">VOID</button> 
+							<button type="button" id="void_btn" class="btn btn-block btn-warning  btn-lg">VOID</button>
 						</div>
 						<div class="col-sm-3">
-							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button> 
+							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button>
 							
 						</div>
 						<div class="col-sm-3">

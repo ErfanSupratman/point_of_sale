@@ -8,6 +8,11 @@ class Inventory extends MY_Controller {
 		$this->load->model('history_stock_model');
 	}
 	public function index() {
+		/*$deletePermission = false;
+		$detailPermission = false;
+		$showBuyPricePermission = false;
+		$showPricePermission = false;*/
+
 		$data['inventory_content'] = '';
 		$this->load->view('inventory/inventory', $data);
 	}

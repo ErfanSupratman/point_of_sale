@@ -30,6 +30,11 @@ class MY_Controller extends CI_Controller {
 		}
 	}
 
+	public function getUserPermissionList(){
+		$session_data = $this->session->userdata('logged_in');
+		return $session_data['permissions'];
+	}
+
 	public function isSessionValid(){
 		if ($this->session->userdata('logged_in')) {
 			return true;

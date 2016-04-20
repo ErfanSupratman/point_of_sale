@@ -59,9 +59,10 @@ $(document).ready(function() {
         });
 
         $("#modal-new-brand-fullscreen #update").click(function() {
+            console.log("update clicked");
             var id = $("#modal-new-brand-fullscreen #brand_id").val();
             var fullName = $("#modal-new-brand-fullscreen #brand_name").val();
-            $.post('Brand/updateBrand?id=' + id, $('form#brand_form').serialize(), function(data) {
+            $.post('Brand/updateBrand?id=' + id, {brand_name:fullName}, function(data) {
                 if (data.success) {
                     swal("Updated!", "Berhasil mengupdate " + fullName + "", "success");
                     table.ajax.reload();
@@ -74,7 +75,7 @@ $(document).ready(function() {
 
         $("#modal-new-brand-fullscreen #insert").click(function() {
             var fullName = $("#modal-new-brand-fullscreen #brand_name").val();
-            $.post('Brand/addBrand', $('form#brand_form').serialize(), function(data) {
+            $.post('Brand/addBrand',  {brand_name:fullName}, function(data) {
                 if (data.success) {
                     swal("Inserted!", "Berhasil menyimpan " + fullName + "", "success");
                     table.ajax.reload();

@@ -39,7 +39,7 @@ class Invoice extends MY_Controller {
 
 	public function voidInvoice(){
 		header('Content-Type: application/json');
-		$response = $this->invoice_model->voidInvoice($_GET['id'], $this->getUsername());
+		$response = $this->invoice_model->voidInvoice($_GET['id'], $this->getUsername(),$_POST['notes']);
 		echo json_encode($response);
 	}
 

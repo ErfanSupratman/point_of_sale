@@ -40,11 +40,9 @@
 						<div class="form-group">
 							<select class="form-control input-sm" id="role_new" name="role_new">
 								<option value="0">Pilih Permission</option>
-								<option value="1">Administrator</option>
-								<option value="2">Invoice</option>
-								<option value="3">Stock</option>
-								<option value="4">Invoice & Stock</option>
-								<option value="5">Manager</option>
+								<option value="1">Super Admin</option>
+								<option value="2">Admin</option>
+								<option value="3">Marketing</option>
 							</select>
 						</div>
 						<div class="checkbox">

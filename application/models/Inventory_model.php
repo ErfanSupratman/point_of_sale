@@ -15,8 +15,8 @@ class Inventory_model extends CI_Model {
 				ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
 				JOIN pos_invoice pi ON pi.id=pid.invoice_id
 				WHERE pid.product_id=ps.product_id
-				AND pi.location_id=ps.location_id
-				AND pi.state in (0,1)) as stock,
+				AND pid.location_id=ps.location_id
+				AND pi.state in (0,1) ) as stock,
 				ps.harga_bengkel,
 				ps.harga_dist_area,
 				ps.harga_dealer,
@@ -62,7 +62,9 @@ class Inventory_model extends CI_Model {
 	}
 
 	function getPriceByProductIdAndLocationId($id, $locationId) {
-		$sql = 'SELECT ps.id,ps.harga_beli,ps.harga_bengkel,ps.harga_dealer,ps.harga_dist_area, ps.harga_retail  FROM pos_stock ps
+		$sql = 'SELECT ps.id,
+		ps.harga_beli,ps.harga_bengkel,ps.harga_dealer,ps.harga_dist_area, ps.harga_retail, pw.name as location_name, pw.id as location_id  FROM pos_stock ps
+		JOIN pos_warehouse pw ON pw.id = ps.location_id
 				WHERE
 					ps.product_id=? and ps.location_id=? and ps.active=true';
 		$query = $this->db->query($sql, array($id, $locationId));

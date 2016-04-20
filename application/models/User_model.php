@@ -42,19 +42,70 @@ class User_model extends CI_Model {
 		return $dataWrapper;
 	}
 
-	function getUser($id) {
+	function getUserPermissionList($username){
+		$sql = 'SELECT ppm.* FROM pos_permission_map ppm 
+		JOIN pos_user pu ON pu.permission=ppm.permission WHERE pu.username=? AND ppm.allowed=true';
+		$query = $this->db->query($sql,array($username));
+		return $query->result();
 
 	}
 
+	function getUser($username) {
+		$sql = 'SELECT * FROM pos_user WHERE username=? and active=true';
+		$result = $this->db->query($sql,array($username));
+		return $result->row();
+	}
+
 	function addUser($data) {
-		$this->db->insert('pos_user', $data);
-		$response = array('success' => true);
+		$success = true;
+		$error = "";
+		try {
+			$this->db->trans_start();
+
+			$user = $this->getUser($data['username']);
+
+			if($user!=null){
+				throw new Exception("Username already exists!");
+			}else{
+				$this->db->insert('pos_user', $data);
+			}
+
+			
+			$this->db->trans_complete();	
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			$success = false;
+			$error = $e->getMessage();
+		}
+		
+		$response = array('success' => $success,'error' => $error);
 		return $response;
 	}
 
 	function updateUser($data, $id) {
-		$this->db->update('pos_user', $data, "id = " . $id);
-		$response = array('success' => true);
+		$success = true;
+		$error = "";
+		try {
+			$this->db->trans_start();
+
+			$user = $this->getUser($data['username']);
+
+			if($user!=null){
+				if($user->id!=$id){
+					throw new Exception("Username already exists!");
+				}
+			}
+
+			$this->db->update('pos_user', $data, "id = " . $id);
+
+			$this->db->trans_complete();	
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			$success = false;
+			$error = $e->getMessage();
+		}
+		
+		$response = array('success' => $success,'error' => $error);
 		return $response;
 	}
 

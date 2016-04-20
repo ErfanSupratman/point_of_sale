@@ -46,13 +46,14 @@ class VerifyLogin extends CI_Controller {
 
 		//query the database
 		$result = $this->user_model->login($username, $password);
-
+		$permissions = $this->user_model->getUserPermissionList($username);
 		if ($result) {
 			$sess_array = array();
 			foreach ($result as $row) {
 				$sess_array = array(
 					'id' => $row->id,
 					'username' => $row->username,
+					'permissions' => $permissions
 				);
 				$this->session->set_userdata('logged_in', $sess_array);
 			}
@@ -75,4 +76,6 @@ class VerifyLogin extends CI_Controller {
 			redirect('/', 'refresh');
 		}
 	}
+
+
 }

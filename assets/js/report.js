@@ -20,6 +20,14 @@ $(document).ready(function() {
             "data": "freight"
         }, {
             "data": "amount"
+        }],
+        "columnDefs": [{
+            "targets": [6, 7],
+            "render": function(data, type, full, meta) {
+                var harga = addCommas(data);
+
+                return harga;
+            }
         }]
     });
 
@@ -29,7 +37,7 @@ $(document).ready(function() {
         if (startDate == "" || endDate == "") {
             swal("Failed!", "Tanggal Start dan Akhir harus diisi!", "error");
         } else {
-            table.ajax.url('Report/getIncomeReport?startDate=' + encodeURI(startDate) + '&endDate=' + encodeURI(endDate));
+            table.ajax.url('Report/getIncomeReport?startDate=' + startDate + '&endDate=' + endDate);
             table.ajax.reload();
         }
     });
@@ -41,7 +49,7 @@ $(document).ready(function() {
         if (startDate == "" || endDate == "") {
             swal("Failed!", "Tanggal Start dan Akhir harus diisi!", "error");
         } else {
-            window.location.href = 'PrintExcel/incomeReport?startDate=' + encodeURI(startDate) + '&endDate=' + encodeURI(endDate);
+            window.location.href = 'PrintExcel/incomeReport?startDate=' + startDate + '&endDate=' + endDate;
         }
 
 
