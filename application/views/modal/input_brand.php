@@ -19,16 +19,7 @@
 				<div class="row">
 					<input type="hidden" id="brand_id" name="brand_id"></input>
 					<div class="col-sm-12">
-						<form id="brand_form" action="/">
-							<div class="form-group">
-								<label for="brand_name">Brand Name : </label><input type="text" id="brand_name" name="brand_name" class="form-control input-sm"></input>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input id="active" name="active" type="checkbox"> Aktif
-								</label>
-							</div>
-						</form>
+						<label for="brand_name">Brand Name : </label><input type="text" id="brand_name" name="brand_name" class="form-control input-sm"></input>
 					</div>
 				</div>
 			</div>
