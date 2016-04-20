@@ -8,14 +8,13 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<h4 class="modal-title" id="myModalLabel">
-							<span class="glyphicon glyphicon-plus"></span> Tambah Stock
+						<span class="glyphicon glyphicon-plus"></span> Tambah Stock
 						</h4>
 					</div>
 					<div class="col-sm-6" align="right">
-
 						<button type="button" class="btn btn-default btn-sm"
-							data-dismiss="modal">
-							<span class="glyphicon glyphicon-remove"></span>
+						data-dismiss="modal">
+						<span class="glyphicon glyphicon-remove"></span>
 						</button>
 					</div>
 				</div>
@@ -36,34 +35,36 @@
 									<option value="4">Gudang Pinjaman</option>
 								</select>
 							</div>
-							<div class="form-group">
-								<label for="brand">Brand</label> <select
-									class="form-control input-xs" id="brand" name="brand"
-									data-live-search="true" title="Pilih Brand"></select> 
-							</div>
-
-							<div class="form-group">
+							<label for="brand">Brand</label> 
+							<div class="brand">
+								<select
+								class="form-control input-xs" id="brand" readonly="true" name="brand"
+							data-live-search="true" title="Pilih Brand"></select>
+							
+						</div><br/>
+							<span id="brand_name"></span>
+						<div class="form-group">
 							<label
-								for="name">Product Name : </label>
-							 <input type="text" id="name"
-								class="form-control input-sm" name="name"
-								data-provide="typeahead" autocomplete="off"></input><input type="hidden"
-								id="product_id" name="product_id"></input>
-							</div>
-								 <label for="name">Product
-								Code : </label> <br /> <span class="product_detail"></span> <br />
+							for="name">Product Name : </label>
+							<input type="text" id="name"
+							class="form-control input-sm" name="name"
+							data-provide="typeahead" autocomplete="off"></input><input type="hidden"
+							id="product_id" name="product_id"></input>
+						</div>
+						<label for="name">Product
+							Code : </label> <br /> <span class="product_detail"></span> <br />
 							
 							
 							<label for="jumlah">Jumlah</label> <input id="jumlah" type="text"
-								class="form-control input-sm" name="jumlah" />
+							class="form-control input-sm" name="jumlah" />
 						</div>
 						<div class="col-sm-6">
-							<label  for="hargab">Harga Beli</label>	
+							<label  for="hargab">Harga Beli</label>
 							<input id="hargab" type="text" class="form-control input-sm" name="hargab" />
-							<label for="hargabe">Harga CNT.</label> 
+							<label for="hargabe">Harga CNT.</label>
 							<input id="hargabe" type="text" class="form-control input-sm" name="hargabe" />
-							<label for="hargada">Harga Distributor Area</label> 
-							<input id="hargada" type="text" class="form-control input-sm" name="hargada" /> 
+							<label for="hargada">Harga Distributor Area</label>
+							<input id="hargada" type="text" class="form-control input-sm" name="hargada" />
 							<label for="hargare">Harga Dealer</label>
 							<input id="hargadl" type="text" class="form-control input-sm" name="hargadl" />
 							<label for="hargare">Harga Retail</label>

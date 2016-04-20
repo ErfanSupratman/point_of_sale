@@ -50,45 +50,58 @@
                             $("#name").typeahead({
                                 source: data
                             });
+
+                            $("#name").blur(function() {
+                                if ($('#modal-new-stock-fullscreen #product_id').val() == "") {
+                                    $('.product_detail').fadeOut(100, function() {
+                                        $('#modal-new-stock-fullscreen #product_id').val("");
+                                        $(this).text("product not found!").fadeIn(100);
+                                    });
+                                }
+                            });
+
+                            $('#name')
+                                .change(
+                                    function(e) {
+
+                                        var current = $('#name').typeahead(
+                                            "getActive");
+                                        if (current) {
+                                            if (current.name == $('#name').val()) {
+                                                $('.product_detail').fadeOut(100, function() {
+                                                    $(this).text(current.product_code).fadeIn(100);
+                                                    $('#modal-new-stock-fullscreen #product_id').val(current.id);
+                                                    $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + current.id + '&locationId=' + $('#modal-new-stock-fullscreen #lokasi').val(), {},
+                                                        function(data) {
+                                                            if (data.length > 0) {
+                                                                $("#modal-new-stock-fullscreen #id").val(data[0].id);
+                                                                $("#modal-new-stock-fullscreen #hargabe").val(addCommas(data[0].harga_bengkel));
+                                                                $("#modal-new-stock-fullscreen #hargada").val(addCommas(data[0].harga_dist_area))
+                                                                $("#modal-new-stock-fullscreen #hargadl").val(addCommas(data[0].harga_dealer));
+                                                                $("#modal-new-stock-fullscreen #hargare").val(addCommas(data[0].harga_retail));
+                                                                $("#modal-new-stock-fullscreen #hargab").val(addCommas(data[0].harga_beli));
+                                                            }
+                                                        })
+
+                                                });
+                                            } else {
+                                                $('.product_detail').fadeOut(100, function() {
+                                                    $('#modal-new-stock-fullscreen #product_id').val("");
+                                                    $(this).text("product not found!").fadeIn(100);
+                                                });
+                                            }
+                                        }
+                                    });
                         }, 'json');
 
                         $('#name').val('');
-                        $('.product_detail').fadeOut(500, function() {
-                            $(this).text("").fadeIn(500);
+                        $('.product_detail').fadeOut(100, function() {
+                            $(this).text("").fadeIn(100);
                         });
+
                     });
 
-                    $('#name')
-                        .change(
-                            function(e) {
 
-                                var current = $('#name').typeahead(
-                                    "getActive");
-                                if (current) {
-                                    if (current.name == $('#name').val()) {
-                                        $('.product_detail').fadeOut(500, function() {
-                                            $(this).text(current.product_code).fadeIn(500);
-                                            $('#modal-new-stock-fullscreen #product_id').val(current.id);
-                                            $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + current.id + '&locationId=' + $('#modal-new-stock-fullscreen #lokasi').val(), {},
-                                                function(data) {
-                                                    if (data.length > 0) {
-                                                        $("#modal-new-stock-fullscreen #id").val(data[0].id);
-                                                        $("#modal-new-stock-fullscreen #hargabe").val(data[0].harga_bengkel);
-                                                        $("#modal-new-stock-fullscreen #hargada").val(data[0].harga_dist_area);
-                                                        $("#modal-new-stock-fullscreen #hargadl").val(data[0].harga_dealer);
-                                                        $("#modal-new-stock-fullscreen #hargare").val(data[0].harga_retail);
-                                                        $("#modal-new-stock-fullscreen #hargab").val(data[0].harga_beli);
-                                                    }
-                                                })
-
-                                        });
-                                    } else {
-                                        $('.product_detail').fadeOut(500, function() {
-                                            $(this).text("product not found!").fadeIn(500);
-                                        });
-                                    }
-                                } else {}
-                            });
 
 
                     /*
@@ -117,7 +130,14 @@
                             }, {
                                 "data": "location_name"
                             }],
-                            "columnDefs": [
+                            "columnDefs": [{
+                                    "targets": [3,4,5,6,7],
+                                    "render": function(data, type, full, meta) {
+                                        var hargaRetail = addCommas(data);
+
+                                        return hargaRetail;
+                                    }
+                                },
                                 /*                            {
                                 "targets": [10],
                                 "orderable": false,
@@ -174,20 +194,37 @@
                             $(".product_detail").text(rowData.product_code)
                             $("#modal-new-stock-fullscreen #brand")
                                 .selectpicker('val', rowData.brand_id);
+                            $("#modal-new-stock-fullscreen .brand").hide();
+                            $("#modal-new-stock-fullscreen #brand_name").text(rowData.brand_name);
                             $("#modal-new-stock-fullscreen #hargabe").val(
-                                rowData.harga_bengkel);
+                                addCommas(rowData.harga_bengkel));
                             $("#modal-new-stock-fullscreen #hargab").val(
-                                rowData.harga_beli);
+                                addCommas(rowData.harga_beli));
                             $("#modal-new-stock-fullscreen #hargada").val(
-                                rowData.harga_dist_area);
+                                addCommas(rowData.harga_dist_area));
                             $("#modal-new-stock-fullscreen #hargadl").val(
-                                rowData.harga_dealer);
+                                addCommas(rowData.harga_dealer));
                             $("#modal-new-stock-fullscreen #hargare").val(
-                                rowData.harga_retail);
+                                addCommas(rowData.harga_retail));
                             $("#modal-new-stock-fullscreen #update").show();
                             $("#modal-new-stock-fullscreen #insert").hide();
                         });
 
+                    $("#modal-new-stock-fullscreen #hargabe").blur(function() {
+                        $("#modal-new-stock-fullscreen #hargabe").val(addCommas($("#modal-new-stock-fullscreen #hargabe").val()));
+                    });
+                    $("#modal-new-stock-fullscreen #hargab").blur(function() {
+                        $("#modal-new-stock-fullscreen #hargab").val(addCommas($("#modal-new-stock-fullscreen #hargab").val()));
+                    })
+                    $("#modal-new-stock-fullscreen #hargada").blur(function() {
+                        $("#modal-new-stock-fullscreen #hargada").val(addCommas($("#modal-new-stock-fullscreen #hargada").val()));
+                    })
+                    $("#modal-new-stock-fullscreen #hargadl").blur(function() {
+                        $("#modal-new-stock-fullscreen #hargadl").val(addCommas($("#modal-new-stock-fullscreen #hargadl").val()));
+                    })
+                    $("#modal-new-stock-fullscreen #hargare").blur(function() {
+                        $("#modal-new-stock-fullscreen #hargare").val(addCommas($("#modal-new-stock-fullscreen #hargare").val()));
+                    })
 
                     $('#stock_table tbody')
                         .on(
@@ -228,8 +265,6 @@
                                     });
                             });
 
-
-
                     $("#modal-new-stock-fullscreen #insert").click(
                         function() {
                             var fullName = $("#modal-new-stock-fullscreen #name").val();
@@ -241,7 +276,7 @@
                                         table.ajax.reload();
                                         $('#modal-new-stock-fullscreen').modal('hide');
                                     } else {
-                                        swal("Failed!", "Gagal menyimpan " + fullName + "", "error");
+                                        swal("Failed!", data.error, "error");
                                     }
                                 }).fail(function() {
                                 swal("Failed!", "Gagal menyimpan " + fullName + "", "error");
@@ -543,6 +578,8 @@
             $("#modal-new-stock-fullscreen #jumlah").val("");
             $(".product_detail").text("")
             $("#modal-new-stock-fullscreen #brand").selectpicker('val', "");
+            $("#modal-new-stock-fullscreen .brand").show();
+            $("#modal-new-stock-fullscreen #brand_name").text("");
             $("#modal-new-stock-fullscreen #hargabe").val(0);
             $("#modal-new-stock-fullscreen #hargab").val(0);
             $("#modal-new-stock-fullscreen #hargada").val(0);

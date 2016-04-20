@@ -18,3 +18,4 @@
 		<script type="text/javascript" src="<?php echo asset_url() ?>/js/sweetalert.min.js"></script>
 		<script type="text/javascript" src="<?php echo asset_url() ?>/js/jQuery.print.js"></script>
 		<script type="text/javascript" src="<?php echo asset_url() ?>/js/bootstrap-datepicker.min.js"></script>
+		<script type="text/javascript" src="<?php echo asset_url() ?>/js/delimiter.js"></script>

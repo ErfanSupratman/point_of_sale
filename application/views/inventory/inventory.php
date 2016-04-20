@@ -70,7 +70,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 										<th>Brand</th>
 										<th>Nama Produk</th>
 										<th>Jumlah</th>
-										<th>Hrg. Bengkel</th>
+										<th>Hrg. Cnt</th>
 										<th>Hrg. Dist. Area</th>
 										<th>Hrg. Dealer</th>
 										<th>Hrg. Retail</th>
@@ -85,7 +85,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<th>Brand</th>
 									<th>Nama Produk</th>
 									<th>Jumlah</th>
-									<th>Hrg. Bengkel</th>
+									<th>Hrg. Cnt</th>
 									<th>Hrg. Dist. Area</th>
 									<th>Hrg. Dealer</th>
 									<th>Hrg. Retail</th>
