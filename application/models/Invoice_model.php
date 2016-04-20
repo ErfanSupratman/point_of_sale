@@ -175,9 +175,9 @@ $dataWrapper = new $this->document_dto();
 			foreach ($data->dataDetail as $obj) {
 				$listExists = true;
 			}
-
+			
 			if(!$listExists){
-				throw new Exception('Stock tidak mencukupi');	
+				throw new Exception('Minimum choose 1 product');	
 			}
 
 			if($data->dataHeader->state==0){
@@ -244,7 +244,7 @@ $dataWrapper = new $this->document_dto();
 			}
 
 			if(!$listExists){
-				throw new Exception('Stock tidak mencukupi');	
+				throw new Exception('Minimum choose 1 product');	
 			}
 			$queryInvCode = $this->db->query('SELECT invoice_code FROM pos_invoice WHERE id=?',array('id' => $headerId));
 			$invoice_code = $queryInvCode->row()->invoice_code;

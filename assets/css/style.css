@@ -28,7 +28,7 @@ body{
 .typeahead { z-index: 1051; }
 
 .loginPanel{
-    background-color:rgba(64,64,64,0.3) !important;
+    background-color:rgba(64,64,64,0.8) !important;
     color: white;
 }
 
