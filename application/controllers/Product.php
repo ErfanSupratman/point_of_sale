@@ -7,6 +7,7 @@ class Product extends MY_Controller {
 		$this->load->model ( "product_model" );
 	}
 	public function index() {
+		$data['permissions'] = $this->getUserPagePermissions();
 		$data ['inventory_content'] = '';
 		$this->load->view ( 'inventory/product', $data );
 	}

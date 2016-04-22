@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class VerifyLogin extends CI_Controller {
+class VerifyLogin extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -36,7 +36,12 @@ class VerifyLogin extends CI_Controller {
 			$this->load->view('welcome_message');
 		} else {
 			//Go to private area
-			redirect('Home', 'refresh');
+			if(in_array('VIEW_DASHBOARD',$this->getUserPagePermissions())||in_array('SUPER_ADMIN',$this->getUserPagePermissions())){
+				redirect('Home', 'refresh');
+			}else{
+				redirect('Inventory?active=inv', 'refresh');
+			}
+			
 		}
 	}
 

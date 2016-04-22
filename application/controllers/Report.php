@@ -28,7 +28,8 @@ class Report extends MY_Controller {
 	
 	public function index()
 	{
-		$this->load->view('report/report');
+		$data['permissions'] = $this->getUserPagePermissions();
+		$this->load->view('report/report',$data);
 	}
 
 	public function getIncomeReport(){

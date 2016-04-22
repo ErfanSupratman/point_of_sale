@@ -27,7 +27,7 @@ class User extends MY_Controller {
 	 
 	public function index()
 	{
-		$data['listUsers'] = $this->user_model->getAllUsersSummary();
+		$data['permissions'] = $this->getUserPagePermissions();
 		$this->load->view('management/user',$data);
 	}
 	

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined( 'BASEPATH' ) or exit( 'No direct script access allowed' );
 
 class MY_Controller extends CI_Controller {
 
@@ -7,15 +7,16 @@ class MY_Controller extends CI_Controller {
 	 * Index Page for this controller.
 	 *
 	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
+	 *   http://example.com/index.php/welcome
+	 * - or -
+	 *   http://example.com/index.php/welcome/index
+	 * - or -
 	 * Since this controller is set as the default controller in
 	 * config/routes.php, it's displayed at http://example.com/
 	 *
 	 * So any other public methods not prefixed with an underscore will
 	 * map to /index.php/welcome/<method_name>
+	 *
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
@@ -23,28 +24,38 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 	}
 
-	public function checkSession(){
-		if ($this->session->userdata('logged_in')) {
-		}else{
-			redirect('/', 'refresh');
+	public function checkSession() {
+		if ( $this->session->userdata( 'logged_in' ) ) {
+		}else {
+			redirect( '/', 'refresh' );
 		}
 	}
 
-	public function getUserPermissionList(){
-		$session_data = $this->session->userdata('logged_in');
+	public function getUserPermissionList() {
+		$session_data = $this->session->userdata( 'logged_in' );
 		return $session_data['permissions'];
 	}
 
-	public function isSessionValid(){
-		if ($this->session->userdata('logged_in')) {
+	public function getUserPagePermissions() {
+		$session_data = $this->session->userdata( 'logged_in' );
+		$permissions = $session_data['permissions'];
+		$permissionsArr = array();
+		foreach ($permissions as $obj) {
+			array_push($permissionsArr, $obj->action);
+		}
+		return $permissionsArr;
+	}
+
+	public function isSessionValid() {
+		if ( $this->session->userdata( 'logged_in' ) ) {
 			return true;
-		}else{
+		}else {
 			return false;
 		}
 	}
 
-	public function getUsername(){
-		$session_data = $this->session->userdata('logged_in');
+	public function getUsername() {
+		$session_data = $this->session->userdata( 'logged_in' );
 		return $session_data['username'];
 	}
 }

@@ -12,7 +12,7 @@ class Inventory extends MY_Controller {
 		$detailPermission = false;
 		$showBuyPricePermission = false;
 		$showPricePermission = false;*/
-
+		$data['permissions'] = $this->getUserPagePermissions();
 		$data['inventory_content'] = '';
 		$this->load->view('inventory/inventory', $data);
 	}

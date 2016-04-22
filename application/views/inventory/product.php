@@ -27,13 +27,16 @@
 				<div class="row" style="background-color: #ffffff">
 					<br/>
 					<div class="col-sm-2">
+						<?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 						<ul class="nav nav-pills nav-stacked">
 							<li class="active"><a href="product?tab=prod&active=inv">List Product</a></li>
 							<li class=""><a href="brand?tab=prod&active=inv">List Brand</a></li>
 						</ul>
+						<?php }?>
 					</div>
 					<div class="col-sm-10">
 						<!-- Button modal fullscreen -->
+						<?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 						<button type="button" class="btn btn-success btn-md hidden-xs hidden-sm" onclick="insertProduct()">
 							<span class="glyphicon glyphicon-plus"></span> Tambah Barang Baru
 						</button>
@@ -41,11 +44,11 @@
 						<button type="button" class="btn btn-success btn-md hidden-lg hidden-md btn-block" onclick="insertProduct()">
 							<span class="glyphicon glyphicon-plus"></span> Tambah Barang Baru
 						</button>
-						
+						<?php }?>
 						<br/>
 						<hr/>
 						<?=$inventory_content?>
-						<div class="table-responsive">
+						<div class="table-responsive"><?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 						<table id="product_table" class="table table-striped table-hover" style="font-size:1em" cellspacing="0" width="98%">
 							<thead>
 								<tr>
@@ -65,6 +68,7 @@
 							</tfoot>
 						
 						</table>
+						<?php }?>
 						</div>
 					</div>
 				</div>

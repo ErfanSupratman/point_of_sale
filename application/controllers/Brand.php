@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Brand extends CI_Controller {
+class Brand extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -26,6 +26,7 @@ class Brand extends CI_Controller {
 	
 	public function index()
 	{
+		$data['permissions'] = $this->getUserPagePermissions();
 		$data['inventory_content'] = '';
 		$this->load->view('inventory/brand',$data);
 	}

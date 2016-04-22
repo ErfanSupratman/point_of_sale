@@ -10,6 +10,7 @@ class Invoice extends MY_Controller {
 	}
 
 	public function index() {
+		$data['permissions'] = $this->getUserPagePermissions();
 		$data['inventory_content'] = '';
 		$this->load->view('invoice/invoice', $data);
 	}

@@ -23,6 +23,7 @@
 				<div class="row">
 
 					<div class="col-sm-12">
+						<?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 						<form id="product_form" action="/">
 							<input type="hidden" class="form-control input-sm"
 								id="product_id" name="product_id"></input> <label for="brand">Brand</label>
@@ -36,12 +37,15 @@
 							<label for="name">Product Name : </label> <input type="text"
 								id="name_new" name="name_new" class="form-control input-sm"></input>
 						</form>
+						<?php }?>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
+				<?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 				<button type="button" class="btn btn-success" id="insert">Simpan</button>
 				<button type="button" class="btn btn-success" id="update">Update</button>
+				<?php }?>
 			</div>
 		</div>
 	</div>

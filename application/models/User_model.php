@@ -43,7 +43,7 @@ class User_model extends CI_Model {
 	}
 
 	function getUserPermissionList($username){
-		$sql = 'SELECT ppm.* FROM pos_permission_map ppm 
+		$sql = 'SELECT ppm.action FROM pos_permission_map ppm 
 		JOIN pos_user pu ON pu.permission=ppm.permission WHERE pu.username=? AND ppm.allowed=true';
 		$query = $this->db->query($sql,array($username));
 		return $query->result();

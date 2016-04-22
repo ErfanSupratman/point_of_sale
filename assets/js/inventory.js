@@ -166,6 +166,26 @@
                                 }
                             ]
                         });
+
+                    if ($('#delete_column_show').val() != "true") {
+                        var column = table.column(9);
+                        column.visible(false);
+                    }
+
+                    if ($('#sell_price_column_show').val() != "true") {
+                        //3,4,5,6,7
+                        var column = table.column(3);
+                        column.visible(false);
+                         column = table.column(4);
+                        column.visible(false);
+                         column = table.column(5);
+                        column.visible(false);
+                         column = table.column(6);
+                        column.visible(false);
+                         column = table.column(7);
+                        column.visible(false);
+                    }
+
                     $('#modal-new-stock-fullscreen #brand').selectpicker({
                         style: 'btn-info',
                         size: 8
@@ -565,8 +585,10 @@
                                         });
 
                             });
+                        return tableBookingNow;
                     });
-            return tableBookingNow;
+
+
         };
 
         function addStock() {

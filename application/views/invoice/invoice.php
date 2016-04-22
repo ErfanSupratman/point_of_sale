@@ -23,6 +23,7 @@
 					?>
 				</div>
 				<div class="row" style="background-color: #ffffff">
+					<?php if(in_array("SUPER_ADMIN", $permissions) || in_array("VIEW_INVOICE", $permissions)){ ?>
 					<br/>
 					<div class="col-sm-2">
 						<ul class="nav nav-pills nav-stacked">
@@ -34,9 +35,11 @@
 						<ul class="nav nav-pills nav-stacked">
 							<li id="finishedMenu"><a href="#" id="finished"><span class="label label-success">Finished</span> <span id="finishedBadge" class="badge"></span></a></li>
 						</ul>
+						<?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 						<ul class="nav nav-pills nav-stacked">
 							<li id="voidMenu"><a href="#" id="void"><span class="label label-danger">Void</span> <span id="voidBadge" class="badge"></span></a></li>
 						</ul>
+						<?php }?>
 					</div>
 					<div class="col-sm-10">
 						<!-- Button modal fullscreen -->
@@ -71,6 +74,7 @@
 							</table>
 						</div>
 					</div>
+					<?php }?>
 				</div>
 			</div>
 		</div>

@@ -1,42 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 $session_data = $this->session->userdata('logged_in');
-$permissions = $session_data['permissions'];
 $username = $session_data['username'];
 if (! isset ( $_GET ['active'] )) {
 	$active = 'dash';
 } else {
 	$active = $_GET ['active'];
 }
-
-$inventory = false;
-$invoice = false;
-$user = false;
-$report = false;
-$customer = false;
-
-foreach ($permissions as $permission) {
-	if($permission->permission==1){
-		$inventory = true;
-		$invoice = true;
-		$user = true;
-		$report = true;
-		$customer = true;	
-		break;
-	}
-	if($permission->page=='INVOICE' && $permission->allowed && $permission->action=="VIEW"){
-		$invoice = true;
-	} else if($permission->page=='INVENTORY' && $permission->allowed && $permission->action=="VIEW"){
-		$inventory = true;
-	} else if($permission->page=='USER' && $permission->allowed && $permission->action=="VIEW"){
-		$user = true;
-	} else if($permission->page=='CUSTOMER' && $permission->allowed && $permission->action=="VIEW"){
-		$customer = true;
-	} else if($permission->page=='REPORT' && $permission->allowed && $permission->action=="VIEW"){
-		$report = true;
-	}
-}
-
 
 ?>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -56,26 +26,28 @@ foreach ($permissions as $permission) {
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
+				<?php if(in_array("VIEW_DASHBOARD", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 				<li <?php if($active=='dash'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('Home') ?>"><i class="fa fa-tachometer"></i> Dashboard</a>
 				</li>
-				<?php if($invoice){ ?>
+				<?php }?>
+				<?php if(in_array("VIEW_INVOICE", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 				<li <?php if($active=='invoice'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('Invoice?active=invoice') ?>"><i class="fa fa-usd"></i> Invoice</a>
 				</li>					
-				<?php } if($inventory){ ?>	
+				<?php } if(in_array("VIEW_INVENTORY", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>	
 				<li <?php if($active=='inv'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('Inventory?active=inv') ?>"><i class="fa fa-exchange"></i> Inventory Control</a>
 				</li>
-				<?php } if($user){ ?>
+				<?php } if(in_array("VIEW_USER", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 				<li <?php if($active=='role'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('User?active=role') ?>"><i class="fa fa-group"></i> Role Management</a>
 				</li>
-				<?php } if($customer){ ?>
+				<?php } if(in_array("VIEW_CUSTOMER", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 				<li <?php if($active=='cust'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('Customer?active=cust') ?>"><i class="fa fa-user"></i> Customer Management</a>
 				</li>
-				<?php } if($report){ ?>
+				<?php } if(in_array("VIEW_REPORT", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 				<li <?php if($active=='report'){echo 'class="active"';}?>>
 					<a href="<?php echo site_url('Report?active=report') ?>"><i class="fa fa-area-chart"></i> Reports</a>
 				</li>

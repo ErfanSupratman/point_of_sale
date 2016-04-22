@@ -20,6 +20,11 @@
 				</div>
 			</div>
 			<div class="modal-body">
+				<?php if(!in_array("SUPER_ADMIN", $permissions)){
+					$readOnly="readOnly";
+				}else{
+					$readOnly="";
+				}?>
 				<div class="row">
 					<form action="/" id="stock_form">
 						<div class="col-sm-6">
@@ -56,26 +61,36 @@
 							
 							
 							<label for="jumlah">Jumlah</label> <input id="jumlah" type="text"
-							class="form-control input-sm" name="jumlah" />
+							class="form-control input-sm" <?=$readOnly?> name="jumlah" />
 						</div>
 						<div class="col-sm-6">
-							<label  for="hargab">Harga Beli</label>
-							<input id="hargab" type="text" class="form-control input-sm" name="hargab" />
-							<label for="hargabe">Harga CNT.</label>
-							<input id="hargabe" type="text" class="form-control input-sm" name="hargabe" />
-							<label for="hargada">Harga Distributor Area</label>
-							<input id="hargada" type="text" class="form-control input-sm" name="hargada" />
-							<label for="hargare">Harga Dealer</label>
-							<input id="hargadl" type="text" class="form-control input-sm" name="hargadl" />
-							<label for="hargare">Harga Retail</label>
-							<input id="hargare" type="text" class="form-control input-sm" name="hargare" />
+							<?php if(in_array("BUY_PRICE", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
+								<label  for="hargab">Harga Beli</label>
+								<input <?=$readOnly?> id="hargab" type="text" class="form-control input-sm" name="hargab" />
+							<?php }?>
+								
+							<?php if(in_array("VIEW_SELL_PRICE", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
+								<label for="hargabe">Harga CNT.</label>
+								<input <?=$readOnly?> id="hargabe" type="text" class="form-control input-sm" name="hargabe" />
+								<label for="hargada">Harga Distributor Area</label>
+								<input <?=$readOnly?> id="hargada" type="text" class="form-control input-sm" name="hargada" />
+								<label for="hargare">Harga Dealer</label>
+								<input <?=$readOnly?> id="hargadl" type="text" class="form-control input-sm" name="hargadl" />
+								<label for="hargare">Harga Retail</label>
+								<input <?=$readOnly?> id="hargare" type="text" class="form-control input-sm" name="hargare" />
+							<?php }?>
 						</div>
 					</form>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success" id="insert">Simpan</button>
-				<button type="button" class="btn btn-success" id="update">Update</button>
+				<?php 
+							if(in_array("SUPER_ADMIN", $permissions)){
+								echo '<button type="button" class="btn btn-success" id="insert">Simpan</button>
+				<button type="button" class="btn btn-success" id="update">Update</button>';
+							} 
+						?>
+				
 			</div>
 		</div>
 	</div>

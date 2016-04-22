@@ -161,7 +161,9 @@
 				<div class="modal-footer no-print">
 					<div class="row">
 						<div class="col-sm-3">
+							<?php if(in_array("SUPER_ADMIN", $permissions)){ ?>
 							<button type="button" id="void_btn" class="btn btn-block btn-warning  btn-lg">VOID</button>
+							<?php }?>
 						</div>
 						<div class="col-sm-3">
 							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button>

@@ -33,12 +33,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 							<span class="glyphicon glyphicon-transfer"></span> Pindah Stock
 						</button>
 						-->
-						<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-xs hidden-sm">
+						<?php 
+							if(in_array("SUPER_ADMIN", $permissions)){
+								echo '<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-xs hidden-sm">
 						<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
 						</button>
 						<button type="button" id="addStock" onclick="addStock()" class="btn btn-success btn-md hidden-lg hidden-md btn-block">
 						<span class="glyphicon glyphicon-plus"></span> Tambah Stock Barang
-						</button>
+						</button>';
+							} 
+						?>
+
 						<!--<div class="select-style pull-right hidden-sm hidden-xs"
 										style="width: 200px">
 										<select class="form-control input-md" id="lokasi_stock">
@@ -61,7 +66,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						</div>-->
 						<br />
 						<hr />
-						<?php echo $inventory_content ?>
+						<?php 
+							if(in_array("SUPER_ADMIN", $permissions)){
+								echo '<input type="hidden" id="delete_column_show" value="true"></input>';
+								echo '<input type="hidden" id="sell_price_column_show" value="true"></input>';
+							} else if(in_array("VIEW_SELL_PRICE", $permissions)){
+								echo '<input type="hidden" id="sell_price_column_show" value="true"></input>';
+							} 
+						?>
+						
 						<div class="table-responsive">
 							<table id="stock_table" class="table table-striped table-hover"
 								style="font-size: 1em" cellspacing="0" width="98%">

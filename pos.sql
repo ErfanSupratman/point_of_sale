@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.4.14
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2016 at 11:14 PM
--- Server version: 10.1.10-MariaDB
--- PHP Version: 5.6.19
+-- Generation Time: Apr 22, 2016 at 12:48 PM
+-- Server version: 5.6.26
+-- PHP Version: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -24,7 +24,8 @@ DELIMITER $$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `getCounterSequence` (`tipe` INT) RETURNS VARCHAR(255) CHARSET utf8 COLLATE utf8_bin BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `getCounterSequence`(`tipe` INT) RETURNS varchar(255) CHARSET utf8 COLLATE utf8_bin
+BEGIN
   DECLARE COUNTER_FOUND VARCHAR(255);
   DECLARE LAST_MONTH INT;
   DECLARE CURRENT_MONTH INT;
@@ -44,7 +45,8 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `getCounterSequence` (`tipe` INT) RET
   RETURN COUNTER_FOUND;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `updateAvailableStock` (`stockId` BIGINT, `quantity` INT, `notes` TEXT, `updatedBy` VARCHAR(255)) RETURNS VARCHAR(255) CHARSET utf8 COLLATE utf8_bin BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `updateAvailableStock`(`stockId` BIGINT, `quantity` INT, `notes` TEXT, `updatedBy` VARCHAR(255)) RETURNS varchar(255) CHARSET utf8 COLLATE utf8_bin
+BEGIN
   DECLARE AVAILABLE INT;
   DECLARE SUCCESS BOOL;
   DECLARE RESULT VARCHAR(255);
@@ -71,7 +73,7 @@ DELIMITER ;
 -- Table structure for table `pos_booking`
 --
 
-CREATE TABLE `pos_booking` (
+CREATE TABLE IF NOT EXISTS `pos_booking` (
   `id` bigint(20) NOT NULL,
   `stock_id` bigint(20) NOT NULL,
   `booking_code` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -82,7 +84,7 @@ CREATE TABLE `pos_booking` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_booking`
@@ -118,7 +120,7 @@ INSERT INTO `pos_booking` (`id`, `stock_id`, `booking_code`, `quantity`, `notes`
 -- Table structure for table `pos_brand`
 --
 
-CREATE TABLE `pos_brand` (
+CREATE TABLE IF NOT EXISTS `pos_brand` (
   `id` bigint(20) NOT NULL,
   `brand_code` varchar(255) COLLATE utf8_bin NOT NULL,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -127,7 +129,7 @@ CREATE TABLE `pos_brand` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_brand`
@@ -150,13 +152,13 @@ INSERT INTO `pos_brand` (`id`, `brand_code`, `name`, `created_by`, `created_date
 -- Table structure for table `pos_counter`
 --
 
-CREATE TABLE `pos_counter` (
+CREATE TABLE IF NOT EXISTS `pos_counter` (
   `id` bigint(20) NOT NULL,
   `type` int(11) NOT NULL,
   `sequence` bigint(20) NOT NULL,
   `prefix` varchar(255) COLLATE utf8_bin NOT NULL,
   `updated_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_counter`
@@ -176,7 +178,7 @@ INSERT INTO `pos_counter` (`id`, `type`, `sequence`, `prefix`, `updated_date`) V
 -- Table structure for table `pos_customer`
 --
 
-CREATE TABLE `pos_customer` (
+CREATE TABLE IF NOT EXISTS `pos_customer` (
   `id` bigint(20) NOT NULL,
   `nama` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `telepon` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -187,7 +189,7 @@ CREATE TABLE `pos_customer` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_customer`
@@ -212,7 +214,7 @@ INSERT INTO `pos_customer` (`id`, `nama`, `telepon`, `alamat`, `customer_code`, 
 -- Table structure for table `pos_history_stock`
 --
 
-CREATE TABLE `pos_history_stock` (
+CREATE TABLE IF NOT EXISTS `pos_history_stock` (
   `id` bigint(20) NOT NULL,
   `stock_id` bigint(20) NOT NULL,
   `stock_in` bigint(20) NOT NULL DEFAULT '0',
@@ -341,7 +343,8 @@ INSERT INTO `pos_history_stock` (`id`, `stock_id`, `stock_in`, `stock_out`, `not
 (0, 9, 0, 0, 'updateStock', '2016-04-20 23:32:22', 'febryo'),
 (0, 9, 0, 0, 'updateStock', '2016-04-20 23:35:59', 'febryo'),
 (0, 13, 0, 5, 'PAID Invoice INV/4-2016/00025', '2016-04-21 01:32:13', 'febryo'),
-(0, 9, 0, 5, 'PAID Invoice INV/4-2016/00025', '2016-04-21 01:32:13', 'febryo');
+(0, 9, 0, 5, 'PAID Invoice INV/4-2016/00025', '2016-04-21 01:32:13', 'febryo'),
+(0, 13, 0, 5, 'PAID Invoice INV/4-2016/00027', '2016-04-22 17:15:46', 'febryo2');
 
 -- --------------------------------------------------------
 
@@ -349,7 +352,7 @@ INSERT INTO `pos_history_stock` (`id`, `stock_id`, `stock_in`, `stock_out`, `not
 -- Table structure for table `pos_invoice`
 --
 
-CREATE TABLE `pos_invoice` (
+CREATE TABLE IF NOT EXISTS `pos_invoice` (
   `id` bigint(20) NOT NULL,
   `invoice_code` varchar(255) COLLATE utf8_bin NOT NULL,
   `booking_code` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -368,14 +371,14 @@ CREATE TABLE `pos_invoice` (
   `created_date` datetime DEFAULT NULL,
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_invoice`
 --
 
 INSERT INTO `pos_invoice` (`id`, `invoice_code`, `booking_code`, `billing_name`, `billing_address`, `customer_id`, `billing_phone`, `billing_email`, `freight`, `term_of_payment`, `location_id`, `notes`, `state`, `finalize_date`, `created_by`, `created_date`, `updated_by`, `updated_date`) VALUES
-(2, 'INV/4-2016/00027', 'BOK/4-2016/00024', 'febryo', 'asdad', NULL, '123123', '5asdad@asda.com', 4000, '15 hari', 0, '231313 21345 void yaa oke yes', 1, '0000-00-00 00:00:00', 'febryo', '2016-04-21 01:16:18', 'febryo', '2016-04-21 01:47:50');
+(2, 'INV/4-2016/00027', 'BOK/4-2016/00024', 'febryo', 'asdad', NULL, '123123', '5asdad@asda.com', 4000, '15 hari', 0, '231313 21345 void yaa oke yes', 2, '2016-04-01 00:00:00', 'febryo', '2016-04-21 01:16:18', 'febryo2', '2016-04-22 17:15:46');
 
 -- --------------------------------------------------------
 
@@ -383,7 +386,7 @@ INSERT INTO `pos_invoice` (`id`, `invoice_code`, `booking_code`, `billing_name`,
 -- Table structure for table `pos_invoice_detail`
 --
 
-CREATE TABLE `pos_invoice_detail` (
+CREATE TABLE IF NOT EXISTS `pos_invoice_detail` (
   `id` bigint(20) NOT NULL,
   `product_id` bigint(11) NOT NULL,
   `quantity` int(11) NOT NULL,
@@ -391,14 +394,14 @@ CREATE TABLE `pos_invoice_detail` (
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `invoice_id` bigint(20) NOT NULL,
   `location_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_invoice_detail`
 --
 
 INSERT INTO `pos_invoice_detail` (`id`, `product_id`, `quantity`, `price`, `active`, `invoice_id`, `location_id`) VALUES
-(11, 5, 5, 50000, 1, 2, 1);
+(12, 5, 5, 50000, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -406,7 +409,7 @@ INSERT INTO `pos_invoice_detail` (`id`, `product_id`, `quantity`, `price`, `acti
 -- Table structure for table `pos_invoice_status_history`
 --
 
-CREATE TABLE `pos_invoice_status_history` (
+CREATE TABLE IF NOT EXISTS `pos_invoice_status_history` (
   `id` bigint(20) NOT NULL,
   `invoice_id` bigint(20) NOT NULL,
   `notes` text COLLATE utf8_bin,
@@ -421,11 +424,11 @@ CREATE TABLE `pos_invoice_status_history` (
 -- Table structure for table `pos_permission`
 --
 
-CREATE TABLE `pos_permission` (
+CREATE TABLE IF NOT EXISTS `pos_permission` (
   `id` bigint(20) NOT NULL,
   `permission_name` varchar(255) COLLATE utf8_bin NOT NULL,
   `code` varchar(255) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_permission`
@@ -442,27 +445,29 @@ INSERT INTO `pos_permission` (`id`, `permission_name`, `code`) VALUES
 -- Table structure for table `pos_permission_map`
 --
 
-CREATE TABLE `pos_permission_map` (
+CREATE TABLE IF NOT EXISTS `pos_permission_map` (
   `id` bigint(20) NOT NULL,
-  `page` varchar(255) NOT NULL,
   `allowed` tinyint(1) NOT NULL DEFAULT '1',
   `action` varchar(255) NOT NULL,
   `permission` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pos_permission_map`
 --
 
-INSERT INTO `pos_permission_map` (`id`, `page`, `allowed`, `action`, `permission`) VALUES
-(1, 'INVOICE', 1, 'ADD', 2),
-(2, 'INVOICE', 1, 'VIEW', 2),
-(3, 'INVENTORY', 1, 'VIEW', 2),
-(5, 'INVENTORY', 1, 'VIEW', 3),
-(6, 'INVENTORY', 1, 'HARGA_JUAL', 2),
-(7, 'INVENTORY', 1, 'STOCK', 3),
-(8, 'INVENTORY', 1, 'STOCK', 2),
-(9, 'ALL', 1, 'SUPER_ADMIN', 1);
+INSERT INTO `pos_permission_map` (`id`, `allowed`, `action`, `permission`) VALUES
+(1, 1, 'ADD_INVOICE', 2),
+(2, 1, 'VIEW_INVENTORY', 2),
+(3, 1, 'VIEW_INVOICE', 2),
+(5, 1, 'VIEW_INVENTORY', 3),
+(7, 1, 'VIEW_STOCK', 3),
+(8, 1, 'VIEW_STOCK', 2),
+(9, 1, 'SUPER_ADMIN', 1),
+(10, 1, 'VIEW_SELL_PRICE', 2),
+(11, 1, 'VIEW_LOCATION', 2),
+(12, 1, 'VIEW_BUY_PRICE', 2),
+(13, 1, 'VIEW_DASHBOARD', 2);
 
 -- --------------------------------------------------------
 
@@ -470,7 +475,7 @@ INSERT INTO `pos_permission_map` (`id`, `page`, `allowed`, `action`, `permission
 -- Table structure for table `pos_product`
 --
 
-CREATE TABLE `pos_product` (
+CREATE TABLE IF NOT EXISTS `pos_product` (
   `id` bigint(20) NOT NULL,
   `product_code` varchar(255) COLLATE utf8_bin NOT NULL,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -480,7 +485,7 @@ CREATE TABLE `pos_product` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_product`
@@ -509,7 +514,7 @@ INSERT INTO `pos_product` (`id`, `product_code`, `name`, `brand_id`, `created_by
 -- Table structure for table `pos_stock`
 --
 
-CREATE TABLE `pos_stock` (
+CREATE TABLE IF NOT EXISTS `pos_stock` (
   `id` bigint(20) NOT NULL,
   `stock_code` varchar(255) COLLATE utf8_bin NOT NULL,
   `product_id` bigint(20) NOT NULL,
@@ -526,7 +531,7 @@ CREATE TABLE `pos_stock` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_stock`
@@ -537,7 +542,7 @@ INSERT INTO `pos_stock` (`id`, `stock_code`, `product_id`, `location_id`, `stock
 (9, 'STC-0000000009', 4, 3, 5, 0, 70000, 80000, 50000, 7000, 60000, 'febryo', '2016-04-09 10:32:25', 'febryo', '2016-04-21 01:32:13', 1),
 (10, 'STC-0000000010', 6, 3, 4990, 0, 0, 0, 0, 0, 0, 'febryo', '2016-04-09 11:56:07', 'febryo', '2016-04-19 18:29:05', 1),
 (12, 'STC/4-2016/00001', 6, 2, 50, 0, 0, 0, 0, 0, 0, 'febryo', '2016-04-18 20:46:42', 'febryo', '2016-04-19 12:34:59', 1),
-(13, 'STC/4-2016/00002', 5, 1, 25, 0, 700000, 0, 0, 0, 0, 'febryo', '2016-04-20 22:29:35', 'febryo', '2016-04-21 01:32:13', 1),
+(13, 'STC/4-2016/00002', 5, 1, 20, 0, 700000, 0, 0, 0, 0, 'febryo', '2016-04-20 22:29:35', 'febryo2', '2016-04-22 17:15:46', 1),
 (14, 'STC/4-2016/00003', 4, 1, 0, 0, 0, 0, 0, 0, 0, 'febryo', '2016-04-20 22:30:36', NULL, NULL, 1);
 
 -- --------------------------------------------------------
@@ -546,7 +551,7 @@ INSERT INTO `pos_stock` (`id`, `stock_code`, `product_id`, `location_id`, `stock
 -- Table structure for table `pos_user`
 --
 
-CREATE TABLE `pos_user` (
+CREATE TABLE IF NOT EXISTS `pos_user` (
   `id` bigint(20) NOT NULL,
   `username` varchar(255) COLLATE utf8_bin NOT NULL,
   `password` varchar(32) COLLATE utf8_bin NOT NULL,
@@ -559,7 +564,7 @@ CREATE TABLE `pos_user` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_user`
@@ -576,7 +581,7 @@ INSERT INTO `pos_user` (`id`, `username`, `password`, `full_name`, `address`, `t
 -- Table structure for table `pos_warehouse`
 --
 
-CREATE TABLE `pos_warehouse` (
+CREATE TABLE IF NOT EXISTS `pos_warehouse` (
   `id` bigint(20) NOT NULL,
   `warehouse_code` varchar(255) COLLATE utf8_bin NOT NULL,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -585,7 +590,7 @@ CREATE TABLE `pos_warehouse` (
   `updated_by` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `pos_warehouse`
@@ -694,62 +699,62 @@ ALTER TABLE `pos_warehouse`
 -- AUTO_INCREMENT for table `pos_booking`
 --
 ALTER TABLE `pos_booking`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `pos_brand`
 --
 ALTER TABLE `pos_brand`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `pos_counter`
 --
 ALTER TABLE `pos_counter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `pos_customer`
 --
 ALTER TABLE `pos_customer`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `pos_invoice`
 --
 ALTER TABLE `pos_invoice`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `pos_invoice_detail`
 --
 ALTER TABLE `pos_invoice_detail`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `pos_permission`
 --
 ALTER TABLE `pos_permission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `pos_permission_map`
 --
 ALTER TABLE `pos_permission_map`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `pos_product`
 --
 ALTER TABLE `pos_product`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `pos_stock`
 --
 ALTER TABLE `pos_stock`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `pos_user`
 --
 ALTER TABLE `pos_user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT for table `pos_warehouse`
 --
 ALTER TABLE `pos_warehouse`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
