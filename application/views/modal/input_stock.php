@@ -20,6 +20,10 @@
 				</div>
 			</div>
 			<div class="modal-body">
+					<!-- Preloader -->
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
 				<?php if(!in_array("SUPER_ADMIN", $permissions)){
 					$readOnly="readOnly";
 				}else{

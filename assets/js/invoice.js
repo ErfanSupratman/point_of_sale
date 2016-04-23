@@ -148,13 +148,17 @@ $(document).ready(function() {
         $('#brand').val('');
         $('#name').typeahead('destroy');
         $('#name').val('');
+        $("#status").fadeIn();
+        $("#preloader").fadeIn();
         var getAllBrand = $.get('Brand/getAllBrand', {
 
         }, function(data) {
             $("#brand").typeahead({
                 source: data.data,
-                showHintOnFocus:true
+                showHintOnFocus: true
             });
+            $("#status").fadeOut();
+            $("#preloader").fadeOut();
         }, 'json');
         $("#modal-new-invoice-fullscreen #jumlah").keyup(function(event) {
             if (event.keyCode == 13) {
@@ -195,6 +199,9 @@ $(document).ready(function() {
         $("#modal-new-invoice-fullscreen #billing_name").focus();
         $("#modal-new-invoice-fullscreen #insertDetailForm").removeClass("in");
     })
+
+    $("#status").fadeOut();
+    $("#preloader").fadeOut();
 
     $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
         $("#modal-new-invoice-fullscreen #finalize_btn").hide();
@@ -247,6 +254,8 @@ $(document).ready(function() {
     $('#brand')
         .change(
             function(e) {
+                $("#status").fadeIn();
+                $("#preloader").fadeIn();
                 console.log('test');
                 $('#name').typeahead('destroy');
                 $('#name').val('');
@@ -265,6 +274,8 @@ $(document).ready(function() {
                             $("#name").typeahead({
                                 source: data
                             });
+                            $("#status").fadeOut();
+                            $("#preloader").fadeOut();
                         }, 'json');
                         $('#name').prop('disabled', false);
                     } else {
@@ -494,7 +505,11 @@ $(document).ready(function() {
         var billingAddress = $("#modal-new-invoice-fullscreen #billing_address").val();
         //var locationId = $("#modal-new-invoice-fullscreen #locationId").val();
         var notes = $("#modal-new-invoice-fullscreen #notes").val();
-        var freight = $("#modal-new-invoice-fullscreen #freight").val();
+        var freight = "0";
+        if($("#modal-new-invoice-fullscreen #freight").val()!="" && $("#modal-new-invoice-fullscreen #freight").val()!=undefined){
+            freight = $("#modal-new-invoice-fullscreen #freight").val();
+        }
+        
         var termOfPayment = $("#modal-new-invoice-fullscreen #term_of_payment").val();
 
         if (state == '') {
@@ -541,10 +556,14 @@ $(document).ready(function() {
     }
 
     function insertInvoiceToDB(data) {
+        $("#status").fadeIn();
+        $("#preloader").fadeIn();
         $.post('Invoice/addInvoice', {
                 invoice: JSON.stringify(data)
             },
             function(data) {
+                $("#status").fadeOut();
+                $("#preloader").fadeOut();
                 if (data.success) {
                     swal("Success!", "Sukses tambah invoice ", "success");
                     $('#modal-new-invoice-fullscreen').modal('hide');
@@ -556,11 +575,15 @@ $(document).ready(function() {
 
             }, 'json'
         ).fail(function(error) {
+            $("#status").fadeOut();
+            $("#preloader").fadeOut();
             swal("Failed!", "Gagal tambah invoice", "error");
         });
     }
 
     function voidInvoiceToDB(invoiceId) {
+        $("#status").fadeIn();
+        $("#preloader").fadeOut();
         notes = $('#modal-new-invoice-fullscreen #notes').val();
         if (notes == undefined) {
             notes = "";
@@ -568,6 +591,8 @@ $(document).ready(function() {
         $.post('Invoice/voidInvoice?id=' + invoiceId, {
             "notes": notes
         }, function(data) {
+            $("#status").fadeOut();
+            $("#preloader").fadeOut();
             if (data.success) {
                 swal("Success!", "Sukses void invoice ", "success");
                 $('#modal-new-invoice-fullscreen').modal('hide');
@@ -577,17 +602,23 @@ $(document).ready(function() {
                 swal("Failed!", "Gagal tambah invoice ", "error");
             }
         }).fail(function() {
+            $("#status").fadeOut();
+            $("#preloader").fadeOut();
             swal("Failed!", "Gagal void invoice", "error");
         });;
 
     }
 
     function updateInvoiceToDB(data, headerId) {
+        $("#status").fadeIn();
+        $("#preloader").fadeIn();
         $.post('Invoice/updateInvoice', {
                 invoice: JSON.stringify(data),
                 headerId: headerId
             },
             function(data) {
+                $("#status").fadeOut();
+                $("#preloader").fadeOut();
                 if (data.success) {
                     swal("Success!", "Sukses update invoice ", "success");
                     $('#modal-new-invoice-fullscreen').modal('hide');
@@ -598,8 +629,11 @@ $(document).ready(function() {
                     swal("Failed!", "Gagal update invoice," + data.error, "error");
                 }
 
+
             }, 'json'
         ).fail(function() {
+            $("#status").fadeOut();
+            $("#preloader").fadeOut();
             swal("Failed!", "Gagal update invoice", "error");
         });
     }
@@ -609,6 +643,8 @@ $(document).ready(function() {
     };
 
     function getInvoiceDetail(id) {
+        $("#status").fadeIn();
+        $("#preloader").fadeIn();
         $.get('Invoice/getInvoiceHeaderAndItemByInvoiceId?id=' + id, {}, function(data) {
             $('#modal-new-invoice-fullscreen').modal('show');
             $("#modal-new-invoice-fullscreen #invoice_code").val(data.header.invoice_code);
@@ -685,9 +721,9 @@ $(document).ready(function() {
                 $('#modal-new-invoice-fullscreen #void_btn').hide();
                 $('#modal-new-invoice-fullscreen #booking_btn').show();
             }
-
+            $("#status").fadeOut();
+            $("#preloader").fadeOut();
             swal.close();
-
         })
     }
 

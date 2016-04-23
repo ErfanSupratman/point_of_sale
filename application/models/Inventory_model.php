@@ -115,13 +115,27 @@ class Inventory_model extends CI_Model {
 			$productId = intval($data['product_id']);
 			$locationId = intval($data['location_id']);
 			$stockAdded = $data['stock'];
-			if (isset($data['harga_bengkel'])) {
-				$hargaBeli = str_replace(",", "", $data['harga_beli']);
+			if(isset($data['harga_beli'])){
+				$hargaBeli = str_replace(",", "", $data['harga_beli']);	
+				$data['harga_beli'] = $hargaBeli;
+			} 
+			if(isset($data['harga_bengkel'])){
 				$hargaBengkel = str_replace(",", "", $data['harga_bengkel']);
-				$hargaDistArea = str_replace(",", "", $data['harga_dist_area']);
-				$hargaRetail = str_replace(",", "", $data['harga_retail']);
-				$hargaDealer = str_replace(",", "", $data['harga_dealer']);
+				$data['harga_bengkel'] = $hargaBengkel;
 			}
+			if(isset($data['harga_dist_area'])){
+				$hargaDistArea = str_replace(",", "", $data['harga_dist_area']);
+				$data['harga_dist_area'] = $hargaDistArea;
+			}
+			if(isset($data['harga_retail'])){
+				$hargaRetail = str_replace(",", "", $data['harga_retail']);
+				$data['harga_retail'] = $hargaRetail;
+			}
+			if(isset($data['harga_dealer'])){
+				$hargaDealer = str_replace(",", "", $data['harga_dealer']);
+				$data['harga_dealer'] = $hargaDealer;
+			} 
+
 			if ($operand != '+') {
 				$stockAdded = $stockAdded * (-1);
 			}

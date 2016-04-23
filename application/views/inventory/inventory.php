@@ -10,6 +10,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		<?php
 			$this->load->view('navigation/main');
 		?>
+
 		<div class="container-fluid" >
 			<div id="body" class="padding-top-80px">
 				<div class="row">

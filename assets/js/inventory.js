@@ -15,6 +15,8 @@
                     });
 
                     requestBrand.done(function(msg) {
+                        $("#status").fadeOut();
+                        $("#preloader").fadeOut();
                         var options;
                         $.each(msg.data, function(i, item) {
                             $('#modal-new-stock-fullscreen #brand').append(
@@ -32,12 +34,16 @@
                     });
 
                     requestBrand.fail(function(jqXHR, textStatus) {
-                        console.log(textStatus)
+                        $("#status").fadeOut();
+                        $("#preloader").fadeOut();
+                        swal('Failed!', 'Failed to get brand from database', 'error');
                     });
 
                     var tableBooking = {};
 
                     $('#brand').change(function() {
+                        $("#status").fadeIn();
+                        $("#preloader").fadeIn();
                         $('#name').typeahead('destroy');
 
                         if ($('#brand').val() != undefined) {
@@ -47,6 +53,8 @@
                         $.get('Product/findProductByBrandId', {
                             brandId: $('#brand').val()
                         }, function(data) {
+                            $("#status").fadeOut();
+                            $("#preloader").fadeOut();
                             $("#name").typeahead({
                                 source: data
                             });
@@ -68,6 +76,8 @@
                                             "getActive");
                                         if (current) {
                                             if (current.name == $('#name').val()) {
+                                                $("#status").fadeIn();
+                                                $("#preloader").fadeIn();
                                                 $('.product_detail').fadeOut(100, function() {
                                                     $(this).text(current.product_code).fadeIn(100);
                                                     $('#modal-new-stock-fullscreen #product_id').val(current.id);
@@ -81,6 +91,8 @@
                                                                 $("#modal-new-stock-fullscreen #hargare").val(addCommas(data[0].harga_retail));
                                                                 $("#modal-new-stock-fullscreen #hargab").val(addCommas(data[0].harga_beli));
                                                             }
+                                                            $("#status").fadeOut();
+                                                            $("#preloader").fadeOut();
                                                         })
 
                                                 });
@@ -176,13 +188,13 @@
                         //3,4,5,6,7
                         var column = table.column(3);
                         column.visible(false);
-                         column = table.column(4);
+                        column = table.column(4);
                         column.visible(false);
-                         column = table.column(5);
+                        column = table.column(5);
                         column.visible(false);
-                         column = table.column(6);
+                        column = table.column(6);
                         column.visible(false);
-                         column = table.column(7);
+                        column = table.column(7);
                         column.visible(false);
                     }
 
@@ -287,10 +299,14 @@
 
                     $("#modal-new-stock-fullscreen #insert").click(
                         function() {
+                            $("#status").fadeIn();
+                            $("#preloader").fadeIn();
                             var fullName = $("#modal-new-stock-fullscreen #name").val();
                             $.post('Inventory/addStock', $('form#stock_form')
                                 .serialize(),
                                 function(data) {
+                                    $("#status").fadeOut();
+                                    $("#preloader").fadeOut();
                                     if (data.success) {
                                         swal("Inserted!", "Berhasil menyimpan " + fullName + "", "success");
                                         table.ajax.reload();
