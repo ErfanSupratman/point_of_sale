@@ -850,11 +850,14 @@ function calculateTotal() {
         freight = removeCommas(freight);
     }
     $('#invoice_item_list tbody tr').each(function() {
-        quantity = parseInt($(this).find('#jumlah_row #jumlahs').val());
-        console.log('quantity ' + quantity);
+        if($(this).find('#jumlah_row #jumlahs').val()==''){
+            $(this).find('#jumlah_row #jumlahs').val(0);
+        }else{
+            quantity = parseInt($(this).find('#jumlah_row #jumlahs').val());
+        }
+        
         price = parseInt(removeCommas($(this).find('#harga_row #hargas').val()));
 
-        console.log('price ' + price);
         var total = quantity * price;
         subTotal += total;
         $(this).find('#harga_row #hargas').val(addCommas(price));
