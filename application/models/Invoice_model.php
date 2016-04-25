@@ -174,6 +174,9 @@ $dataWrapper = new $this->document_dto();
 			$listExists = false;
 			foreach ($data->dataDetail as $obj) {
 				$listExists = true;
+				if($obj->quantity<=0){
+					throw new Exception('Quantity must > 0!');	
+				}
 			}
 			
 			if(!$listExists){
@@ -241,6 +244,9 @@ $dataWrapper = new $this->document_dto();
 			$listExists = false;
 			foreach ($data->dataDetail as $obj) {
 				$listExists = true;
+				if($obj->quantity<=0){
+					throw new Exception('Quantity must > 0!');	
+				}
 			}
 
 			if(!$listExists){

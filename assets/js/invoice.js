@@ -146,6 +146,7 @@ $(document).ready(function() {
         $("#modal-new-invoice-fullscreen #brand").selectpicker('val', "");
         $('#brand').typeahead('destroy');
         $('#brand').val('');
+        $('#brand').prop("disabled", true);
         $('#name').typeahead('destroy');
         $('#name').val('');
         $("#status").fadeIn();
@@ -224,11 +225,18 @@ $(document).ready(function() {
     var i = 1;
 
     $("#modal-new-invoice-fullscreen #insert_row").on('click', function() {
-        addRowValue(i);
-        i++;
+        if (addRowValue(i)) {
+            i++;
+        }
     });
 
-
+    $('#modal-new-invoice-fullscreen #locationId').change(function() {
+        if ($('#locationId').val() == "") {
+            $('#brand').prop("disabled", true);
+        } else {
+            $('#brand').prop("disabled", false);
+        }
+    });
 
     $('#modal-new-invoice-fullscreen #brand').change(function() {
         $('#name').val('');
@@ -442,19 +450,11 @@ $(document).ready(function() {
             closeOnCancel: false
         }, function(isConfirm) {
             if (isConfirm) {
-                swal({
-                    title: "Processing!",
-                    text: "",
-                    timer: 1,
-                    showConfirmButton: false
-                }, function() {
-                    if (invoiceId == "") {
-                        saveInvoice(1);
-                    } else {
-                        updateInvoice(1, invoiceId);
-                    }
-                    swal.close();
-                });
+                if (invoiceId == "") {
+                    saveInvoice(1);
+                } else {
+                    updateInvoice(1, invoiceId);
+                }
             } else {
                 swal.close();
             }
@@ -506,10 +506,10 @@ $(document).ready(function() {
         //var locationId = $("#modal-new-invoice-fullscreen #locationId").val();
         var notes = $("#modal-new-invoice-fullscreen #notes").val();
         var freight = "0";
-        if($("#modal-new-invoice-fullscreen #freight").val()!="" && $("#modal-new-invoice-fullscreen #freight").val()!=undefined){
+        if ($("#modal-new-invoice-fullscreen #freight").val() != "" && $("#modal-new-invoice-fullscreen #freight").val() != undefined) {
             freight = $("#modal-new-invoice-fullscreen #freight").val();
         }
-        
+
         var termOfPayment = $("#modal-new-invoice-fullscreen #term_of_payment").val();
 
         if (state == '') {
@@ -766,8 +766,8 @@ $(document).ready(function() {
                 '<td id="brand_row">' + data[key].brand_name + '</td>' +
                 '<td id="product_row">' + data[key].product_name + '<input type="hidden" class="form-control input-sm" id="product_ids" name="product_ids" value="' + data[key].product_id + '"></td>' +
                 '<td>' + data[key].product_code + '</td>' +
-                '<td id="jumlah_row"><input ' + readOnly + ' onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlahs" name="jumlahs" value="' + data[key].quantity + '"></input></td>' +
-                '<td id="harga_row"><input ' + readOnly + ' onchange="calculateTotal()" type="text" class="form-control input-sm" id="hargas" name="hargas" value="' + price + '"></input></td>' +
+                '<td id="jumlah_row"><input onkeypress="return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)" ' + readOnly + ' onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlahs" name="jumlahs" value="' + data[key].quantity + '"></input></td>' +
+                '<td id="harga_row"><input onkeypress="return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)" ' + readOnly + ' onchange="calculateTotal()" type="text" class="form-control input-sm" id="hargas" name="hargas" value="' + price + '"></input></td>' +
                 '<td><button type="button" onclick="removeRow(' + x + ')" data-id="' + x + '" id="delete" class="' + hidden + ' btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
             x++;
         }
@@ -784,42 +784,56 @@ $(document).ready(function() {
         var productId = $('#product_id').val();
         var locationId = $('#locationId').val();
         var harga = 0;
-        $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + productId + '&locationId=' + locationId, {},
-            function(data) {
-                if (data.length > 0) {
-                    var priceType = $('#modal-new-invoice-fullscreen #price_type').val();
-                    if (priceType == 'Bengkel') {
-                        harga = data[0].harga_bengkel;
-                    } else if (priceType == 'Dealer') {
-                        harga = data[0].harga_dealer;
-                    } else if (priceType == 'Distributor Area') {
-                        harga = data[0].harga_dist_area;
-                    } else if (priceType == 'Retail') {
-                        harga = data[0].harga_retail;
+        console.log("productId " + productId);
+        if (productId == "") {
+            swal("Failed", "Product not found!", "error");
+            return false;
+        } else if (jumlah == "" || jumlah == "0") {
+            swal("Failed", "Quantity must > 0!", "error");
+            return false;
+        } else {
+            $.get('Inventory/getPriceByProductIdAndLocationId?productId=' + productId + '&locationId=' + locationId, {},
+                function(data) {
+                    if (data.length > 0) {
+                        var priceType = $('#modal-new-invoice-fullscreen #price_type').val();
+                        if (priceType == 'Bengkel') {
+                            harga = data[0].harga_bengkel;
+                        } else if (priceType == 'Dealer') {
+                            harga = data[0].harga_dealer;
+                        } else if (priceType == 'Distributor Area') {
+                            harga = data[0].harga_dist_area;
+                        } else if (priceType == 'Retail') {
+                            harga = data[0].harga_retail;
+                        }
+
+                        $('#brand').val('');
+                        $('#brand').prop("disabled", true);
+                        $('#name').val('');
+                        $('#modal-new-invoice-fullscreen .product_detail').text('');
+                        $('#jumlah').val('');
+                        $('#jumlah').prop("disabled", true);
+                        $('#product_id').val('');
+                        $('#price_type').val('');
+                        $('#locationId').val('');
+                        $('#invoice_item_list').slideUp(200, function() {
+                            $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
+                                '<td id="location_row">' + data[0].location_name + '<input type="hidden" class="form-control input-sm" id="location_ids" name="location_ids" value="' + locationId + '"></td>' +
+                                '<td id="brand_row">' + brand + '</td>' +
+                                '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_ids" name="product_ids" value="' + productId + '"></td>' +
+                                '<td>' + productCode + '</td>' +
+                                '<td id="jumlah_row"><input onkeypress="return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)" onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlahs" name="jumlah" value="' + jumlah + '"></input></td>' +
+                                '<td id="harga_row"><input onkeypress="return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)" onchange="calculateTotal()" type="text" class="form-control input-sm" id="hargas" name="harga" value="' + harga + '"></input></td>' +
+                                '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+                            $('#invoice_item_list').slideDown(200);
+                            calculateTotal();
+                        });
+                    } else {
+                        swal("Failed!", "Gagal, karena product " + product + " tidak ada di warehouse tersebut", "error");
+                        return false;
                     }
-
-                    $('#brand').val('');
-                    $('#name').val('');
-                    $('#modal-new-invoice-fullscreen .product_detail').text('');
-                    $('#jumlah').val('');
-                    $('#price_type').val('');
-                    $('#invoice_item_list').slideUp(200, function() {
-                        $('#invoice_item_list').append('<tr id="invoiceItem"><td>' + i + '</td>' +
-                            '<td id="location_row">' + data[0].location_name + '<input type="hidden" class="form-control input-sm" id="location_ids" name="location_ids" value="' + locationId + '"></td>' +
-                            '<td id="brand_row">' + brand + '</td>' +
-                            '<td id="product_row">' + product + '<input type="hidden" class="form-control input-sm" id="product_ids" name="product_ids" value="' + productId + '"></td>' +
-                            '<td>' + productCode + '</td>' +
-                            '<td id="jumlah_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="jumlahs" name="jumlah" value="' + jumlah + '"></input></td>' +
-                            '<td id="harga_row"><input onchange="calculateTotal()" type="text" class="form-control input-sm" id="hargas" name="harga" value="' + harga + '"></input></td>' +
-                            '<td><button type="button" onclick="removeRow(' + i + ')" data-id="' + i + '" id="delete" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-                        $('#invoice_item_list').slideDown(200);
-                        calculateTotal();
-                    });
-                } else {
-                    swal("Failed!", "Gagal, karena product " + product + " tidak ada di warehouse tersebut", "error");
-                }
-            }, 'json');
-
+                }, 'json');
+            return true;
+        }
     }
 
 });
@@ -828,15 +842,17 @@ function calculateTotal() {
     var subTotal = 0;
     var grandTotal = 0;
     var freight = 0;
+    var quantity = 0;
+    var price = 0;
     if ($('#modal-new-invoice-fullscreen #freight').val() != "") {
         freight = $('#modal-new-invoice-fullscreen #freight').val();
         $('#modal-new-invoice-fullscreen #freight').val(addCommas(freight));
         freight = removeCommas(freight);
     }
     $('#invoice_item_list tbody tr').each(function() {
-        var quantity = parseInt($(this).find('#jumlah_row #jumlahs').val());
+        quantity = parseInt($(this).find('#jumlah_row #jumlahs').val());
         console.log('quantity ' + quantity);
-        var price = parseInt(removeCommas($(this).find('#harga_row #hargas').val()));
+        price = parseInt(removeCommas($(this).find('#harga_row #hargas').val()));
 
         console.log('price ' + price);
         var total = quantity * price;
@@ -847,6 +863,9 @@ function calculateTotal() {
     grandTotal = subTotal + parseInt(freight);
     subTotal = addCommas(subTotal);
     grandTotal = addCommas(grandTotal);
+
+
+
     $('#modal-new-invoice-fullscreen .grandTotal').fadeOut(500, function() {
         $('#modal-new-invoice-fullscreen .grandTotal').text(grandTotal).fadeIn(500);
     });

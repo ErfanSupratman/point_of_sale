@@ -103,7 +103,7 @@
 									</div>
 									<div class="col-sm-2">
 										<label for="jumlah">Jumlah</label>
-										<input type="text" id="jumlah" class="form-control input-sm" name="jumlah"></input>
+										<input type="text" id="jumlah" onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' class="form-control input-sm" name="jumlah"></input>
 									</div>
 									<div class="col-sm-2">
 										<br/>
@@ -148,7 +148,7 @@
 						<div class="col-sm-6">
 							<h3>Sub Total : Rp. <span class="subTotal">0</span></h3>
 							<h3>Biaya Pengiriman : <input type="text" class="form-control input-sm"
-							id="freight" name="freight"></input></h3>
+							id="freight" onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' name="freight"></input></h3>
 							
 						</div>
 					</div>
@@ -169,13 +169,14 @@
 							<?php }?>
 						</div>
 						<div class="col-sm-3">
-							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button>
+							
 							
 						</div>
 						<div class="col-sm-3">
 							<button type="button" id="update_btn" class="btn btn-block btn-info btn-lg">UPDATE</button>
 						</div>
 						<div class="col-sm-3 pull-right">
+							<button type="button" id="confirm_btn" class="btn btn-block btn-warning  btn-lg">CONFIRM</button>
 							<button type="button" id="booking_btn" class="btn btn-block btn-info btn-lg">BOOKING</button>
 							<button type="button" id="finalize_btn" class="btn btn-block btn-success btn-lg">PAID</button>
 							

@@ -63,6 +63,7 @@
                                 if ($('#modal-new-stock-fullscreen #product_id').val() == "") {
                                     $('.product_detail').fadeOut(100, function() {
                                         $('#modal-new-stock-fullscreen #product_id').val("");
+                                        $('#modal-new-stock-fullscreen #id').val("");
                                         $(this).text("product not found!").fadeIn(100);
                                     });
                                 }
@@ -75,6 +76,7 @@
                                         var current = $('#name').typeahead(
                                             "getActive");
                                         if (current) {
+                                            $('#modal-new-stock-fullscreen #id').val("");
                                             if (current.name == $('#name').val()) {
                                                 $("#status").fadeIn();
                                                 $("#preloader").fadeIn();
@@ -99,6 +101,7 @@
                                             } else {
                                                 $('.product_detail').fadeOut(100, function() {
                                                     $('#modal-new-stock-fullscreen #product_id').val("");
+                                                    $('#modal-new-stock-fullscreen #id').val("");
                                                     $(this).text("product not found!").fadeIn(100);
                                                 });
                                             }
@@ -297,45 +300,26 @@
                                     });
                             });
 
-                    $("#modal-new-stock-fullscreen #insert").click(
+                    /*$("#modal-new-stock-fullscreen #insert").click(
                         function() {
-                            $("#status").fadeIn();
-                            $("#preloader").fadeIn();
-                            var fullName = $("#modal-new-stock-fullscreen #name").val();
-                            $.post('Inventory/addStock', $('form#stock_form')
-                                .serialize(),
-                                function(data) {
-                                    $("#status").fadeOut();
-                                    $("#preloader").fadeOut();
-                                    if (data.success) {
-                                        swal("Inserted!", "Berhasil menyimpan " + fullName + "", "success");
-                                        table.ajax.reload();
-                                        $('#modal-new-stock-fullscreen').modal('hide');
-                                    } else {
-                                        swal("Failed!", data.error, "error");
-                                    }
-                                }).fail(function() {
-                                swal("Failed!", "Gagal menyimpan " + fullName + "", "error");
-                            });
+                            insertStockToDB(table);
+                        });*/
+
+                    $("#stock_form").submit(
+                        function(event) {
+                            event.preventDefault();
+                            var id = $("#modal-new-stock-fullscreen #id").val();
+                            if (id == "") {
+                                insertStockToDB(table);
+                            } else {
+                                updateStockToDB(table);
+                            }
                         });
 
-                    $("#modal-new-stock-fullscreen #update").click(
+                   /* $("#modal-new-stock-fullscreen #update").click(
                         function() {
-                            var fullName = $(
-                                "#modal-new-stock-fullscreen #name").val();
-                            $.post('Inventory/updateStock?id=' + $(
-                                    "#modal-new-stock-fullscreen #id").val(), $('form#stock_form')
-                                .serialize(),
-                                function(data) {
-                                    if (data.success) {
-                                        swal("Updated!", "Berhasil menyimpan " + fullName + "", "success");
-                                        table.ajax.reload();
-                                        $('#modal-new-stock-fullscreen').modal('hide');
-                                    } else {
-                                        swal("Failed!", "Gagal menyimpan " + fullName + "", "error");
-                                    }
-                                });
-                        });
+                            updateStockToDB(table);
+                        });*/
 
                     /*
                         HISTORY STOCK
@@ -627,4 +611,54 @@
             $("#modal-new-stock-fullscreen #lokasi_detail").text("");
             $("#modal-new-stock-fullscreen #update").hide();
             $("#modal-new-stock-fullscreen #insert").show();
+        }
+
+        function insertStockToDB(table) {
+            $("#status").fadeIn();
+            $("#preloader").fadeIn();
+            var fullName = $("#modal-new-stock-fullscreen #name").val();
+            $.post('Inventory/addStock', $('form#stock_form')
+                .serialize()).fail(function() {
+                $("#status").fadeOut();
+                $("#preloader").fadeOut();
+                swal("Failed!", "Gagal menyimpan " + fullName + "", "error");
+            }).done(function(data) {
+                $("#status").fadeOut();
+                $("#preloader").fadeOut();
+                if (data.success) {
+                    swal("Inserted!", "Berhasil menyimpan " + fullName + "", "success");
+                    table.ajax.reload();
+                    $('#modal-new-stock-fullscreen').modal('hide');
+                } else {
+                    swal("Failed!", data.error, "error");
+                }
+            });
+
+        }
+
+        function updateStockToDB(table) {
+            $("#status").fadeIn();
+            $("#preloader").fadeIn();
+            var fullName = $(
+                "#modal-new-stock-fullscreen #name").val();
+            $.post('Inventory/updateStock?id=' + $(
+                    "#modal-new-stock-fullscreen #id").val(), $('form#stock_form')
+                .serialize(),
+                function(data) {
+                    if (data.success) {
+                        $("#status").fadeOut();
+                        $("#preloader").fadeOut();
+                        swal("Updated!", "Berhasil menyimpan " + fullName + "", "success");
+                        table.ajax.reload();
+                        $('#modal-new-stock-fullscreen').modal('hide');
+                    } else {
+                        $("#status").fadeOut();
+                        $("#preloader").fadeOut();
+                        swal("Failed!", data.error, "error");
+                    }
+                }).fail(function(){
+                     $("#status").fadeOut();
+                        $("#preloader").fadeOut();
+                        swal("Failed!", "Gagal menyimpan " + fullName + "", "error");
+                });
         }

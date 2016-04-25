@@ -1,7 +1,9 @@
 <!-- Modal fullscreen -->
+
 <div class="modal modal-fullscreen fade" id="modal-new-stock-fullscreen"
 	tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	aria-hidden="true">
+	<form id="stock_form">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -30,7 +32,7 @@
 					$readOnly="";
 				}?>
 				<div class="row">
-					<form action="/" id="stock_form">
+					
 						<div class="col-sm-6">
 							<input type="hidden" id="id" name="id"></input>
 							<label for="lokasi">Lokasi Stock</label><br/>
@@ -65,37 +67,38 @@
 							
 							
 							<label for="jumlah">Jumlah</label> <input id="jumlah" type="text"
-							class="form-control input-sm" <?=$readOnly?> name="jumlah" />
+							class="form-control input-sm" onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' <?=$readOnly?> name="jumlah" />
 						</div>
 						<div class="col-sm-6">
 							<?php if(in_array("BUY_PRICE", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 								<label  for="hargab">Harga Beli</label>
-								<input <?=$readOnly?> id="hargab" type="text" class="form-control input-sm" name="hargab" />
+								<input onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' <?=$readOnly?> id="hargab" type="text" class="form-control input-sm" name="hargab" />
 							<?php }?>
 								
 							<?php if(in_array("VIEW_SELL_PRICE", $permissions) || in_array("SUPER_ADMIN", $permissions)){ ?>
 								<label for="hargabe">Harga CNT.</label>
-								<input <?=$readOnly?> id="hargabe" type="text" class="form-control input-sm" name="hargabe" />
+								<input onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' <?=$readOnly?> id="hargabe" type="text" class="form-control input-sm" name="hargabe" />
 								<label for="hargada">Harga Distributor Area</label>
-								<input <?=$readOnly?> id="hargada" type="text" class="form-control input-sm" name="hargada" />
+								<input onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' <?=$readOnly?> id="hargada" type="text" class="form-control input-sm" name="hargada" />
 								<label for="hargare">Harga Dealer</label>
-								<input <?=$readOnly?> id="hargadl" type="text" class="form-control input-sm" name="hargadl" />
+								<input onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' <?=$readOnly?> id="hargadl" type="text" class="form-control input-sm" name="hargadl" />
 								<label for="hargare">Harga Retail</label>
-								<input <?=$readOnly?> id="hargare" type="text" class="form-control input-sm" name="hargare" />
+								<input onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' <?=$readOnly?> id="hargare" type="text" class="form-control input-sm" name="hargare" />
 							<?php }?>
 						</div>
-					</form>
+					
 				</div>
 			</div>
 			<div class="modal-footer">
 				<?php 
 							if(in_array("SUPER_ADMIN", $permissions)){
-								echo '<button type="button" class="btn btn-success" id="insert">Simpan</button>
-				<button type="button" class="btn btn-success" id="update">Update</button>';
+								echo '<button type="submit" class="btn btn-success" id="insert">Simpan</button>
+				<button type="submit" class="btn btn-success" id="update">Update</button>';
 							} 
 						?>
 				
 			</div>
 		</div>
 	</div>
+	</form>
 </div>

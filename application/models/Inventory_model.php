@@ -98,10 +98,9 @@ class Inventory_model extends CI_Model {
 	function getAvailableQuantity($id) {
 		$sql = 'SELECT ps.stock-(select COALESCE(sum(pid.quantity),0) from pos_invoice_detail pid
 		JOIN pos_invoice pi ON pi.id=pid.invoice_id
-		WHERE pid.product_id=ps.product_id and pi.state in (0,1)) as stock
+		WHERE pid.product_id=ps.product_id and pid.location_id=ps.location_id and pi.state in (0,1)) as stock
 		FROM pos_stock ps
 		JOIN pos_product pp ON pp.id=ps.product_id
-		JOIN pos_warehouse pw ON pw.id=ps.location_id
 		JOIN pos_brand pb ON pb.id=pp.brand_id
 		WHERE ps.active=true and ps.id=' . $id;
 		$query = $this->db->query($sql);
@@ -216,6 +215,11 @@ class Inventory_model extends CI_Model {
 	}
 
 	function addStock($data, $operationName, $username) {
+		if($data['stock']<=0){
+			$response = array('success' => false,'error' => 'Quantity must > 0');
+			return $response;
+		}
+
 		$result = $this->modifyStock($data, '+', $operationName, $username);
 		$response = array(
 			'success' => $result['success'],
@@ -235,10 +239,11 @@ class Inventory_model extends CI_Model {
 		error_log("UPDATED");
 		$resultAvailable = $this->getAvailableQuantity($data['id']);
 		$difference = intval($data['stock']) - intval($resultAvailable->stock);
+		
 		$data['stock'] = $difference;
 		$modifyStockResult = $this->modifyStock($data, '+', 'updateStock', $username);
 		$response = array(
-			'success' => $modifyStockResult['success'],
+			'success' => $modifyStockResult['success'],'stock' => $data['stock']." ".$resultAvailable->stock
 		);
 		return $response;
 	}
