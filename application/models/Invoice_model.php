@@ -7,6 +7,7 @@ class Invoice_model extends CI_Model {
 		$this->load->model('dataWrapper_dto');
 		$this->load->model('document_dto');
 		$this->load->model('inventory_model');
+		$this->load->model('customer_model');
 	}
 
 	function getAllInvoiceSummary() {
@@ -102,12 +103,12 @@ $dataWrapper = new $this->document_dto();
 		$sqlHeader = 'UPDATE pos_invoice SET state=3,updated_date=now(),updated_by=?,notes=? WHERE id=?';
 		$queryHeader = $this->db->query($sqlHeader, array($username,$notes,$id));
 
-		$sqlDetail = 'SELECT pid.product_id,pid.quantity,pi.location_id FROM pos_invoice pi JOIN pos_invoice_detail pid ON pid.invoice_id=pi.id WHERE pi.id=? and pi.state=2';
+		$sqlDetail = 'SELECT pid.product_id,pid.quantity,pi.location_id,pi.invoice_code FROM pos_invoice pi JOIN pos_invoice_detail pid ON pid.invoice_id=pi.id WHERE pi.id=? and pi.state=2';
 		$queryDetail = $this->db->query($sqlDetail, array($id));
 
 		foreach ($queryDetail->result() as $obj) {
 			$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$obj->location_id );
-			$this->inventory_model->addStock( $stock, 'addInvoice',  $username);
+			$this->inventory_model->addStock( $stock, 'void invoice '.$obj->invoice_code,  $username);
 		}
 		$response = array('success' => true);
 		return $response;
@@ -286,6 +287,13 @@ $dataWrapper = new $this->document_dto();
 					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$obj->location_id );
 					$this->inventory_model->decreaseStock( $stock, 'PAID Invoice '.$invoice_code,  $username);
 				}
+				$dataCustomer = array(
+					'nama' => $data->dataHeader->billing_name,
+					'alamat' => $data->dataHeader->billing_address,
+					'telepon' => $data->dataHeader->billing_phone,
+					'email' => $data->dataHeader->billing_email,
+				);
+				$this->customer_model->addCustomer($dataCustomer);
 			}
 
 			if($data->dataHeader->state==3){

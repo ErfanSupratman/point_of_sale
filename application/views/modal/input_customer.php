@@ -20,7 +20,13 @@
 						<form action="/" id="cust_form">
 						<input type="hidden" id="cust_id" name="cust_id">
 							<div class="form-group">
-								<label for="user_name_new">Nama Lengkap : </label><input type="text" id="user_name_new" name="user_name_new" class="form-control input-sm"></input>
+								<label for="user_name_new">Nama : </label><input type="text" id="user_name_new" name="user_name_new" class="form-control input-sm"></input>
+							</div>
+							<div class="form-group">
+								<label for="email">Email : </label><input type="text" id="email" name="email" class="form-control input-sm"></input>
+							</div>
+							<div class="form-group">
+								<label for="pic">PIC : </label><input type="text" id="pic" name="pic" class="form-control input-sm"></input>
 							</div>
 							<div class="form-group">
 								<label for="hp_new">No. HP : </label><input type="text" id="hp_new" name="hp_new" class="form-control input-sm"></input>

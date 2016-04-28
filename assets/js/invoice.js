@@ -1,49 +1,10 @@
 $(document).ready(function() {
 
-    /*    $("#modal-new-invoice-fullscreen #print").on("click", function() {
-        var divContents = $("#modal-new-invoice-fullscreen .modal-body").html();
-        var printWindow = window.open('', '', 'height=400,width=800');
-        printWindow.document.write('<html><head><title>DIV Contents</title>');
-        printWindow.document.write('</head><body >');
-        printWindow.document.write(divContents);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.print();
-    });*/
-
     $('#modal-new-invoice-fullscreen #export_xls').on('click', function() {
-        /* $("#modal-new-invoice-fullscreen").print({
-            globalStyles: true,
-            mediaPrint: false,
-            stylesheet: null,
-            noPrintSelector: ".no-print",
-            iframe: false,
-            append: null,
-            prepend: null,
-            manuallyCopyFormValues: true,
-            deferred: $.Deferred(),
-            timeout: 1000,
-            title: null,
-            doctype: '<!doctype html>'
-        });*/
         window.location.href = 'PrintExcel/invoiceXls?id=' + $("#modal-new-invoice-fullscreen #invoice_id").val();
     });
 
     $('#modal-new-invoice-fullscreen #print').on('click', function() {
-        /* $("#modal-new-invoice-fullscreen").print({
-            globalStyles: true,
-            mediaPrint: false,
-            stylesheet: null,
-            noPrintSelector: ".no-print",
-            iframe: false,
-            append: null,
-            prepend: null,
-            manuallyCopyFormValues: true,
-            deferred: $.Deferred(),
-            timeout: 1000,
-            title: null,
-            doctype: '<!doctype html>'
-        });*/
         window.open('invoice/printInvoice?id=' + $("#modal-new-invoice-fullscreen #invoice_id").val());
     })
 
@@ -117,22 +78,6 @@ $(document).ready(function() {
             $(".modal-backdrop").addClass("modal-backdrop-transparent");
         }, 0);
     });
-
-    /*
-    $.get('Brand/getAllBrand', {}, function(data) {
-        $.each(data.data, function(i, item) {
-            $('#modal-new-invoice-fullscreen #brand').append(
-                $("<option></option>").attr("value", item.id)
-                .text(item.name));
-            $('#modal-new-invoice-fullscreen #brand').selectpicker(
-                'refresh');
-        });
-    }, 'json');
-
-    $('#modal-new-invoice-fullscreen #brand').selectpicker({
-        style: 'btn-sm btn-info',
-        size: 8
-    });*/
 
     $("#modal-new-invoice-fullscreen #add_row").on('click', function() {
         $('#name').prop('disabled', true);
@@ -258,6 +203,31 @@ $(document).ready(function() {
                     $('#jumlah').prop('disabled', false);
                 }
             });
+
+
+
+    $('#billing_name').keydown(function(e) {
+        if ($('#billing_name').val().length > 1) {
+            $.get('Customer/findByNamaLike', {
+                nama: $('#billing_name').val()
+            }, function(data) {
+                var billingName = $("#billing_name").typeahead();
+                billingName.data('typeahead').source = data.data;
+
+            }, 'json');
+        }
+    });
+
+    $('#billing_name').change(function(e) {
+        var current = $('#billing_name').typeahead("getActive");
+        if (current) {
+            if (current.name == $('#billing_name').val()) {
+                $('#billing_address').val(current.alamat);
+                $('#billing_email').val(current.email);
+                $('#billing_phone').val(current.telepon);
+            }
+        }
+    })
 
     $('#brand')
         .change(
@@ -729,7 +699,6 @@ $(document).ready(function() {
 
     function countAllStateBadge() {
         $.get('Invoice/countAllStates', {}, function(data) {
-            /*$('#pendingBadge').text(data);*/
             $('#bookingBadge').text("");
             $('#pendingBadge').text("");
             $('#finishedBadge').text("");
@@ -850,12 +819,12 @@ function calculateTotal() {
         freight = removeCommas(freight);
     }
     $('#invoice_item_list tbody tr').each(function() {
-        if($(this).find('#jumlah_row #jumlahs').val()==''){
+        if ($(this).find('#jumlah_row #jumlahs').val() == '') {
             $(this).find('#jumlah_row #jumlahs').val(0);
-        }else{
+        } else {
             quantity = parseInt($(this).find('#jumlah_row #jumlahs').val());
         }
-        
+
         price = parseInt(removeCommas($(this).find('#harga_row #hargas').val()));
 
         var total = quantity * price;

@@ -45,6 +45,8 @@ class Customer extends MY_Controller {
 				'nama' => $_POST['user_name_new'],
 				'alamat' => $_POST['alamat_new'],
 				'telepon' => $_POST['hp_new'],
+				'email' => $_POST['email'],
+				'pic' => $_POST['pic']
 			  );
 		
 		$response = $this->customer_model->updateCustomer($data, $_GET['id']);
@@ -56,7 +58,9 @@ class Customer extends MY_Controller {
 		$data = array(
 				'nama' => $_POST['user_name_new'],
 				'alamat' => $_POST['alamat_new'],
-				'telepon' => $_POST['hp_new']
+				'telepon' => $_POST['hp_new'],
+				'email' => $_POST['email'],
+				'pic' => $_POST['pic']
 			  );
 		$response = $this->customer_model->addCustomer($data);
 		echo json_encode($response);
@@ -66,6 +70,17 @@ class Customer extends MY_Controller {
 		$id = $_GET['id'];
 		header('Content-Type: application/json');
 		$response = $this->customer_model->deactiveCustomer($id);
+		echo json_encode($response);
+	}
+
+	public function findByNamaLike(){
+		header('Content-Type: application/json');
+		$name = "";
+		if(isset($_GET['nama'])){
+			$name = $_GET['nama'];
+		}
+		$name = TRIM($name);
+		$response = $this->customer_model->findByNamaLike($name);
 		echo json_encode($response);
 	}
 }

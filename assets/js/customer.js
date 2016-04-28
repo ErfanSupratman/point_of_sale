@@ -31,6 +31,8 @@ $(document).ready(function() {
     $("#modal-new-cust-fullscreen #user_name_new").val(rowData.nama);
 	$("#modal-new-cust-fullscreen #hp_new").val(rowData.telepon);
 	$("#modal-new-cust-fullscreen #alamat_new").val(rowData.alamat);
+	$("#modal-new-cust-fullscreen #email").val(rowData.email);
+	$("#modal-new-cust-fullscreen #pic").val(rowData.pic);
 	$("#modal-new-cust-fullscreen #active").prop('checked', Boolean(rowData.active>0));
 	$("#modal-new-cust-fullscreen #active").prop('disabled', true);
     $("#modal-new-cust-fullscreen #update").show();
@@ -97,6 +99,8 @@ function insertCustomer(){
 	$("#modal-new-cust-fullscreen .title_header").text("Tambah Data");
     $("#modal-new-cust-fullscreen #user_name_new").val("");
 	$("#modal-new-cust-fullscreen #hp_new").val("");
+	$("#modal-new-cust-fullscreen #pic").val("");
+	$("#modal-new-cust-fullscreen #email").val("");
 	$("#modal-new-cust-fullscreen #alamat_new").val("");
 	$("#modal-new-cust-fullscreen #active").prop('checked', true);
 	$("#modal-new-cust-fullscreen #active").prop('disabled', true);
