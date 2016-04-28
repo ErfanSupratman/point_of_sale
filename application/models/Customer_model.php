@@ -19,7 +19,7 @@
 		function getAllCustomersSummary() 
 		{
 			$dataWrapper = new DataWrapper();
-			$sql = 'SELECT id, nama, email, telepon, alamat, customer_code, active FROM pos_customer WHERE active=true ORDER BY id desc';
+			$sql = 'SELECT id, nama, email, telepon, alamat, customer_code, active, pic FROM pos_customer WHERE active=true ORDER BY id desc';
 			$query = $this->db->query($sql);
 			$dataWrapper->data = $query->result();
 			return $dataWrapper;
