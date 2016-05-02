@@ -31,7 +31,7 @@
 							<input type="text" id="booking_code" name="booking_code" readonly="true" class="form-control input-sm"/>
 							<label for="billing_name">No. Invoice</label>
 							<input type="text" id="invoice_code" name="invoice_code" readonly="true" class="form-control input-sm"/>
-							<label for="billing_name">Nama Penerima</label>
+							<label for="billing_name">Nama Penerima <i id="preloadCustomer" class="fa fa-spinner fa-spin"></i></label>
 							<input type="text" id="billing_name" name="billing_name" data-provide="typeahead" autocomplete="off" class="form-control input-sm"/>
 							<label for="billing_phone">No. Telepon</label>
 							<input type="text" id="billing_phone" name="billing_phone" class="form-control input-sm"/>

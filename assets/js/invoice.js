@@ -144,10 +144,12 @@ $(document).ready(function() {
     $('#modal-new-invoice-fullscreen').on('shown.bs.modal', function(e) {
         $("#modal-new-invoice-fullscreen #billing_name").focus();
         $("#modal-new-invoice-fullscreen #insertDetailForm").removeClass("in");
+        $("#preloadCustomer").fadeOut();
     })
 
     $("#status").fadeOut();
     $("#preloader").fadeOut();
+    $("#preloadCustomer").fadeOut();
 
     $('#modal-new-invoice-fullscreen').on('show.bs.modal', function(e) {
         $("#modal-new-invoice-fullscreen #finalize_btn").hide();
@@ -160,6 +162,7 @@ $(document).ready(function() {
         $('#modal-new-invoice-fullscreen #state').val("");
         $('#modal-new-invoice-fullscreen #print').hide();
         $('#modal-new-invoice-fullscreen #export_xls').hide();
+        $("#preloadCustomer").fadeOut();
     })
 
     $('#modal-finalize-fullscreen').on('shown.bs.modal', function(e) {
@@ -206,28 +209,34 @@ $(document).ready(function() {
 
 
 
-    $('#billing_name').keydown(function(e) {
-        if ($('#billing_name').val().length > 1) {
+    $('#billing_name').keyup(function(e) {
+        if ($('#billing_name').val().length > 2) {
+            $("#preloadCustomer").fadeIn();
             $.get('Customer/findByNamaLike', {
                 nama: $('#billing_name').val()
             }, function(data) {
+                $("#preloadCustomer").fadeOut();
                 var billingName = $("#billing_name").typeahead();
                 billingName.data('typeahead').source = data.data;
-
+                $('#billing_name')
+                    .change(
+                        function(e) {
+                            var current = $('#billing_name').typeahead("getActive");
+                            if (current) {
+                                if (current.name == $('#billing_name').val()) {
+                                    $('#billing_address').val(current.alamat);
+                                    $('#billing_email').val(current.email);
+                                    $('#billing_phone').val(current.telepon);
+                                }
+                            }
+                        });
             }, 'json');
         }
     });
 
-    $('#billing_name').change(function(e) {
-        var current = $('#billing_name').typeahead("getActive");
-        if (current) {
-            if (current.name == $('#billing_name').val()) {
-                $('#billing_address').val(current.alamat);
-                $('#billing_email').val(current.email);
-                $('#billing_phone').val(current.telepon);
-            }
-        }
-    })
+
+
+
 
     $('#brand')
         .change(
