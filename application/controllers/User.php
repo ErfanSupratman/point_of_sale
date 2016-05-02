@@ -68,7 +68,9 @@ class User extends MY_Controller {
 
 	public function addUser(){
 		header('Content-Type: application/json');
-		$data = array(
+		if(empty($_POST['password_new'])){
+				$response = array('success' => false,'error' => "Password cannot be empty!");
+			}else{$data = array(
 					'username' => $_POST['username_new'],
 					'password' => md5($_POST['password_new']),
 					'full_name' => $_POST['full_name_new'],
@@ -76,6 +78,8 @@ class User extends MY_Controller {
 					'permission' => $_POST['role_new']
 				  );
 		$response = $this->user_model->addUser($data);
+	}
+		
 		echo json_encode($response);
 	}
 }

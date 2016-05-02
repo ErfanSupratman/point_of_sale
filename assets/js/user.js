@@ -1,5 +1,7 @@
 $(document).ready(function() {
 	var selected = [];
+	 $("#status").fadeOut();
+                $("#preloader").fadeOut();
 	var table = $('#user_table').DataTable({
 			select: 'single',
 			"processing": true,
@@ -30,6 +32,7 @@ $(document).ready(function() {
 		$("#modal-new-user-fullscreen #full_name_new").val( rowData.full_name );
 		$("#modal-new-user-fullscreen #hp_new").val( rowData.telepon );
 		$("#modal-new-user-fullscreen #role_new").val( rowData.permission_id );
+		$("#modal-new-user-fullscreen #password_new").val( "" );
 		$("#modal-new-user-fullscreen #user_id").val(rowData.id)
 		$("#modal-new-user-fullscreen #active").prop('checked', Boolean(rowData.active>0));
 		$("#modal-new-user-fullscreen #active").prop('disabled', true);
@@ -63,9 +66,13 @@ $(document).ready(function() {
     } );
 	
 	$( "#modal-new-user-fullscreen #update" ).click(function() {
+		 $("#status").fadeIn();
+                $("#preloader").fadeIn();
 		var id = $("#modal-new-user-fullscreen #user_id").val();
 		var fullName = $("#modal-new-user-fullscreen #full_name_new").val();
 		$.post( 'User/updateUser?id='+id, $('form#user_form').serialize(), function(data) {
+			 $("#status").fadeOut();
+                $("#preloader").fadeOut();
 			if(data.success){
 				swal("Updated!", "Berhasil mengupdate "+fullName+"", "success");
 				table.ajax.reload();
@@ -77,8 +84,12 @@ $(document).ready(function() {
 	});
 
 	$( "#modal-new-user-fullscreen #insert" ).click(function() {
+		 $("#status").fadeIn();
+                $("#preloader").fadeIn();
 		var fullName = $("#modal-new-user-fullscreen #full_name_new").val();
 		$.post( 'User/addUser', $('form#user_form').serialize(), function(data) {
+			 $("#status").fadeOut();
+                $("#preloader").fadeOut();
 			if(data.success){
 				swal("Inserted!", "Berhasil menyimpan "+fullName+"", "success");
 				table.ajax.reload();

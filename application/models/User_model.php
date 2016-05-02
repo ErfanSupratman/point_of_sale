@@ -62,6 +62,18 @@ class User_model extends CI_Model {
 		try {
 			$this->db->trans_start();
 
+			if($data['permission']=="0"){
+				throw new Exception("Permission cannot be empty!");
+			}
+
+			if(empty($data['username'])){
+				throw new Exception("Username cannot be empty!");	
+			}
+
+			if(empty($data['password'])){
+				throw new Exception("Password cannot be empty!");	
+			}
+
 			$user = $this->getUser($data['username']);
 
 			if($user!=null){
@@ -87,6 +99,15 @@ class User_model extends CI_Model {
 		$error = "";
 		try {
 			$this->db->trans_start();
+
+			if($data['permission']=="0"){
+				throw new Exception("Permission cannot be empty!");
+			}
+
+			if(empty($data['username'])){
+				throw new Exception("Username cannot be empty!");	
+			}
+
 
 			$user = $this->getUser($data['username']);
 

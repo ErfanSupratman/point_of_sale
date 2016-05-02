@@ -173,6 +173,9 @@ $dataWrapper = new $this->document_dto();
 		try {
 			$this->db->trans_start();
 			$listExists = false;
+			if(empty($data->dataHeader->billing_name)){
+				throw new Exception('Nama penerima cannot be empty!');	
+			}
 			foreach ($data->dataDetail as $obj) {
 				$listExists = true;
 				if($obj->quantity<=0){
@@ -243,6 +246,9 @@ $dataWrapper = new $this->document_dto();
 		try {
 			$this->db->trans_start();
 			$listExists = false;
+			if(empty($data->dataHeader->billing_name)){
+				throw new Exception('Nama penerima cannot be empty!');	
+			}
 			foreach ($data->dataDetail as $obj) {
 				$listExists = true;
 				if($obj->quantity<=0){
@@ -283,6 +289,9 @@ $dataWrapper = new $this->document_dto();
 			error_log("state ".$data->dataHeader->state);
 
 			if($data->dataHeader->state==2){
+				if(empty($data->dataHeader->finalize_date)){
+					throw new Exception('Finalize date cannot be empty!');
+				}
 				foreach ($data->dataDetail as $obj) {
 					$stock = array('product_id' => $obj->product_id, 'stock' => $obj->quantity, 'location_id' =>$obj->location_id );
 					$this->inventory_model->decreaseStock( $stock, 'PAID Invoice '.$invoice_code,  $username);
