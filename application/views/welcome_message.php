@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<link rel="stylesheet" href="<?=asset_url()?>/css/bootstrap-flaty.min.css">
 	<link rel="stylesheet" href="<?=asset_url()?>/css/style.css">
+	<link rel="shortcut icon" href="<?=asset_url()?>/icon/favicon.ico" type="image/x-icon"/>
 	<style>
 		
 	

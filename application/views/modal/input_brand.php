@@ -16,6 +16,9 @@
 				</div>
 			</div>
 			<div class="modal-body">
+			<div id="preloader">
+    <div id="status">&nbsp;</div>
+    </div>
 				<div class="row">
 					<input type="hidden" id="brand_id" name="brand_id"></input>
 					<div class="col-sm-12">

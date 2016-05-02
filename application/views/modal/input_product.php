@@ -20,6 +20,9 @@
 				</div>
 			</div>
 			<div class="modal-body">
+			<div id="preloader">
+    <div id="status">&nbsp;</div>
+    </div>
 				<div class="row">
 
 					<div class="col-sm-12">

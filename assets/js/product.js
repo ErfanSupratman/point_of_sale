@@ -2,7 +2,8 @@ $(document)
     .ready(
         function() {
             var selected = [];
-
+ $("#status").fadeOut();
+                $("#preloader").fadeOut();
             var requestBrand = $.ajax({
                 url: "Brand/getAllBrand",
                 method: "GET",
@@ -10,6 +11,8 @@ $(document)
             });
 
             requestBrand.done(function(msg) {
+                 $("#status").fadeOut();
+                $("#preloader").fadeOut();
                 console.log(msg);
                 var options;
                 $.each(msg.data, function(i, item) {
@@ -23,6 +26,8 @@ $(document)
             });
 
             requestBrand.fail(function(jqXHR, textStatus) {
+                 $("#status").fadeOut();
+                $("#preloader").fadeOut();
                 console.log(textStatus)
             });
 
@@ -116,6 +121,8 @@ $(document)
             $("#modal-new-product-fullscreen #update")
                 .click(
                     function() {
+                         $("#status").fadeIn();
+                $("#preloader").fadeIn();
                         var id = $(
                                 "#modal-new-product-fullscreen #product_id")
                             .val();
@@ -127,6 +134,8 @@ $(document)
                             $('form#product_form')
                             .serialize(),
                             function(data) {
+                                 $("#status").fadeOut();
+                $("#preloader").fadeOut();
                                 if (data.success) {
                                     swal(
                                         "Updated!",
@@ -144,11 +153,15 @@ $(document)
 
             $("#modal-new-product-fullscreen #insert").click(
                 function() {
+                     $("#status").fadeIn();
+                $("#preloader").fadeIn();
                     var fullName = $(
                             "#modal-new-product-fullscreen #name_new")
                         .val();
                     $.post('Product/addProduct', $('form#product_form')
                         .serialize(), function(data) {
+                             $("#status").fadeOut();
+                $("#preloader").fadeOut();
                             if (data.success) {
                                 swal("Inserted!", "Berhasil menyimpan " + fullName + "", "success");
                                 table.ajax.reload();
@@ -157,6 +170,7 @@ $(document)
                             } else {
                                 swal("Failed!", data.error, "error");
                             }
+
                         });
                 });
 

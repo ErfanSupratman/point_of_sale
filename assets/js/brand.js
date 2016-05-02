@@ -58,11 +58,18 @@ $(document).ready(function() {
                 });
         });
 
+         $("#status").fadeOut();
+                $("#preloader").fadeOut();
+
         $("#modal-new-brand-fullscreen #update").click(function() {
+             $("#status").fadeIn();
+                $("#preloader").fadeIn();
             console.log("update clicked");
             var id = $("#modal-new-brand-fullscreen #brand_id").val();
             var fullName = $("#modal-new-brand-fullscreen #brand_name").val();
             $.post('Brand/updateBrand?id=' + id, {brand_name:fullName}, function(data) {
+                 $("#status").fadeOut();
+                $("#preloader").fadeOut();
                 if (data.success) {
                     swal("Updated!", "Berhasil mengupdate " + fullName + "", "success");
                     table.ajax.reload();
@@ -74,8 +81,12 @@ $(document).ready(function() {
         });
 
         $("#modal-new-brand-fullscreen #insert").click(function() {
+             $("#status").fadeIn();
+                $("#preloader").fadeIn();
             var fullName = $("#modal-new-brand-fullscreen #brand_name").val();
             $.post('Brand/addBrand',  {brand_name:fullName}, function(data) {
+                 $("#status").fadeOut();
+                $("#preloader").fadeOut();
                 if (data.success) {
                     swal("Inserted!", "Berhasil menyimpan " + fullName + "", "success");
                     table.ajax.reload();
