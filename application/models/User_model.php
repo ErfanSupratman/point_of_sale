@@ -8,6 +8,10 @@ class User_model extends CI_Model {
 	function __construct() {
 		parent::__construct();
 	}
+	
+	function deleteSessions(){
+		$this->db->empty_table('ci_session'); 
+	}
 
 	function login($username, $password) {
 		$this->db->select('id, username, password');

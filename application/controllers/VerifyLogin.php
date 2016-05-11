@@ -44,6 +44,11 @@ class VerifyLogin extends MY_Controller {
 			
 		}
 	}
+	
+	function deleteSessions(){
+		$this->user_model->deleteSessions();
+		echo "last cleaning time: ". time();
+	}
 
 	function check_database($password) {
 		//Field validation succeeded.  Validate against database
@@ -62,16 +67,19 @@ class VerifyLogin extends MY_Controller {
 				);
 				$this->session->set_userdata('logged_in', $sess_array);
 			}
+			session_write_close();
 			return TRUE;
 		} else {
 			$this->form_validation->set_message('check_database', 'Invalid username or password');
+			session_write_close();
 			return false;
 		}
 	}
 
 	function logout() {
+		$session_data = $this->session->userdata( 'logged_in' );
 		$this->session->unset_userdata('logged_in');
-		session_destroy();
+		$this->session->sess_destroy();
 		redirect('/', 'refresh');
 	}
 
