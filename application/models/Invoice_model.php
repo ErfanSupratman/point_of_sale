@@ -21,6 +21,7 @@ class Invoice_model extends CI_Model {
 				billing_phone,
 				billing_email,
 				location_id,
+				discount,
 				state,
 				created_by,
 				created_date
@@ -40,6 +41,7 @@ class Invoice_model extends CI_Model {
 				pi.booking_code, 
 				pi.billing_name, 
 				COALESCE(pi.freight,0) as freight, 
+				pi.discount,
 				SUM(pid.quantity*pid.price) as amount 
 				FROM pos_invoice pi 
 				JOIN pos_invoice_detail pid ON pid.invoice_id=pi.id
@@ -60,6 +62,7 @@ $dataWrapper = new $this->document_dto();
 				pi.billing_phone,
 				pi.billing_email,
 				pi.freight,
+				pi.discount,
 				pi.notes,
 				pi.term_of_payment,
 				pi.state,

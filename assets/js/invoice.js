@@ -129,6 +129,7 @@ $(document).ready(function() {
         $('.grandTotal').text("");
         $('#brand').val('');
         $('#name').val('');
+		$('#discount').val('');
         $('#jumlah').val('');
         $('#price_type').val('Pilih');
         $('#name').prop('disabled', true);
@@ -194,6 +195,12 @@ $(document).ready(function() {
     });
 
     $('#freight')
+        .change(
+            function(e) {
+                calculateTotal();
+            });
+			
+	 $('#discount')
         .change(
             function(e) {
                 calculateTotal();
@@ -485,8 +492,13 @@ $(document).ready(function() {
         //var locationId = $("#modal-new-invoice-fullscreen #locationId").val();
         var notes = $("#modal-new-invoice-fullscreen #notes").val();
         var freight = "0";
+		var discount = "0";
         if ($("#modal-new-invoice-fullscreen #freight").val() != "" && $("#modal-new-invoice-fullscreen #freight").val() != undefined) {
             freight = $("#modal-new-invoice-fullscreen #freight").val();
+        }
+		
+		if ($("#modal-new-invoice-fullscreen #discount").val() != "" && $("#modal-new-invoice-fullscreen #discount").val() != undefined) {
+            discount = $("#modal-new-invoice-fullscreen #discount").val();
         }
 
         var termOfPayment = $("#modal-new-invoice-fullscreen #term_of_payment").val();
@@ -507,6 +519,7 @@ $(document).ready(function() {
             //location_id: locationId,
             notes: notes,
             freight: removeCommas(freight),
+			discount: discount,
             term_of_payment: termOfPayment
         };
 
@@ -637,6 +650,7 @@ $(document).ready(function() {
             $("#modal-new-invoice-fullscreen #notes").val(data.header.notes);
             $("#modal-new-invoice-fullscreen #freight").val(addCommas(data.header.freight));
             $("#modal-new-invoice-fullscreen #state").val(data.header.state);
+			$("#modal-new-invoice-fullscreen #discount").val(data.header.discount);
             $('#modal-new-invoice-fullscreen .subTotal').text("");
             $('#modal-new-invoice-fullscreen .grandTotal').text("");
             $('#brand').val('');
@@ -822,11 +836,18 @@ function calculateTotal() {
     var freight = 0;
     var quantity = 0;
     var price = 0;
+	var discount = 0;
+	var discountPrice = 0;
     if ($('#modal-new-invoice-fullscreen #freight').val() != "") {
         freight = $('#modal-new-invoice-fullscreen #freight').val();
         $('#modal-new-invoice-fullscreen #freight').val(addCommas(freight));
         freight = removeCommas(freight);
     }
+	
+	if ($('#modal-new-invoice-fullscreen #discount').val() != "") {
+        discount = $('#modal-new-invoice-fullscreen #discount').val();
+    }
+	
     $('#invoice_item_list tbody tr').each(function() {
         if ($(this).find('#jumlah_row #jumlahs').val() == '') {
             $(this).find('#jumlah_row #jumlahs').val(0);
@@ -840,12 +861,14 @@ function calculateTotal() {
         subTotal += total;
         $(this).find('#harga_row #hargas').val(addCommas(price));
     });
-
-    grandTotal = subTotal + parseInt(freight);
+	
+	if(discount > 0){
+		discountPrice = ((discount/100) * subTotal);
+	}
+	
+    grandTotal = subTotal + parseInt(freight) - Math.floor(discountPrice);
     subTotal = addCommas(subTotal);
     grandTotal = addCommas(grandTotal);
-
-
 
     $('#modal-new-invoice-fullscreen .grandTotal').fadeOut(500, function() {
         $('#modal-new-invoice-fullscreen .grandTotal').text(grandTotal).fadeIn(500);

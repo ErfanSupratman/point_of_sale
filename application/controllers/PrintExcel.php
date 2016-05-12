@@ -27,12 +27,15 @@ class PrintExcel extends MY_Controller {
 				//strtotime("2011-01-07")
 				$objWorksheet->getCell('F5')->setValue($result->header->invoice_code);
 				$objWorksheet->getCell('F6')->setValue($result->header->term_of_payment);
+				$objWorksheet->getCell('F7')->setValue($result->header->billing_name);
 
 				if($countList>2){
-					$objWorksheet->insertNewRowBefore(10,$countList-2);
+					$objWorksheet->insertNewRowBefore(11,$countList-2);
 				}
-				$i = 9;
+				$i = 10;
 				$number = 1;
+				$subTotal = 0;
+				$discount = $result->header->discount;
 				foreach ($result->detail as $obj) {
 					$objWorksheet->getCell('A'.$i)->setValue($number);
 					$objWorksheet->getCell('B'.$i)->setValue($obj->product_name);
@@ -41,12 +44,15 @@ class PrintExcel extends MY_Controller {
 					$objWorksheet->getCell('F'.$i)->setValue(intval($obj->price)*intval($obj->quantity));
 					$i++;
 					$number++;
+					$subTotal +=$obj->price*$obj->quantity;
 				}
-
+				$discountPrice = floor($subTotal * ($discount/100));
 				if($countList<2){
-					$objWorksheet->getCell('F11')->setValue($result->header->freight);
+					$objWorksheet->getCell('F12')->setValue(-$discountPrice);
+					$objWorksheet->getCell('F13')->setValue($result->header->freight);
 				}else{
-					$objWorksheet->getCell('F'.$i)->setValue($result->header->freight);
+					$objWorksheet->getCell('F'.$i)->setValue(-$discountPrice);
+					$objWorksheet->getCell('F'.$i+1)->setValue($result->header->freight);
 				}
 
 				$filename='invoice_'.date("Y-m-d").'.xls'; //save our workbook as this file name
@@ -101,14 +107,22 @@ class PrintExcel extends MY_Controller {
 			}
 			$i = 5;
 			foreach ($result as $obj) {
+				$discountPrice = 0;
+				if($obj->discount>0){
+					$discountPrice = floor(($obj->discount/100) * $obj->amount);
+				}
+				
+				
 				$objWorksheet->getCell('A'.$i)->setValue($obj->created_date);
 				$objWorksheet->getCell('B'.$i)->setValue($obj->finalize_date);
 				$objWorksheet->getCell('C'.$i)->setValue($obj->updated_by);
 				$objWorksheet->getCell('D'.$i)->setValue($obj->invoice_code);
 				$objWorksheet->getCell('E'.$i)->setValue($obj->booking_code);
 				$objWorksheet->getCell('F'.$i)->setValue($obj->billing_name);
-				$objWorksheet->getCell('G'.$i)->setValue($obj->freight);
-				$objWorksheet->getCell('H'.$i)->setValue($obj->amount);
+				$objWorksheet->getCell('G'.$i)->setValue($obj->discount);
+				$objWorksheet->getCell('H'.$i)->setValue($obj->freight);
+				$objWorksheet->getCell('I'.$i)->setValue($obj->amount);
+				$objWorksheet->getCell('J'.$i)->setValue($obj->amount-$discountPrice);
 				$i++;
 			}
 

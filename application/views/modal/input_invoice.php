@@ -147,6 +147,8 @@
 						</div>
 						<div class="col-sm-6">
 							<h3>Sub Total : Rp. <span class="subTotal">0</span></h3>
+							<h3>Discount(%) : <input type="number" max="100" class="form-control input-sm"
+							id="discount"  name="discount"></input></h3>
 							<h3>Biaya Pengiriman : <input type="text" class="form-control input-sm"
 							id="freight" onkeypress='return event.keyCode==13 || ( event.charCode >= 48 && event.charCode <= 57)' name="freight"></input></h3>
 							
