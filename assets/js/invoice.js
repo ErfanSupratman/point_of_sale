@@ -519,7 +519,7 @@ $(document).ready(function() {
             //location_id: locationId,
             notes: notes,
             freight: removeCommas(freight),
-			discount: discount,
+			discount: removeCommas(discount),
             term_of_payment: termOfPayment
         };
 
@@ -846,6 +846,8 @@ function calculateTotal() {
 	
 	if ($('#modal-new-invoice-fullscreen #discount').val() != "") {
         discount = $('#modal-new-invoice-fullscreen #discount').val();
+        $('#modal-new-invoice-fullscreen #discount').val(addCommas(discount));
+        discount = removeCommas(discount);
     }
 	
     $('#invoice_item_list tbody tr').each(function() {
@@ -862,11 +864,7 @@ function calculateTotal() {
         $(this).find('#harga_row #hargas').val(addCommas(price));
     });
 	
-	if(discount > 0){
-		discountPrice = ((discount/100) * subTotal);
-	}
-	
-    grandTotal = subTotal + parseInt(freight) - Math.floor(discountPrice);
+    grandTotal = subTotal + parseInt(freight) - discount;
     subTotal = addCommas(subTotal);
     grandTotal = addCommas(grandTotal);
 

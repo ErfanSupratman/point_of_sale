@@ -42,7 +42,7 @@
 <table class="table-header">
   <tr>
     <td width="100px"><img src="<?php echo asset_url() ?>/images/logo_invoice.png"></img></td>
-    <td width="350px"><span style="font-size:20px"><b>DETAILER GALLERY</b></span><br/>
+    <td width="350px" valign="top">&nbsp;&nbsp;<span style="font-size:20px"><b>DETAILER GALLERY</b></span><br/>
 </td>
     <td >
     	<table style="border-spacing:0;border-collapse:collapse">
@@ -113,14 +113,10 @@
   $sum += (intval($obj->price)*intval($obj->quantity));
   $number++;
 	}
-	$discountPrice = 0;
-	if($discount>0){
-		$discountPrice = floor(($discount/100)*$sum);
-	}
   ?>
   <tr>
-    <td class="tg-lqy6" colspan="4">Discount </td>
-    <td class="tg-yw4l-right"><?=$discountPrice?></td>
+    <td class="tg-lqy6" colspan="4">Discount</td>
+    <td class="tg-yw4l-right"><?=number_format($discount)?></td>
   </tr>
   <tr>
     <td class="tg-lqy6" colspan="4">Freight</td>
@@ -128,7 +124,7 @@
   </tr>
   <tr>
     <td class="tg-lqy6" colspan="4">Total</td>
-    <td class="tg-yw4l-right-bold"><?=number_format(($sum+$freight)-$discountPrice)?></td>
+    <td class="tg-yw4l-right-bold"><?=number_format(($sum+$freight)-$discount)?></td>
   </tr>
 </table>
 <br/>

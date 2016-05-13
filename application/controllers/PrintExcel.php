@@ -46,12 +46,12 @@ class PrintExcel extends MY_Controller {
 					$number++;
 					$subTotal +=$obj->price*$obj->quantity;
 				}
-				$discountPrice = floor($subTotal * ($discount/100));
+
 				if($countList<2){
-					$objWorksheet->getCell('F12')->setValue(-$discountPrice);
+					$objWorksheet->getCell('F12')->setValue(-$discount);
 					$objWorksheet->getCell('F13')->setValue($result->header->freight);
 				}else{
-					$objWorksheet->getCell('F'.$i)->setValue(-$discountPrice);
+					$objWorksheet->getCell('F'.$i)->setValue(-$discount);
 					$objWorksheet->getCell('F'.$i+1)->setValue($result->header->freight);
 				}
 
@@ -107,12 +107,6 @@ class PrintExcel extends MY_Controller {
 			}
 			$i = 5;
 			foreach ($result as $obj) {
-				$discountPrice = 0;
-				if($obj->discount>0){
-					$discountPrice = floor(($obj->discount/100) * $obj->amount);
-				}
-				
-				
 				$objWorksheet->getCell('A'.$i)->setValue($obj->created_date);
 				$objWorksheet->getCell('B'.$i)->setValue($obj->finalize_date);
 				$objWorksheet->getCell('C'.$i)->setValue($obj->updated_by);
@@ -122,7 +116,7 @@ class PrintExcel extends MY_Controller {
 				$objWorksheet->getCell('G'.$i)->setValue($obj->discount);
 				$objWorksheet->getCell('H'.$i)->setValue($obj->freight);
 				$objWorksheet->getCell('I'.$i)->setValue($obj->amount);
-				$objWorksheet->getCell('J'.$i)->setValue($obj->amount-$discountPrice);
+				$objWorksheet->getCell('J'.$i)->setValue($obj->amount-$obj->discount);
 				$i++;
 			}
 
